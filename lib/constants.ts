@@ -31,9 +31,9 @@ export const HOSTS = [
     image: "/hosts/adam.jpg",
     bio: "Adam is the host of the Mission Matters podcast, ranked in the top 2.5% out of 2,617,524 podcasts globally. Adam's advice has been featured in major publications such as Forbes, Fox Business, Investor's Business Daily, and The Street to name a few.",
     social: {
-      linkedin: "#",
-      instagram: "#",
-      youtube: "#",
+      linkedin: "https://www.linkedin.com/in/adamtorres8/",
+      instagram: "https://www.instagram.com/askadamtorres",
+      youtube: "https://www.youtube.com/@MissionMattersBusiness",
     },
   },
   {
@@ -42,9 +42,9 @@ export const HOSTS = [
     image: "/hosts/chirag.jpg",
     bio: "Chirag oversees the PR, branding, and events (IRL) efforts of Mission Matters along with community affairs and partnerships. Chirag co-founded 3 other ventures with one successful exit. He was also the inaugural Managing Director for a White-House recognized Non-profit teaching financial education to students in need.",
     social: {
-      linkedin: "#",
-      instagram: "#",
-      youtube: "#",
+      linkedin: "https://www.linkedin.com/in/chiragsagar/",
+      instagram: "https://www.instagram.com/chiragdsagar",
+      youtube: "https://www.youtube.com/@MissionMattersBusiness",
     },
   },
   {
@@ -54,9 +54,9 @@ export const HOSTS = [
     imagePosition: "center 20%",
     bio: "Elias Arjan is the host and visionary behind the Healthspan Productions, and a leading healthspan advocate, educator, and speaker. As a co-founder of PRUVN Research, Elias is known for his relentless commitment to evidence-based wellness and cutting-edge longevity science.",
     social: {
-      linkedin: "#",
-      instagram: "#",
-      youtube: "#",
+      linkedin: "https://www.linkedin.com/in/eliasarjan/",
+      instagram: "https://www.instagram.com/eliasarjan",
+      youtube: "https://www.youtube.com/@healthspan_collective",
     },
   },
 ] as const;

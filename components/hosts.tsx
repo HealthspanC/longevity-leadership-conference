@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { LINKS, HOSTS } from "@/lib/constants";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
 import { FadeIn } from "./fade-in";
@@ -11,6 +13,109 @@ const socialIcons = {
   instagram: Instagram,
   youtube: Youtube,
 } as const;
+
+function HostCards() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-16">
+      {HOSTS.map((host) => {
+        const isOpen = expanded === host.name;
+        return (
+          <div
+            key={host.name}
+            className="group relative rounded-[16px] overflow-hidden cursor-pointer"
+            onClick={() => setExpanded(isOpen ? null : host.name)}
+          >
+            <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-purple-deep">
+              <Image
+                src={host.image}
+                alt={host.name}
+                fill
+                className="object-cover"
+                style={{
+                  objectPosition:
+                    "imagePosition" in host
+                      ? host.imagePosition
+                      : "center 20%",
+                }}
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+
+              {/* Subtle purple tint overlay */}
+              <div className="absolute inset-0 bg-purple-deep/15 mix-blend-multiply" />
+
+              {/* Bottom gradient — default */}
+              <div className={cn(
+                "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500",
+                "group-hover:opacity-0",
+                isOpen && "!opacity-0"
+              )} />
+              {/* Bottom gradient — expanded (taller, denser) */}
+              <div className={cn(
+                "absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 via-60% to-transparent transition-opacity duration-500",
+                "opacity-0 group-hover:opacity-100",
+                isOpen && "!opacity-100"
+              )} />
+
+              {/* Name + Title + Bio */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
+                <div className="inline-flex mb-2">
+                  <span className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3.5 py-1">
+                    {host.title}
+                  </span>
+                </div>
+                <h3 className={cn(
+                  "font-serif text-2xl md:text-[1.7rem] font-bold text-white leading-tight mb-0 transition-all duration-500",
+                  "group-hover:mb-3",
+                  isOpen && "!mb-3"
+                )}>
+                  {host.name}
+                </h3>
+
+                {/* Bio — tap on mobile, hover on desktop */}
+                <div className={cn(
+                  "max-h-0 opacity-0 transition-all duration-500 ease-out overflow-hidden",
+                  "md:group-hover:max-h-[300px] md:group-hover:opacity-100",
+                  isOpen && "!max-h-[300px] !opacity-100"
+                )}>
+                  <p className="text-[0.8rem] text-white/70 leading-relaxed md:mt-0">
+                    {host.bio}
+                  </p>
+
+                  {/* Social */}
+                  <div className="flex gap-2.5 mt-3 mb-1">
+                    {(
+                      Object.entries(host.social) as [
+                        keyof typeof socialIcons,
+                        string,
+                      ][]
+                    ).map(([platform, url]) => {
+                      const Icon = socialIcons[platform];
+                      return (
+                        <a
+                          key={platform}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={platform}
+                          onClick={(e) => e.stopPropagation()}
+                          className="w-8 h-8 rounded-full bg-white/[0.15] border border-white/[0.2] flex items-center justify-center text-white/80 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
+                        >
+                          <Icon className="w-3.5 h-3.5" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function Hosts() {
   return (
@@ -41,78 +146,7 @@ export function Hosts() {
 
         {/* Editorial Host Profiles */}
         <FadeIn delay={100}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-16">
-            {HOSTS.map((host) => (
-              <div
-                key={host.name}
-                className="group relative rounded-[16px] overflow-hidden cursor-pointer"
-              >
-                {/* Photo — tall portrait, duotone by default */}
-                <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-purple-deep">
-                  <Image
-                    src={host.image}
-                    alt={host.name}
-                    fill
-                    className="object-cover"
-                    style={{
-                      objectPosition:
-                        "imagePosition" in host
-                          ? host.imagePosition
-                          : "center 20%",
-                    }}
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-
-                  {/* Subtle purple tint overlay */}
-                  <div className="absolute inset-0 bg-purple-deep/15 mix-blend-multiply" />
-
-                  {/* Bottom gradient for text legibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                  {/* Always-visible: Name + Title — uses flex-end so content grows upward */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
-                    <div className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light/80 mb-1.5">
-                      {host.title}
-                    </div>
-                    <h3 className="font-serif text-2xl md:text-[1.7rem] font-bold text-white leading-tight mb-0 transition-all duration-500 group-hover:mb-3">
-                      {host.name}
-                    </h3>
-
-                    {/* Bio — slides up on hover (desktop), always visible on mobile */}
-                    <div className="md:max-h-0 md:opacity-0 md:group-hover:max-h-[300px] md:group-hover:opacity-100 transition-all duration-500 ease-out overflow-hidden">
-                      <p className="text-[0.8rem] text-white/70 leading-relaxed mt-3 md:mt-0">
-                        {host.bio}
-                      </p>
-
-                      {/* Social */}
-                      <div className="flex gap-2.5 mt-3 mb-1">
-                        {(
-                          Object.entries(host.social) as [
-                            keyof typeof socialIcons,
-                            string,
-                          ][]
-                        ).map(([platform, url]) => {
-                          const Icon = socialIcons[platform];
-                          return (
-                            <a
-                              key={platform}
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label={platform}
-                              className="w-8 h-8 rounded-full bg-white/[0.15] border border-white/[0.2] flex items-center justify-center text-white/80 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
-                            >
-                              <Icon className="w-3.5 h-3.5" />
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <HostCards />
         </FadeIn>
 
         {/* Colophon strip — icon centered in divider */}

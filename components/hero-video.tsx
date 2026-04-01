@@ -1,29 +1,53 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Player from "@vimeo/player";
+
+const VIMEO_ID = "1106534793";
+const START_TIME = 4; // seconds
+const END_TIME = 60; // seconds
 
 export function HeroVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<Player | null>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    // Explicitly trigger play for browsers that block autoplay attribute
-    video.play().catch(() => {});
+    const el = containerRef.current;
+    if (!el || playerRef.current) return;
+
+    const player = new Player(el, {
+      id: Number(VIMEO_ID),
+      background: true, // autoplay, muted, no controls, loop
+      muted: true,
+      autopause: false,
+      dnt: true, // do not track
+      quality: "1080p",
+    });
+
+    playerRef.current = player;
+
+    player.ready().then(() => {
+      player.setCurrentTime(START_TIME);
+    });
+
+    player.on("timeupdate", (data: { seconds: number }) => {
+      if (data.seconds >= END_TIME) {
+        player.setCurrentTime(START_TIME);
+      }
+    });
+
+    return () => {
+      player.destroy();
+      playerRef.current = null;
+    };
   }, []);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Video */}
-      <video
-        ref={videoRef}
-        src="/video/hero.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
+      {/* Vimeo player — scaled up to ensure full cover with no letterboxing */}
+      <div
+        ref={containerRef}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100%,177.78vh)] h-[max(100%,56.25vw)]"
       />
 
       {/* Cinematic overlays */}

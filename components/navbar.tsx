@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
-import { ChevronRight, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -64,28 +65,53 @@ export function Navbar() {
       {/* Navbar */}
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-[1000] py-4 transition-all duration-350",
-          scrolled &&
-            "bg-bg/92 backdrop-blur-2xl border-b border-border-light py-2.5 shadow-sm"
+          "fixed top-0 left-0 right-0 z-[1000] transition-all duration-350",
+          scrolled
+            ? "bg-bg/92 backdrop-blur-2xl border-b border-border-light shadow-sm py-3"
+            : "py-5"
         )}
       >
-        <div className="flex items-center justify-between max-w-[1140px] mx-auto px-6">
-          <a href="#" className={cn("flex items-center gap-2.5 font-bold text-base tracking-tight transition-colors duration-350", scrolled ? "text-text" : "text-white")}>
-            <div className="w-9 h-9 bg-purple-deep rounded-[10px] flex items-center justify-center relative overflow-hidden">
-              <span className="font-black text-xs text-white tracking-wide relative z-10">
-                LLC
-              </span>
-              <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-[radial-gradient(circle,rgba(192,96,128,0.4),transparent)]" />
-            </div>
-            LLC &rsquo;26
+        <div className="flex items-center justify-between max-w-[1280px] mx-auto px-6">
+          {/* Logo */}
+          <a href="#" className="relative shrink-0">
+            {/* Purple logo — visible on scroll */}
+            <Image
+              src="/brand/logo.png"
+              alt="Healthspan Collective"
+              width={3309}
+              height={986}
+              priority
+              className={cn(
+                "w-[220px] h-auto transition-opacity duration-350",
+                scrolled ? "opacity-100" : "opacity-0"
+              )}
+            />
+            {/* White logo — visible over video hero */}
+            <Image
+              src="/brand/logo-white.png"
+              alt="Healthspan Collective"
+              width={4147}
+              height={1798}
+              priority
+              className={cn(
+                "w-[220px] h-auto absolute top-1/2 left-0 -translate-y-1/2 transition-opacity duration-350",
+                scrolled ? "opacity-0" : "opacity-100"
+              )}
+            />
           </a>
 
-          <ul className="hidden md:flex items-center gap-8 list-none">
+          {/* Desktop nav */}
+          <ul className="hidden md:flex items-center gap-7 list-none">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className={cn("text-sm font-medium transition-colors", scrolled ? "text-text-secondary hover:text-purple" : "text-white/80 hover:text-white")}
+                  className={cn(
+                    "text-sm font-medium transition-colors",
+                    scrolled
+                      ? "text-text-secondary hover:text-purple"
+                      : "text-white/80 hover:text-white"
+                  )}
                 >
                   {item.label}
                 </a>
@@ -103,8 +129,9 @@ export function Navbar() {
             </li>
           </ul>
 
+          {/* Mobile hamburger */}
           <button
-            className="flex md:hidden flex-col gap-[5px] p-1 bg-transparent"
+            className="flex md:hidden p-1 bg-transparent"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >

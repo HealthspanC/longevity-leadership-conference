@@ -73,10 +73,66 @@ export function Hero() {
 
           <FadeIn delay={200}>
             <div className="relative flex items-center justify-center max-w-[400px] mx-auto lg:max-w-none">
-              {/* Decorative rings — light for dark bg */}
-              <div className="absolute border border-white/[0.08] rounded-full w-[340px] h-[340px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block" />
-              <div className="absolute border border-dashed border-white/[0.05] rounded-full w-[420px] h-[420px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block" />
-              <div className="absolute border border-white/[0.03] rounded-full w-[500px] h-[500px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block" />
+              {/* Radial glow */}
+              <div className="absolute w-[520px] h-[520px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.12)_0%,rgba(139,92,246,0.04)_40%,transparent_70%)]" />
+
+              {/* Inner arc — clockwise, 60s */}
+              <div className="absolute w-[280px] h-[280px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block animate-[spin_60s_linear_infinite]">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 280 280" fill="none">
+                  <defs>
+                    <linearGradient id="arc1" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="rgb(167,139,250)" stopOpacity="0.55" />
+                      <stop offset="50%" stopColor="rgb(139,92,246)" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="rgb(139,92,246)" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="140" cy="140" r="138" stroke="url(#arc1)" strokeWidth="1.5" strokeDasharray="430 438" strokeLinecap="round" />
+                </svg>
+                {/* Orbiting dot at arc head */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-light/80 shadow-[0_0_12px_4px_rgba(139,92,246,0.6)]" />
+                </div>
+              </div>
+
+              {/* Middle arc — counter-clockwise, 45s */}
+              <div className="absolute w-[380px] h-[380px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block animate-[spin_45s_linear_infinite_reverse]">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 380 380" fill="none">
+                  <defs>
+                    <linearGradient id="arc2" x1="1" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="rgb(167,139,250)" stopOpacity="0.4" />
+                      <stop offset="50%" stopColor="rgb(139,92,246)" stopOpacity="0.1" />
+                      <stop offset="100%" stopColor="rgb(139,92,246)" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="190" cy="190" r="188" stroke="url(#arc2)" strokeWidth="1.2" strokeDasharray="580 602" strokeLinecap="round" />
+                </svg>
+                {/* Orbiting dot at arc head */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+                  <div className="w-2 h-2 rounded-full bg-purple-light/60 shadow-[0_0_10px_3px_rgba(139,92,246,0.45)]" />
+                </div>
+                {/* Secondary dot */}
+                <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-light/45 shadow-[0_0_8px_2px_rgba(139,92,246,0.3)]" />
+                </div>
+              </div>
+
+              {/* Outer arc — clockwise, 80s */}
+              <div className="absolute w-[480px] h-[480px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:block animate-[spin_80s_linear_infinite]">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480" fill="none">
+                  <defs>
+                    <linearGradient id="arc3" x1="0" y1="1" x2="1" y2="0">
+                      <stop offset="0%" stopColor="rgb(167,139,250)" stopOpacity="0.3" />
+                      <stop offset="50%" stopColor="rgb(139,92,246)" stopOpacity="0.08" />
+                      <stop offset="100%" stopColor="rgb(139,92,246)" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="240" cy="240" r="238" stroke="url(#arc3)" strokeWidth="1" strokeDasharray="730 768" strokeLinecap="round" />
+                </svg>
+                {/* Orbiting dot */}
+                <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-light/45 shadow-[0_0_8px_3px_rgba(139,92,246,0.35)]" />
+                </div>
+              </div>
               <Countdown />
             </div>
           </FadeIn>

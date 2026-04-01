@@ -1,38 +1,43 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Player from "@vimeo/player";
 
 const VIMEO_ID = "1106534793";
-const START_TIME = 4.7; // seconds
-const END_TIME = 60; // seconds
+const START_TIME = 4.7;
+const END_TIME = 60;
 
 export function HeroVideo() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerRef = useRef<Player | null>(null);
 
-  // Custom loop: listen for timeupdate via Vimeo postMessage API
   useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
-      if (typeof e.data !== "string") return;
-      try {
-        const data = JSON.parse(e.data);
-        if (data.event === "timeupdate" && data.data?.seconds >= END_TIME) {
-          iframeRef.current?.contentWindow?.postMessage(
-            JSON.stringify({ method: "setCurrentTime", value: START_TIME }),
-            "*"
-          );
-        }
-      } catch {
-        // ignore non-JSON messages
-      }
-    };
+    const iframe = iframeRef.current;
+    if (!iframe || playerRef.current) return;
 
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+    // Wrap the already-rendered iframe with the SDK for reliable event control
+    const player = new Player(iframe);
+    playerRef.current = player;
+
+    player.on("timeupdate", (data: { seconds: number }) => {
+      if (data.seconds >= END_TIME || data.seconds < START_TIME - 1) {
+        player.setCurrentTime(START_TIME);
+      }
+    });
+
+    player.on("ended", () => {
+      player.setCurrentTime(START_TIME);
+      player.play();
+    });
+
+    return () => {
+      playerRef.current = null;
+    };
   }, []);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Vimeo iframe — loads immediately, no SDK delay */}
+      {/* Iframe loads immediately; SDK wraps it for event control */}
       <iframe
         ref={iframeRef}
         src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}

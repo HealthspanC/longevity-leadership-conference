@@ -22,7 +22,6 @@ export default function Home() {
         <Vision />
         <Hosts />
         <Speakers />
-        <MissionBanner />
         <GetInvolved />
         <Gallery />
         <Subscribe />

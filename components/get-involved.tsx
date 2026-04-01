@@ -12,19 +12,19 @@ const iconMap: Record<string, React.ElementType> = {
 
 const colorStyles = {
   purple: {
-    iconBg: "bg-purple-wash",
-    iconColor: "text-purple",
-    linkColor: "text-purple",
-    accentBar: "bg-purple",
+    iconBg: "bg-white/[0.12]",
+    iconColor: "text-purple-light",
+    linkColor: "text-purple-light",
+    accentBar: "bg-purple-light",
   },
   rose: {
-    iconBg: "bg-rose-pale",
-    iconColor: "text-rose",
-    linkColor: "text-rose",
+    iconBg: "bg-white/[0.12]",
+    iconColor: "text-rose-pale",
+    linkColor: "text-rose-pale",
     accentBar: "bg-rose",
   },
   teal: {
-    iconBg: "bg-[#eef8f6]",
+    iconBg: "bg-white/[0.12]",
     iconColor: "text-teal",
     linkColor: "text-teal",
     accentBar: "bg-teal",
@@ -35,9 +35,18 @@ export function GetInvolved() {
   return (
     <section
       id="involve"
-      className="relative z-2 py-24 lg:py-28 bg-bg-warm border-t border-b border-border-light"
+      className="relative z-2 py-24 lg:py-28 bg-purple-deep overflow-hidden"
     >
-      <div className="max-w-[1140px] mx-auto px-6">
+      {/* Gradient overlays */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.05'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
+
+      <div className="relative z-10 max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <SectionHeader
             label="Get Involved"
@@ -45,6 +54,7 @@ export function GetInvolved() {
             accentWord="Movement"
             subtitle="Multiple pathways to engage with the longevity leadership community."
             centered
+            dark
           />
         </FadeIn>
 
@@ -56,7 +66,7 @@ export function GetInvolved() {
               return (
                 <div
                   key={card.title}
-                  className="group bg-bg-card border border-border-light rounded-[12px] p-10 px-7 text-center shadow-sm transition-all duration-350 hover:-translate-y-1 hover:shadow-lg relative"
+                  className="group bg-white/[0.07] backdrop-blur-sm border border-white/[0.1] rounded-[12px] p-10 px-7 text-center transition-all duration-350 hover:-translate-y-1 hover:bg-white/[0.12] relative"
                 >
                   {/* Accent bar on hover */}
                   <div
@@ -74,10 +84,10 @@ export function GetInvolved() {
                   >
                     {Icon && <Icon className="w-6 h-6" />}
                   </div>
-                  <h3 className="font-bold text-lg mb-2.5 text-text">
+                  <h3 className="font-bold text-lg mb-2.5 text-white">
                     {card.title}
                   </h3>
-                  <p className="text-[0.88rem] text-text-secondary leading-relaxed mb-6">
+                  <p className="text-[0.88rem] text-white/60 leading-relaxed mb-6">
                     {card.description}
                   </p>
                   <a

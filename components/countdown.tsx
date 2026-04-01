@@ -44,11 +44,11 @@ export function Countdown() {
       ];
 
   return (
-    <div className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.12] rounded-[28px] p-12 px-10 shadow-[0_8px_40px_rgba(0,0,0,0.3)] text-center relative z-2">
+    <div className="bg-white/[0.07] backdrop-blur-xl border border-white/[0.12] rounded-[28px] p-12 px-10 shadow-[0_8px_40px_rgba(0,0,0,0.3)] text-center relative z-2 flex flex-col items-center justify-center">
       <div className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-white/50 mb-6">
         The Future of Health Begins In
       </div>
-      <div className="flex gap-3 justify-center mb-7" role="timer" aria-label="Countdown to conference">
+      <div className="flex gap-3 justify-center" role="timer" aria-label="Countdown to conference">
         {items.map((item, i) => (
           <div key={i} className="text-center">
             <div className="flex items-center justify-center w-[72px] h-[72px] bg-white/[0.1] border border-white/[0.15] rounded-[12px] text-[1.8rem] font-extrabold text-white">
@@ -62,9 +62,6 @@ export function Countdown() {
           </div>
         ))}
       </div>
-      <p className="font-serif italic text-base text-white/60">
-        &ldquo;Where every generation benefits from the science of longevity.&rdquo;
-      </p>
     </div>
   );
 }

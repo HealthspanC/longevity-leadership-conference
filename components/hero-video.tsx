@@ -10,13 +10,27 @@ export function HeroVideo() {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleLoaded = () => setLoaded(true);
-    video.addEventListener("loadeddata", handleLoaded);
+    const show = () => setLoaded(true);
+
+    // Listen for multiple ready signals
+    video.addEventListener("loadeddata", show);
+    video.addEventListener("canplay", show);
+    video.addEventListener("playing", show);
 
     // If already loaded (cached)
-    if (video.readyState >= 3) setLoaded(true);
+    if (video.readyState >= 2) show();
 
-    return () => video.removeEventListener("loadeddata", handleLoaded);
+    // Explicitly trigger play — some browsers block autoplay without this
+    video.play().catch(() => {
+      // Autoplay blocked — still show the first frame
+      show();
+    });
+
+    return () => {
+      video.removeEventListener("loadeddata", show);
+      video.removeEventListener("canplay", show);
+      video.removeEventListener("playing", show);
+    };
   }, []);
 
   return (

@@ -30,33 +30,83 @@ export function Navbar() {
       {/* Mobile overlay */}
       <div
         className={cn(
-          "fixed inset-0 z-[999] bg-bg/97 backdrop-blur-2xl flex flex-col items-center justify-center gap-7 transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-[1001] flex flex-col items-center justify-center transition-all duration-500 md:hidden overflow-hidden",
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
+        {/* Dark purple background with texture */}
+        <div className="absolute inset-0 bg-purple-deep" />
+        <div className="absolute inset-0 dark-panel-texture" />
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-dark/40 via-transparent to-purple-deep/60" />
+
+        {/* Subtle radial glow accent */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] rounded-full bg-purple-mid/10 blur-[100px]" />
+
+        {/* Close button — glass pill */}
         <button
           onClick={() => setMobileOpen(false)}
-          className="absolute top-5 right-5 p-2"
+          className="absolute top-5 right-5 p-2.5 rounded-full bg-white/[0.08] backdrop-blur-sm border border-white/[0.12] transition-all duration-300 hover:bg-white/[0.14] active:scale-95"
           aria-label="Close menu"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5 text-white/80" />
         </button>
-        {NAV_ITEMS.map((item) => (
-          <a
-            key={item.href}
-            href={item.href}
-            onClick={() => setMobileOpen(false)}
-            className="text-xl font-semibold text-text hover:text-purple transition-colors"
-          >
-            {item.label}
-          </a>
-        ))}
+
+        {/* Logo */}
+        <div className={cn(
+          "mb-10 transition-all duration-500",
+          mobileOpen ? "opacity-100 translate-y-0 delay-100" : "opacity-0 -translate-y-4"
+        )}>
+          <Image
+            src="/brand/logo-white.png"
+            alt="Healthspan Collective"
+            width={4147}
+            height={1798}
+            className="w-[200px] h-auto"
+          />
+        </div>
+
+        {/* Nav items with staggered entrance */}
+        <nav className="flex flex-col items-center gap-1">
+          {NAV_ITEMS.map((item, i) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                "relative text-2xl font-serif font-medium text-white/80 hover:text-white py-3 px-8 rounded-lg transition-all duration-500",
+                "hover:bg-white/[0.05]",
+                "active:scale-[0.98]",
+                mobileOpen
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-6"
+              )}
+              style={{
+                transitionDelay: mobileOpen ? `${150 + i * 70}ms` : "0ms",
+              }}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Decorative divider */}
+        <div className={cn(
+          "w-16 h-px my-6 bg-gradient-to-r from-transparent via-purple-light/40 to-transparent transition-all duration-700",
+          mobileOpen ? "opacity-100 scale-x-100 delay-500" : "opacity-0 scale-x-0"
+        )} />
+
+        {/* CTA button */}
         <a
           href={LINKS.tickets}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setMobileOpen(false)}
-          className="bg-purple-deep text-white px-6 py-2.5 rounded-full font-semibold text-sm shadow-md"
+          className={cn(
+            "bg-white text-purple-deep px-8 py-3 rounded-full font-semibold text-sm tracking-wide transition-all duration-500",
+            "shadow-[0_0_30px_rgba(168,124,224,0.25)] hover:shadow-[0_0_40px_rgba(168,124,224,0.35)]",
+            "hover:-translate-y-0.5 active:scale-[0.97]",
+            mobileOpen ? "opacity-100 translate-y-0 delay-[550ms]" : "opacity-0 translate-y-4"
+          )}
         >
           Get Tickets
         </a>
@@ -73,7 +123,7 @@ export function Navbar() {
       >
         <div className="flex items-center justify-between max-w-[1280px] mx-auto px-6">
           {/* Logo */}
-          <a href="#" className="relative shrink-0">
+          <a href="#" className="relative shrink-0 h-[54px] md:h-[72px] w-[240px] md:w-[390px]">
             {/* Purple logo — visible on scroll */}
             <Image
               src="/brand/logo.png"
@@ -82,7 +132,7 @@ export function Navbar() {
               height={986}
               priority
               className={cn(
-                "w-[160px] md:w-[230px] h-auto transition-opacity duration-350 ml-[10px] lg:ml-[28px]",
+                "h-full w-auto absolute left-0 top-0 transition-opacity duration-350",
                 scrolled ? "opacity-100" : "opacity-0"
               )}
             />
@@ -90,11 +140,11 @@ export function Navbar() {
             <Image
               src="/brand/logo-white.png"
               alt="Healthspan Collective"
-              width={4147}
-              height={1798}
+              width={3230}
+              height={786}
               priority
               className={cn(
-                "w-[260px] md:w-[280px] max-w-none h-auto absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-350 -ml-[24px] lg:ml-[30px]",
+                "h-[43px] md:h-[58px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
                 scrolled ? "opacity-0" : "opacity-100"
               )}
             />

@@ -70,7 +70,7 @@ export function Navbar() {
         )}
       >
         <div className="flex items-center justify-between max-w-[1140px] mx-auto px-6">
-          <a href="#" className="flex items-center gap-2.5 font-bold text-base text-text tracking-tight">
+          <a href="#" className={cn("flex items-center gap-2.5 font-bold text-base tracking-tight transition-colors duration-350", scrolled ? "text-text" : "text-white")}>
             <div className="w-9 h-9 bg-purple-deep rounded-[10px] flex items-center justify-center relative overflow-hidden">
               <span className="font-black text-xs text-white tracking-wide relative z-10">
                 LLC
@@ -85,7 +85,7 @@ export function Navbar() {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="text-sm font-medium text-text-secondary hover:text-purple transition-colors"
+                  className={cn("text-sm font-medium transition-colors", scrolled ? "text-text-secondary hover:text-purple" : "text-white/80 hover:text-white")}
                 >
                   {item.label}
                 </a>
@@ -108,7 +108,7 @@ export function Navbar() {
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className={cn("w-6 h-6 transition-colors duration-350", scrolled ? "text-text" : "text-white")} />
           </button>
         </div>
       </nav>

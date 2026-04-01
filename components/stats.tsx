@@ -50,26 +50,33 @@ function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) 
 
 export function Stats() {
   return (
-    <section className="relative z-2 pb-10 -mt-10">
-      <div className="max-w-[1140px] mx-auto px-6">
-        <FadeIn>
-          <div className="dark-panel-texture grid grid-cols-2 md:grid-cols-4 bg-purple-deep rounded-[20px] py-12 px-10 shadow-[0_20px_60px_rgba(45,27,78,0.2)] relative overflow-hidden">
-            {STATS.map((stat, i) => (
-              <div
-                key={stat.label}
-                className="text-center relative z-10 py-4 md:py-0"
-              >
-                {i < STATS.length - 1 && (
-                  <div className="hidden md:block absolute right-0 top-[15%] h-[70%] w-px bg-white/10" />
-                )}
-                <AnimatedNumber target={stat.value} suffix={stat.suffix} />
-                <div className="text-sm text-white/50 font-medium mt-1">
-                  {stat.label}
+    <section className="relative z-10">
+      <div className="dark-panel-texture bg-purple-deep relative overflow-hidden">
+        {/* Top fade — blends with hero video overlay */}
+        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-[rgba(10,6,18,0.35)] to-transparent pointer-events-none" />
+        {/* Bottom fade — blends into light page background */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-purple-deep/50" />
+
+        <div className="max-w-[1140px] mx-auto px-6">
+          <FadeIn>
+            <div className="grid grid-cols-2 md:grid-cols-4 py-14 relative">
+              {STATS.map((stat, i) => (
+                <div
+                  key={stat.label}
+                  className="text-center relative z-10 py-4 md:py-0"
+                >
+                  {i < STATS.length - 1 && (
+                    <div className="hidden md:block absolute right-0 top-[15%] h-[70%] w-px bg-white/10" />
+                  )}
+                  <AnimatedNumber target={stat.value} suffix={stat.suffix} />
+                  <div className="text-sm text-white/50 font-medium mt-1">
+                    {stat.label}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </FadeIn>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
       </div>
     </section>
   );

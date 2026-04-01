@@ -36,12 +36,13 @@ export function Hosts() {
                 className="bg-bg-card border border-border-light rounded-[16px] overflow-hidden shadow-sm transition-all duration-350 hover:shadow-lg hover:-translate-y-1 flex flex-col"
               >
                 {/* Photo */}
-                <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-purple-deep to-purple overflow-hidden">
+                <div className="relative w-full aspect-[5/6] bg-gradient-to-br from-purple-deep to-purple overflow-hidden">
                   <Image
                     src={host.image}
                     alt={host.name}
                     fill
-                    className="object-cover object-top"
+                    className="object-cover"
+                    style={{ objectPosition: "imagePosition" in host ? host.imagePosition : "center 20%" }}
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 </div>

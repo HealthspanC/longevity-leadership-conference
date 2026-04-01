@@ -51,6 +51,7 @@ export const HOSTS = [
     name: "Elias Arjan",
     title: "Founder/CEO - Healthspan Collective",
     image: "/hosts/elias.jpg",
+    imagePosition: "center 20%",
     bio: "Elias Arjan is the host and visionary behind the Healthspan Productions, and a leading healthspan advocate, educator, and speaker. As a co-founder of PRUVN Research, Elias is known for his relentless commitment to evidence-based wellness and cutting-edge longevity science.",
     social: {
       linkedin: "#",

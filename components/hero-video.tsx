@@ -1,53 +1,48 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Player from "@vimeo/player";
 
 const VIMEO_ID = "1106534793";
-const START_TIME = 4; // seconds
+const START_TIME = 4.7; // seconds
 const END_TIME = 60; // seconds
 
 export function HeroVideo() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<Player | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  // Custom loop: listen for timeupdate via Vimeo postMessage API
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el || playerRef.current) return;
-
-    const player = new Player(el, {
-      id: Number(VIMEO_ID),
-      background: true, // autoplay, muted, no controls, loop
-      muted: true,
-      autopause: false,
-      dnt: true, // do not track
-      quality: "1080p",
-    });
-
-    playerRef.current = player;
-
-    player.ready().then(() => {
-      player.setCurrentTime(START_TIME);
-    });
-
-    player.on("timeupdate", (data: { seconds: number }) => {
-      if (data.seconds >= END_TIME) {
-        player.setCurrentTime(START_TIME);
+    const handleMessage = (e: MessageEvent) => {
+      if (typeof e.data !== "string") return;
+      try {
+        const data = JSON.parse(e.data);
+        if (data.event === "timeupdate" && data.data?.seconds >= END_TIME) {
+          iframeRef.current?.contentWindow?.postMessage(
+            JSON.stringify({ method: "setCurrentTime", value: START_TIME }),
+            "*"
+          );
+        }
+      } catch {
+        // ignore non-JSON messages
       }
-    });
-
-    return () => {
-      player.destroy();
-      playerRef.current = null;
     };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Vimeo player — scaled up to ensure full cover with no letterboxing */}
-      <div
-        ref={containerRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100%,177.78vh)] h-[max(100%,56.25vw)]"
+      {/* Vimeo iframe — loads immediately, no SDK delay */}
+      <iframe
+        ref={iframeRef}
+        src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
+        allow="autoplay; fullscreen"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none"
+        style={{
+          width: "max(100%, 177.78vh)",
+          height: "max(100%, 56.25vw)",
+        }}
+        title="Conference highlight reel"
       />
 
       {/* Cinematic overlays */}

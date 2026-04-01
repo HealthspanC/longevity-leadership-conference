@@ -45,13 +45,13 @@ export function Countdown() {
 
   return (
     <div className="text-center relative z-2 flex flex-col items-center justify-center">
-      <div className="text-[0.65rem] font-bold tracking-[0.25em] uppercase text-white/40 mb-5">
+      <div className="text-[0.6rem] md:text-[0.65rem] font-bold tracking-[0.2em] md:tracking-[0.25em] uppercase text-white/40 mb-4 md:mb-5 whitespace-nowrap">
         The Future of Health Begins In
       </div>
-      <div className="flex gap-5 justify-center" role="timer" aria-label="Countdown to conference">
+      <div className="flex gap-3 md:gap-5 justify-center" role="timer" aria-label="Countdown to conference">
         {items.map((item, i) => (
           <div key={i} className="text-center">
-            <div className="text-[2.8rem] font-extrabold text-white leading-none tabular-nums drop-shadow-[0_0_12px_rgba(139,92,246,0.3)]">
+            <div className="text-[2rem] md:text-[2.8rem] font-extrabold text-white leading-none tabular-nums drop-shadow-[0_0_12px_rgba(139,92,246,0.3)]">
               {typeof item.value === "number"
                 ? String(item.value).padStart(2, "0")
                 : item.value}

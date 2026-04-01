@@ -82,7 +82,7 @@ export function Navbar() {
               height={986}
               priority
               className={cn(
-                "w-[220px] h-auto transition-opacity duration-350",
+                "w-[160px] md:w-[230px] h-auto transition-opacity duration-350 ml-[10px] lg:ml-[28px]",
                 scrolled ? "opacity-100" : "opacity-0"
               )}
             />
@@ -94,7 +94,7 @@ export function Navbar() {
               height={1798}
               priority
               className={cn(
-                "w-[220px] h-auto absolute top-1/2 left-0 -translate-y-1/2 transition-opacity duration-350",
+                "w-[260px] md:w-[280px] max-w-none h-auto absolute top-1/2 left-0 -translate-y-1/2 transition-all duration-350 -ml-[24px] lg:ml-[30px]",
                 scrolled ? "opacity-0" : "opacity-100"
               )}
             />

@@ -40,18 +40,15 @@ export function HeroVideo() {
   }, [mounted]);
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Render iframe only on client to avoid hydration mismatch from Vimeo SDK */}
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#0a0612]">
+      {/* Vimeo iframe — sized to always cover the full hero regardless of aspect ratio */}
       {mounted && (
         <iframe
           ref={iframeRef}
           src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
           allow="autoplay; fullscreen"
+          style={{ width: 'max(200%, 250vh)', height: 'max(200%, 150vh)' }}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none"
-          style={{
-            width: "max(100%, 177.78vh)",
-            height: "max(100%, 56.25vw)",
-          }}
           title="Conference highlight reel"
         />
       )}

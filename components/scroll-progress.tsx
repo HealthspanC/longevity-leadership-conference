@@ -20,13 +20,24 @@ export function ScrollProgress() {
 
   return (
     <div
-      className="fixed top-0 left-0 h-0.5 z-[10000] bg-gradient-to-r from-purple via-rose to-teal transition-[width] duration-100 ease-linear"
-      style={{ width: `${progress}%` }}
-      role="progressbar"
-      aria-valuenow={Math.round(progress)}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-label="Page scroll progress"
-    />
+      className="fixed top-0 left-0 right-0 h-[2px] z-[10000] pointer-events-none"
+    >
+      <div
+        className="h-full bg-gradient-to-r from-purple-deep via-purple-mid to-purple-light transition-[width] duration-150 ease-out"
+        style={{ width: `${progress}%` }}
+        role="progressbar"
+        aria-valuenow={Math.round(progress)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Page scroll progress"
+      />
+      {/* Glow tip */}
+      {progress > 0 && (
+        <div
+          className="absolute top-0 h-[2px] w-[60px] bg-gradient-to-r from-transparent to-purple-light/80 blur-[3px] transition-[left] duration-150 ease-out"
+          style={{ left: `calc(${progress}% - 60px)` }}
+        />
+      )}
+    </div>
   );
 }

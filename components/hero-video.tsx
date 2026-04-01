@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Player from "@vimeo/player";
 
 const VIMEO_ID = "1106534793";
@@ -10,12 +10,16 @@ const END_TIME = 60;
 export function HeroVideo() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerRef = useRef<Player | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const iframe = iframeRef.current;
     if (!iframe || playerRef.current) return;
 
-    // Wrap the already-rendered iframe with the SDK for reliable event control
     const player = new Player(iframe);
     playerRef.current = player;
 
@@ -33,22 +37,24 @@ export function HeroVideo() {
     return () => {
       playerRef.current = null;
     };
-  }, []);
+  }, [mounted]);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Iframe loads immediately; SDK wraps it for event control */}
-      <iframe
-        ref={iframeRef}
-        src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
-        allow="autoplay; fullscreen"
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none"
-        style={{
-          width: "max(100%, 177.78vh)",
-          height: "max(100%, 56.25vw)",
-        }}
-        title="Conference highlight reel"
-      />
+      {/* Render iframe only on client to avoid hydration mismatch from Vimeo SDK */}
+      {mounted && (
+        <iframe
+          ref={iframeRef}
+          src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
+          allow="autoplay; fullscreen"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none"
+          style={{
+            width: "max(100%, 177.78vh)",
+            height: "max(100%, 56.25vw)",
+          }}
+          title="Conference highlight reel"
+        />
+      )}
 
       {/* Cinematic overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,18,0.92)] via-[rgba(10,6,18,0.5)] to-[rgba(10,6,18,0.3)]" />

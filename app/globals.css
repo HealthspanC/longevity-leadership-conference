@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+
+  --color-bg: #faf9f7;
+  --color-bg-warm: #f5f3f0;
+  --color-bg-card: #ffffff;
+  --color-bg-muted: #f0eee9;
+
+  --color-text: #1a1a2e;
+  --color-text-secondary: #555566;
+  --color-text-muted: #8888a0;
+
+  --color-purple-deep: #2d1b4e;
+  --color-purple-dark: #3c2066;
+  --color-purple: #5b3a8c;
+  --color-purple-mid: #7b52b5;
+  --color-purple-light: #a87ce0;
+  --color-purple-pale: #e8ddf5;
+  --color-purple-wash: #f4effb;
+
+  --color-rose: #c06080;
+  --color-rose-light: #e8a0b8;
+  --color-rose-pale: #fdf2f5;
+
+  --color-gold: #b8860b;
+  --color-teal: #2a7a6e;
+  --color-teal-light: #5cb5a6;
+
+  --color-border: #e4e0da;
+  --color-border-light: #eeebe6;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark panel shared texture overlay */
+.dark-panel-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(192,96,128,0.12), transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(42,122,110,0.08), transparent 40%);
+  pointer-events: none;
+}
+
+.dark-panel-texture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.05'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+/* Gallery shimmer animation */
+@keyframes gallery-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

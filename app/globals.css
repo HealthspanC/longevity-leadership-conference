@@ -75,6 +75,14 @@ body {
   100% { background-position: -200% 0; }
 }
 
+/* Host section floating particles */
+@keyframes host-float {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: var(--start-opacity, 0.2); }
+  25% { transform: translateY(-18px) translateX(8px); }
+  50% { transform: translateY(-8px) translateX(-6px); opacity: calc(var(--start-opacity, 0.2) + 0.1); }
+  75% { transform: translateY(-22px) translateX(4px); }
+}
+
 /* Gallery scroll animations */
 @keyframes scroll-left {
   0% { transform: translateX(0); }

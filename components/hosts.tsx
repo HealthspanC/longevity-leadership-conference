@@ -19,98 +19,107 @@ function HostCards() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-16">
-      {HOSTS.map((host) => {
+      {HOSTS.map((host, i) => {
         const isOpen = expanded === host.name;
         return (
-          <div
-            key={host.name}
-            className="group relative rounded-[16px] overflow-hidden cursor-pointer"
-            onClick={() => setExpanded(isOpen ? null : host.name)}
-          >
-            <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-purple-deep">
-              <Image
-                src={host.image}
-                alt={host.name}
-                fill
-                className="object-cover"
-                style={{
-                  objectPosition:
-                    "imagePosition" in host
-                      ? host.imagePosition
-                      : "center 20%",
-                }}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
+          <FadeIn key={host.name} delay={i * 120}>
+            <div
+              className={cn(
+                "group relative rounded-[16px] overflow-hidden cursor-pointer transition-shadow duration-500",
+                "hover:shadow-[0_0_30px_rgba(168,124,224,0.2)]",
+                isOpen && "!shadow-[0_0_30px_rgba(168,124,224,0.2)]"
+              )}
+              onClick={() => setExpanded(isOpen ? null : host.name)}
+            >
+              <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-purple-deep">
+                <Image
+                  src={host.image}
+                  alt={host.name}
+                  fill
+                  className={cn(
+                    "object-cover transition-transform duration-700 ease-out",
+                    "group-hover:scale-[1.05]",
+                    isOpen && "!scale-[1.05]"
+                  )}
+                  style={{
+                    objectPosition:
+                      "imagePosition" in host
+                        ? host.imagePosition
+                        : "center 20%",
+                  }}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
 
-              {/* Subtle purple tint overlay */}
-              <div className="absolute inset-0 bg-purple-deep/15 mix-blend-multiply" />
+                {/* Subtle purple tint overlay */}
+                <div className="absolute inset-0 bg-purple-deep/15 mix-blend-multiply" />
 
-              {/* Bottom gradient — default */}
-              <div className={cn(
-                "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500",
-                "group-hover:opacity-0",
-                isOpen && "!opacity-0"
-              )} />
-              {/* Bottom gradient — expanded (taller, denser) */}
-              <div className={cn(
-                "absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 via-60% to-transparent transition-opacity duration-500",
-                "opacity-0 group-hover:opacity-100",
-                isOpen && "!opacity-100"
-              )} />
-
-              {/* Name + Title + Bio */}
-              <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
-                <div className="inline-flex mb-2">
-                  <span className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3.5 py-1">
-                    {host.title}
-                  </span>
-                </div>
-                <h3 className={cn(
-                  "font-serif text-2xl md:text-[1.7rem] font-bold text-white leading-tight mb-0 transition-all duration-500",
-                  "group-hover:mb-3",
-                  isOpen && "!mb-3"
-                )}>
-                  {host.name}
-                </h3>
-
-                {/* Bio — tap on mobile, hover on desktop */}
+                {/* Bottom gradient — default */}
                 <div className={cn(
-                  "max-h-0 opacity-0 transition-all duration-500 ease-out overflow-hidden",
-                  "md:group-hover:max-h-[300px] md:group-hover:opacity-100",
-                  isOpen && "!max-h-[300px] !opacity-100"
-                )}>
-                  <p className="text-[0.8rem] text-white/70 leading-relaxed md:mt-0">
-                    {host.bio}
-                  </p>
+                  "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500",
+                  "group-hover:opacity-0",
+                  isOpen && "!opacity-0"
+                )} />
+                {/* Bottom gradient — expanded (taller, denser) */}
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 via-60% to-transparent transition-opacity duration-500",
+                  "opacity-0 group-hover:opacity-100",
+                  isOpen && "!opacity-100"
+                )} />
 
-                  {/* Social */}
-                  <div className="flex gap-2.5 mt-3 mb-1">
-                    {(
-                      Object.entries(host.social) as [
-                        keyof typeof socialIcons,
-                        string,
-                      ][]
-                    ).map(([platform, url]) => {
-                      const Icon = socialIcons[platform];
-                      return (
-                        <a
-                          key={platform}
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={platform}
-                          onClick={(e) => e.stopPropagation()}
-                          className="w-8 h-8 rounded-full bg-white/[0.15] border border-white/[0.2] flex items-center justify-center text-white/80 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
-                        >
-                          <Icon className="w-3.5 h-3.5" />
-                        </a>
-                      );
-                    })}
+                {/* Name + Title + Bio */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
+                  <div className="inline-flex mb-2">
+                    <span className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3.5 py-1">
+                      {host.title}
+                    </span>
+                  </div>
+                  <h3 className={cn(
+                    "font-serif text-2xl md:text-[1.7rem] font-bold text-white leading-tight mb-0 transition-all duration-500",
+                    "group-hover:mb-3",
+                    isOpen && "!mb-3"
+                  )}>
+                    {host.name}
+                  </h3>
+
+                  {/* Bio — tap on mobile, hover on desktop */}
+                  <div className={cn(
+                    "max-h-0 opacity-0 transition-all duration-500 ease-out overflow-hidden",
+                    "md:group-hover:max-h-[300px] md:group-hover:opacity-100",
+                    isOpen && "!max-h-[300px] !opacity-100"
+                  )}>
+                    <p className="text-[0.8rem] text-white/70 leading-relaxed md:mt-0">
+                      {host.bio}
+                    </p>
+
+                    {/* Social */}
+                    <div className="flex gap-2.5 mt-3 mb-1">
+                      {(
+                        Object.entries(host.social) as [
+                          keyof typeof socialIcons,
+                          string,
+                        ][]
+                      ).map(([platform, url]) => {
+                        const Icon = socialIcons[platform];
+                        return (
+                          <a
+                            key={platform}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={platform}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-8 h-8 rounded-full bg-white/[0.15] border border-white/[0.2] flex items-center justify-center text-white/80 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
+                          >
+                            <Icon className="w-3.5 h-3.5" />
+                          </a>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </FadeIn>
         );
       })}
     </div>
@@ -132,6 +141,32 @@ export function Hosts() {
         }}
       />
 
+      {/* Floating ambient particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[
+          { size: 3, x: "12%", y: "18%", dur: "18s", delay: "0s", opacity: 0.25 },
+          { size: 2, x: "78%", y: "25%", dur: "22s", delay: "3s", opacity: 0.2 },
+          { size: 4, x: "45%", y: "65%", dur: "25s", delay: "7s", opacity: 0.15 },
+          { size: 2, x: "88%", y: "72%", dur: "20s", delay: "5s", opacity: 0.2 },
+          { size: 3, x: "25%", y: "82%", dur: "24s", delay: "10s", opacity: 0.18 },
+          { size: 2, x: "62%", y: "12%", dur: "19s", delay: "2s", opacity: 0.22 },
+        ].map((p, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-purple-light animate-[host-float_var(--dur)_ease-in-out_var(--delay)_infinite]"
+            style={{
+              width: p.size,
+              height: p.size,
+              left: p.x,
+              top: p.y,
+              opacity: p.opacity,
+              ["--dur" as string]: p.dur,
+              ["--delay" as string]: p.delay,
+            }}
+          />
+        ))}
+      </div>
+
       <div className="relative z-10 max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <SectionHeader
@@ -145,9 +180,7 @@ export function Hosts() {
         </FadeIn>
 
         {/* Editorial Host Profiles */}
-        <FadeIn delay={100}>
-          <HostCards />
-        </FadeIn>
+        <HostCards />
 
         {/* Colophon strip — icon centered in divider */}
         <FadeIn delay={200}>

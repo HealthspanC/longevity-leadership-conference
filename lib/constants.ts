@@ -105,16 +105,24 @@ export const VISION_FEATURES = [
 
 export const SPEAKERS = [
   {
+    name: "Todd Vande Hei",
+    role: "Clinical Research",
+    image: "/speakers/todd-vande-hei.png",
+    bio: "Founder of a Southern California-based healthcare company redefining medicine through root-cause healing, integrating advanced diagnostics with non-pharmaceutical interventions including strength training, nutrition, and lifestyle optimization.",
+    quote: "The future of medicine isn't in the pharmacy—it's in understanding the body's innate capacity to heal.",
+  },
+  {
+    name: "Josephine Musco",
+    role: "Biotech & Innovation",
+    image: "/speakers/josephine-musco.png",
+    bio: "Inventor, CEO, and patent holder at the forefront of biotechnology and wellness innovation. Founder of Olyxir, House of Malakai, and Château Bellevue—translating advanced science into scalable, category-defining enterprises.",
+    quote: "The future of human optimization lives at the intersection of scientific rigor and visionary leadership.",
+  },
+  {
     name: "Speaker Announcement",
     role: "Keynote",
     bio: "Our 2026 keynote lineup is being finalized. Follow us for speaker announcements.",
     quote: "The future of longevity starts with the conversations we have today.",
-  },
-  {
-    name: "Speaker Announcement",
-    role: "Clinical Research",
-    bio: "Top clinicians and researchers in longevity medicine will be featured.",
-    quote: "Evidence-based breakthroughs are redefining what it means to age well.",
   },
   {
     name: "Speaker Announcement",
@@ -127,12 +135,6 @@ export const SPEAKERS = [
     role: "Longevity Science",
     bio: "Visionaries pioneering the future of the longevity ecosystem.",
     quote: "We are at the inflection point between aging as inevitable and aging as treatable.",
-  },
-  {
-    name: "Speaker Announcement",
-    role: "Biotech",
-    bio: "Leading biotech innovators pushing the boundaries of healthspan technology.",
-    quote: "Every breakthrough in biotech brings us closer to a longer, healthier life.",
   },
   {
     name: "Speaker Announcement",

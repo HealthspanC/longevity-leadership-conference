@@ -7,6 +7,7 @@ import { LINKS, HOSTS } from "@/lib/constants";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
+import { MysticRose } from "./mystic-rose";
 
 const socialIcons = {
   linkedin: Linkedin,
@@ -186,19 +187,11 @@ export function Hosts() {
         <FadeIn delay={200}>
           <div className="relative">
             {/* Divider line */}
-            <div className="absolute top-[32px] left-0 right-0 h-px bg-white/[0.12]" />
+            <div className="absolute top-[80px] left-0 right-0 h-px bg-white/[0.12]" />
 
-            {/* Icon centered on the line */}
-            <div className="flex justify-center mb-8 relative z-[1]">
-              <div className="w-16 h-16 rounded-full bg-white border border-white/20 flex items-center justify-center p-2.5">
-                <Image
-                  src="/brand/icon.png"
-                  alt="Healthspan Collective"
-                  width={100}
-                  height={100}
-                  className="w-full h-full object-contain"
-                />
-              </div>
+            {/* Animated Mystic Rose logo */}
+            <div className="flex justify-center mb-6 relative z-[1]">
+              <MysticRose size={160} />
             </div>
 
             {/* Description text — centered, minimal */}

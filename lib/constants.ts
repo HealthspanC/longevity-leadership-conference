@@ -106,23 +106,33 @@ export const VISION_FEATURES = [
 export const SPEAKERS = [
   {
     name: "Speaker Announcement",
-    role: "Coming Soon",
+    role: "Keynote",
     bio: "Our 2026 keynote lineup is being finalized. Follow us for speaker announcements.",
   },
   {
     name: "Speaker Announcement",
-    role: "Coming Soon",
+    role: "Clinical Research",
     bio: "Top clinicians and researchers in longevity medicine will be featured.",
   },
   {
     name: "Speaker Announcement",
-    role: "Coming Soon",
+    role: "Investment",
     bio: "Industry investors and business leaders driving healthspan innovation.",
   },
   {
     name: "Speaker Announcement",
-    role: "Coming Soon",
+    role: "Longevity Science",
     bio: "Visionaries pioneering the future of the longevity ecosystem.",
+  },
+  {
+    name: "Speaker Announcement",
+    role: "Biotech",
+    bio: "Leading biotech innovators pushing the boundaries of healthspan technology.",
+  },
+  {
+    name: "Speaker Announcement",
+    role: "Wellness",
+    bio: "Experts in preventive medicine and evidence-based wellness protocols.",
   },
 ] as const;
 

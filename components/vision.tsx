@@ -39,9 +39,12 @@ export function Vision() {
                 return (
                   <div
                     key={feature.title}
-                    className="flex gap-4 p-6 bg-bg-card border border-border-light rounded-[12px] shadow-sm transition-all duration-350 hover:border-purple-pale hover:shadow-[0_8px_32px_rgba(91,58,140,0.12)] hover:-translate-y-0.5"
+                    className="group relative flex gap-4 p-6 pl-[calc(1.5rem+3px)] bg-bg-card border border-border-light rounded-[12px] shadow-sm transition-all duration-350 hover:border-purple-pale hover:shadow-[0_8px_32px_rgba(91,58,140,0.12)] hover:-translate-y-0.5 overflow-hidden"
                   >
-                    <div className="w-11 h-11 rounded-xl bg-purple-wash flex items-center justify-center text-purple shrink-0">
+                    {/* Gradient accent bar — left edge */}
+                    <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-purple to-rose opacity-0 transition-opacity duration-350 group-hover:opacity-100" />
+
+                    <div className="w-11 h-11 rounded-xl bg-purple-wash flex items-center justify-center text-purple shrink-0 transition-all duration-350 group-hover:bg-purple group-hover:text-white">
                       {Icon && <Icon className="w-5 h-5" />}
                     </div>
                     <div>

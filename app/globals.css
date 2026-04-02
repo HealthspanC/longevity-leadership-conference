@@ -83,6 +83,12 @@ body {
   75% { transform: translateY(-22px) translateX(4px); }
 }
 
+/* Speaker reel scroll */
+@keyframes speaker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100% / 3)); }
+}
+
 /* Gallery scroll animations */
 @keyframes scroll-left {
   0% { transform: translateX(0); }

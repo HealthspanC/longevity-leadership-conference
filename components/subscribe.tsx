@@ -5,13 +5,36 @@ import { FadeIn } from "./fade-in";
 
 export function Subscribe() {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
-    setEmail("");
-    setTimeout(() => setSubmitted(false), 3000);
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus("error");
+        setErrorMsg(data.error || "Something went wrong.");
+        return;
+      }
+
+      setStatus("success");
+      setEmail("");
+      setTimeout(() => setStatus("idle"), 4000);
+    } catch {
+      setStatus("error");
+      setErrorMsg("Network error. Please try again.");
+    }
   }
 
   return (
@@ -40,19 +63,30 @@ export function Subscribe() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
                   required
+                  disabled={status === "loading"}
                   aria-label="Email address"
-                  className="flex-1 bg-white/10 border border-white/15 rounded-full py-4 px-6 text-[0.95rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-white/30 focus:bg-white/15"
+                  className="flex-1 bg-white/10 border border-white/15 rounded-full py-4 px-6 text-[0.95rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-white/30 focus:bg-white/15 disabled:opacity-60"
                 />
                 <button
                   type="submit"
-                  className="bg-white text-purple-deep py-4 px-7 rounded-full font-bold text-[0.95rem] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(255,255,255,0.2)] whitespace-nowrap"
+                  disabled={status === "loading"}
+                  className="bg-white text-purple-deep py-4 px-7 rounded-full font-bold text-[0.95rem] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(255,255,255,0.2)] whitespace-nowrap disabled:opacity-60 disabled:hover:translate-y-0"
                 >
-                  {submitted ? "Subscribed!" : "Subscribe"}
+                  {status === "loading"
+                    ? "Subscribing..."
+                    : status === "success"
+                      ? "Subscribed!"
+                      : "Subscribe"}
                 </button>
               </form>
-              <p className="text-xs text-white/35 mt-3.5">
-                We respect your privacy. Unsubscribe at any time.
-              </p>
+              {status === "error" && (
+                <p className="text-xs text-rose-light mt-3">{errorMsg}</p>
+              )}
+              {status !== "error" && (
+                <p className="text-xs text-white/35 mt-3.5">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              )}
             </div>
           </div>
         </FadeIn>

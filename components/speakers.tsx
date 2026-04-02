@@ -1,315 +1,309 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { SPEAKERS, LINKS } from "@/lib/constants";
-import { User, ChevronLeft, ChevronRight } from "lucide-react";
+import { User, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
 
-function SpeakerCard({
+/* ── Featured Speaker (left panel) with crossfade ── */
+function FeaturedSpeaker({
   speaker,
+  speakerIndex,
 }: {
   speaker: (typeof SPEAKERS)[number];
+  speakerIndex: number;
 }) {
-  const [tapped, setTapped] = useState(false);
-  const isOpen = tapped;
+  const [displayed, setDisplayed] = useState(speaker);
+  const [displayedIndex, setDisplayedIndex] = useState(speakerIndex);
+  const [fading, setFading] = useState(false);
 
+  useEffect(() => {
+    if (speakerIndex === displayedIndex) return;
+    // Fade out
+    setFading(true);
+    const t = setTimeout(() => {
+      // Swap content at midpoint, then fade in
+      setDisplayed(speaker);
+      setDisplayedIndex(speakerIndex);
+      setFading(false);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [speaker, speakerIndex, displayedIndex]);
+
+  return (
+    <div className="relative rounded-[20px] overflow-hidden aspect-[3/4] lg:aspect-auto lg:h-full min-h-[420px]">
+      {/* Placeholder gradient — swap for <Image> when photos arrive */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
+
+      {/* Texture */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Centered placeholder */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-28 h-28 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
+          <User className="w-14 h-14 text-white/15" />
+        </div>
+      </div>
+
+      {/* Bottom gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 via-50% to-transparent" />
+
+      {/* Quote + name overlay — crossfade transition */}
+      <div
+        className={cn(
+          "absolute inset-0 flex flex-col justify-end p-7 md:p-9 z-[2] transition-all duration-300",
+          fading ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
+        )}
+      >
+        <div className="bg-black/30 backdrop-blur-md rounded-[14px] border border-white/[0.08] p-5 md:p-6">
+          <Quote className="w-5 h-5 text-purple-light mb-3 opacity-60" />
+          <p className="font-serif text-[1.05rem] md:text-lg text-white/90 leading-relaxed italic mb-4">
+            &ldquo;{displayed.quote}&rdquo;
+          </p>
+          <div className="flex items-center justify-between">
+            <span className="font-bold text-sm text-white">
+              {displayed.name}
+            </span>
+            <span className="text-[0.6rem] font-bold tracking-[0.18em] uppercase text-purple-light">
+              2026 {displayed.role}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Small Speaker Card (right carousel) ── */
+function SpeakerCard({
+  speaker,
+  isActive,
+  onClick,
+}: {
+  speaker: (typeof SPEAKERS)[number];
+  isActive: boolean;
+  onClick: () => void;
+}) {
   return (
     <div
       className={cn(
-        "group relative w-[240px] md:w-[260px] shrink-0 rounded-[16px] overflow-hidden cursor-pointer transition-shadow duration-500",
-        "hover:shadow-[0_0_30px_rgba(168,124,224,0.2)]",
-        isOpen && "!shadow-[0_0_30px_rgba(168,124,224,0.2)]"
+        "relative rounded-[14px] overflow-hidden cursor-pointer transition-all duration-400",
+        "hover:shadow-[0_0_24px_rgba(168,124,224,0.2)] hover:-translate-y-0.5",
+        isActive &&
+          "ring-2 ring-purple-light shadow-[0_0_24px_rgba(168,124,224,0.25)]"
       )}
-      onClick={() => setTapped(!tapped)}
+      onClick={onClick}
     >
-      <div className="relative w-full aspect-[3/4] bg-purple-deep">
-        {/* Placeholder gradient — will be replaced with <Image> when photos arrive */}
+      {/* Photo placeholder */}
+      <div className="relative w-full aspect-[4/3] bg-purple-deep">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
-
-        {/* Subtle texture */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
-
-        {/* Centered placeholder icon */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
-            <User className="w-9 h-9 text-white/20" />
+          <div className="w-12 h-12 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
+            <User className="w-6 h-6 text-white/20" />
           </div>
         </div>
+      </div>
 
-        {/* Bottom gradient — default */}
-        <div
-          className={cn(
-            "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500",
-            "group-hover:opacity-0",
-            isOpen && "!opacity-0"
-          )}
-        />
-        {/* Bottom gradient — expanded */}
-        <div
-          className={cn(
-            "absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 via-60% to-transparent transition-opacity duration-500",
-            "opacity-0 group-hover:opacity-100",
-            isOpen && "!opacity-100"
-          )}
-        />
-
-        {/* Name + Role + Bio */}
-        <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6 z-[2]">
-          <div className="inline-flex mb-1.5">
-            <span className="text-[0.6rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3 py-0.5">
-              {speaker.role}
-            </span>
-          </div>
-          <h3
-            className={cn(
-              "font-serif text-lg md:text-xl font-bold text-white leading-tight mb-0 transition-all duration-500",
-              "group-hover:mb-2",
-              isOpen && "!mb-2"
-            )}
-          >
-            {speaker.name}
-          </h3>
-
-          {/* Bio — hover on desktop, tap on mobile */}
-          <div
-            className={cn(
-              "max-h-0 opacity-0 transition-all duration-500 ease-out overflow-hidden",
-              "md:group-hover:max-h-[200px] md:group-hover:opacity-100",
-              isOpen && "!max-h-[200px] !opacity-100"
-            )}
-          >
-            <p className="text-[0.75rem] text-white/65 leading-relaxed">
-              {speaker.bio}
-            </p>
-          </div>
-        </div>
+      {/* Text below image */}
+      <div className="p-4 bg-bg-card">
+        <p className="text-[0.78rem] text-text-secondary leading-relaxed mb-3 line-clamp-3">
+          &ldquo;{speaker.bio}&rdquo;
+        </p>
+        <h4 className="font-serif text-base font-bold text-text leading-tight mb-0.5">
+          {speaker.name}
+        </h4>
+        <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
+          2026 {speaker.role}
+        </span>
       </div>
     </div>
   );
 }
 
-function SpeakerReel() {
-  const items = [...SPEAKERS, ...SPEAKERS, ...SPEAKERS];
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [paused, setPaused] = useState(false);
-  const pauseTimeout = useRef<ReturnType<typeof setTimeout>>();
-  const dragState = useRef({
-    isDragging: false,
-    startX: 0,
-    startTranslate: 0,
-    currentX: 0,
-  });
+/* ── Carousel (right panel) ── */
+function SpeakerCarousel({
+  activeIndex,
+  onSelect,
+}: {
+  activeIndex: number;
+  onSelect: (i: number) => void;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+  const didDrag = useRef(false);
 
-  const getTrackX = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return 0;
-    const style = getComputedStyle(track);
-    const matrix = new DOMMatrix(style.transform);
-    return matrix.m41;
+  const scroll = useCallback((direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = 260 + 16; // card + gap
+    el.scrollBy({
+      left: direction === "right" ? cardWidth : -cardWidth,
+      behavior: "smooth",
+    });
   }, []);
 
-  const freezeTrack = useCallback(() => {
-    setPaused(true);
-    if (pauseTimeout.current) clearTimeout(pauseTimeout.current);
+  /* ── Drag/swipe handlers ── */
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    isDragging.current = true;
+    didDrag.current = false;
+    startX.current = e.clientX;
+    scrollLeft.current = el.scrollLeft;
+    el.setPointerCapture(e.pointerId);
+    el.style.cursor = "grabbing";
+    el.style.scrollSnapType = "none";
   }, []);
 
-  const resumeAfterDelay = useCallback(() => {
-    const track = trackRef.current;
-    pauseTimeout.current = setTimeout(() => {
-      if (track) {
-        track.style.transition = "";
-        track.style.transform = "";
-      }
-      setPaused(false);
-    }, 4000);
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    const dx = e.clientX - startX.current;
+    if (Math.abs(dx) > 5) didDrag.current = true;
+    el.scrollLeft = scrollLeft.current - dx;
   }, []);
 
-  const scroll = useCallback(
-    (direction: "left" | "right") => {
-      const track = trackRef.current;
-      if (!track) return;
-
-      freezeTrack();
-      const currentX = getTrackX();
-
-      const cardWidth = window.innerWidth >= 768 ? 280 : 256;
-      const gap = window.innerWidth >= 768 ? 20 : 16;
-      const step = cardWidth + gap;
-
-      const newX =
-        direction === "left" ? currentX + step : currentX - step;
-
-      track.style.transform = `translateX(${newX}px)`;
-      track.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
-
-      resumeAfterDelay();
-    },
-    [freezeTrack, getTrackX, resumeAfterDelay]
-  );
-
-  // Drag / swipe handlers
-  const onDragStart = useCallback(
-    (clientX: number) => {
-      const track = trackRef.current;
-      if (!track) return;
-
-      freezeTrack();
-      track.style.transition = "none";
-
-      dragState.current = {
-        isDragging: true,
-        startX: clientX,
-        startTranslate: getTrackX(),
-        currentX: clientX,
-      };
-    },
-    [freezeTrack, getTrackX]
-  );
-
-  const onDragMove = useCallback((clientX: number) => {
-    const ds = dragState.current;
-    if (!ds.isDragging) return;
-
-    const track = trackRef.current;
-    if (!track) return;
-
-    ds.currentX = clientX;
-    const delta = clientX - ds.startX;
-    track.style.transform = `translateX(${ds.startTranslate + delta}px)`;
+  const handlePointerUp = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.releasePointerCapture(e.pointerId);
+    el.style.cursor = "";
+    el.style.scrollSnapType = "";
   }, []);
-
-  const onDragEnd = useCallback(() => {
-    const ds = dragState.current;
-    if (!ds.isDragging) return;
-    ds.isDragging = false;
-
-    const track = trackRef.current;
-    if (!track) return;
-
-    // Snap to nearest card
-    const cardWidth = window.innerWidth >= 768 ? 280 : 256;
-    const gap = window.innerWidth >= 768 ? 20 : 16;
-    const step = cardWidth + gap;
-    const delta = ds.currentX - ds.startX;
-    const currentX = ds.startTranslate + delta;
-
-    // Snap with momentum — if dragged more than 30% of a card, go to next
-    const snapped =
-      Math.abs(delta) > step * 0.3
-        ? Math.round(currentX / step) * step
-        : Math.round(ds.startTranslate / step) * step;
-
-    track.style.transition = "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)";
-    track.style.transform = `translateX(${snapped}px)`;
-
-    resumeAfterDelay();
-  }, [resumeAfterDelay]);
-
-  // Mouse events
-  const onMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      onDragStart(e.clientX);
-    },
-    [onDragStart]
-  );
-
-  const onMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      onDragMove(e.clientX);
-    },
-    [onDragMove]
-  );
-
-  const onMouseUp = useCallback(() => {
-    onDragEnd();
-  }, [onDragEnd]);
-
-  const onMouseLeave = useCallback(() => {
-    if (dragState.current.isDragging) onDragEnd();
-  }, [onDragEnd]);
-
-  // Touch events
-  const onTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      onDragStart(e.touches[0].clientX);
-    },
-    [onDragStart]
-  );
-
-  const onTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      onDragMove(e.touches[0].clientX);
-    },
-    [onDragMove]
-  );
-
-  const onTouchEnd = useCallback(() => {
-    onDragEnd();
-  }, [onDragEnd]);
 
   return (
-    <div className="relative mb-14">
-      {/* Subtle fade edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-bg/55 to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-bg/55 to-transparent z-10 pointer-events-none" />
+    <div className="relative">
+      {/* Arrow controls */}
+      <div className="flex items-center justify-end mb-5">
+        <div className="flex gap-2">
+          <button
+            onClick={() => scroll("left")}
+            aria-label="Previous speaker"
+            className="w-9 h-9 rounded-full border border-border-light flex items-center justify-center text-text-muted transition-all hover:border-purple hover:text-purple active:scale-95"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            aria-label="Next speaker"
+            className="w-9 h-9 rounded-full border border-border-light flex items-center justify-center text-text-muted transition-all hover:border-purple hover:text-purple active:scale-95"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
 
-      {/* Navigation arrows */}
-      <button
-        onClick={() => scroll("left")}
-        aria-label="Previous speaker"
-        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 border border-border-light shadow-sm flex items-center justify-center text-purple-deep transition-all hover:bg-white hover:shadow-md hover:scale-105 active:scale-95"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <button
-        onClick={() => scroll("right")}
-        aria-label="Next speaker"
-        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 border border-border-light shadow-sm flex items-center justify-center text-purple-deep transition-all hover:bg-white hover:shadow-md hover:scale-105 active:scale-95"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      {/* Scrolling track — draggable + swipeable */}
+      {/* Scrollable cards — draggable */}
       <div
-        className="overflow-hidden cursor-grab active:cursor-grabbing select-none"
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseLeave}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 cursor-grab select-none"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
       >
+        {SPEAKERS.map((speaker, i) => (
+          <div
+            key={i}
+            className="w-[240px] md:w-[260px] shrink-0 snap-start"
+          >
+            <SpeakerCard
+              speaker={speaker}
+              isActive={i === activeIndex}
+              onClick={() => {
+                if (!didDrag.current) onSelect(i);
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Mobile Speaker Card (equal treatment) ── */
+function MobileSpeakerCard({
+  speaker,
+}: {
+  speaker: (typeof SPEAKERS)[number];
+}) {
+  return (
+    <div className="relative rounded-[16px] overflow-hidden bg-bg-card">
+      {/* Photo placeholder */}
+      <div className="relative w-full aspect-[3/2] bg-purple-deep">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
         <div
-          ref={trackRef}
-          className={cn(
-            "flex gap-4 md:gap-5 pointer-events-none",
-            !paused &&
-              "animate-[speaker-scroll_45s_linear_infinite]"
-          )}
-        >
-          {items.map((speaker, i) => (
-            <SpeakerCard key={i} speaker={speaker} />
-          ))}
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
+            <User className="w-7 h-7 text-white/20" />
+          </div>
+        </div>
+        {/* Bottom gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      </div>
+
+      {/* Content */}
+      <div className="p-5">
+        <Quote className="w-4 h-4 text-purple-light mb-2.5 opacity-50" />
+        <p className="font-serif text-[0.95rem] text-text/90 leading-relaxed italic mb-3">
+          &ldquo;{speaker.quote}&rdquo;
+        </p>
+        <p className="text-[0.8rem] text-text-secondary leading-relaxed mb-3">
+          {speaker.bio}
+        </p>
+        <div className="flex items-center justify-between">
+          <h4 className="font-bold text-sm text-text">{speaker.name}</h4>
+          <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
+            2026 {speaker.role}
+          </span>
         </div>
       </div>
     </div>
   );
 }
 
+/* ── Main Section ── */
 export function Speakers() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  /* Auto-rotate featured speaker every 5s (desktop only) */
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % SPEAKERS.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [paused]);
+
   return (
     <section
       id="speakers"
-      className="relative z-2 py-28 lg:py-32 overflow-hidden"
+      className="relative z-2 py-28 lg:py-32"
     >
       <div className="max-w-[1140px] mx-auto px-6">
         <FadeIn>
@@ -321,14 +315,39 @@ export function Speakers() {
             centered
           />
         </FadeIn>
-      </div>
 
-      {/* Full-bleed reel */}
-      <FadeIn delay={100}>
-        <SpeakerReel />
-      </FadeIn>
+        {/* Desktop: Split layout — Featured + Carousel */}
+        <FadeIn delay={100}>
+          <div
+            className="hidden lg:grid lg:grid-cols-[minmax(360px,1fr)_1.4fr] gap-8 mb-14"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            {/* Left — Featured speaker */}
+            <FeaturedSpeaker speaker={SPEAKERS[activeIndex]} speakerIndex={activeIndex} />
 
-      <div className="max-w-[1140px] mx-auto px-6">
+            {/* Right — Carousel */}
+            <div className="min-w-0">
+              <SpeakerCarousel
+                activeIndex={activeIndex}
+                onSelect={(i) => {
+                  setActiveIndex(i);
+                  setPaused(true);
+                }}
+              />
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* Mobile: Equal grid of all speakers */}
+        <FadeIn delay={100}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:hidden mb-14">
+            {SPEAKERS.map((speaker, i) => (
+              <MobileSpeakerCard key={i} speaker={speaker} />
+            ))}
+          </div>
+        </FadeIn>
+
         <FadeIn delay={200}>
           <div className="text-center">
             <p className="text-text-secondary mb-3.5 text-[0.9rem]">

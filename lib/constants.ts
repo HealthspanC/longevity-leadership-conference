@@ -108,31 +108,37 @@ export const SPEAKERS = [
     name: "Speaker Announcement",
     role: "Keynote",
     bio: "Our 2026 keynote lineup is being finalized. Follow us for speaker announcements.",
+    quote: "The future of longevity starts with the conversations we have today.",
   },
   {
     name: "Speaker Announcement",
     role: "Clinical Research",
     bio: "Top clinicians and researchers in longevity medicine will be featured.",
+    quote: "Evidence-based breakthroughs are redefining what it means to age well.",
   },
   {
     name: "Speaker Announcement",
     role: "Investment",
     bio: "Industry investors and business leaders driving healthspan innovation.",
+    quote: "The longevity economy is the most consequential market of our generation.",
   },
   {
     name: "Speaker Announcement",
     role: "Longevity Science",
     bio: "Visionaries pioneering the future of the longevity ecosystem.",
+    quote: "We are at the inflection point between aging as inevitable and aging as treatable.",
   },
   {
     name: "Speaker Announcement",
     role: "Biotech",
     bio: "Leading biotech innovators pushing the boundaries of healthspan technology.",
+    quote: "Every breakthrough in biotech brings us closer to a longer, healthier life.",
   },
   {
     name: "Speaker Announcement",
     role: "Wellness",
     bio: "Experts in preventive medicine and evidence-based wellness protocols.",
+    quote: "Prevention is the most powerful form of medicine we have.",
   },
 ] as const;
 

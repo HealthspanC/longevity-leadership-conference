@@ -8,6 +8,7 @@ import { Speakers } from "@/components/speakers";
 import { MissionBanner } from "@/components/mission-banner";
 import { GetInvolved } from "@/components/get-involved";
 import { Gallery } from "@/components/gallery";
+import { TopicsMarquee } from "@/components/topics-marquee";
 import { Subscribe } from "@/components/subscribe";
 import { Footer } from "@/components/footer";
 
@@ -24,6 +25,7 @@ export default function Home() {
         <Speakers />
         <GetInvolved />
         <Gallery />
+        <TopicsMarquee />
         <Subscribe />
       </main>
       <Footer />

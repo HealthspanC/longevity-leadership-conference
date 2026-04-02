@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { SPEAKERS, LINKS } from "@/lib/constants";
 import { User, ChevronLeft, ChevronRight, Quote, X } from "lucide-react";
@@ -323,7 +324,7 @@ function MobileSpeakerCard({
   );
 }
 
-/* ── Speaker Modal ── */
+/* ── Speaker Modal (portaled to body) ── */
 function SpeakerModal({
   speaker,
   onClose,
@@ -331,7 +332,10 @@ function SpeakerModal({
   speaker: Speaker;
   onClose: () => void;
 }) {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -343,66 +347,71 @@ function SpeakerModal({
     };
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity" />
 
-      {/* Modal */}
+      {/* Modal card */}
       <div
-        className="relative bg-bg rounded-[20px] overflow-hidden max-w-[680px] w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-200"
+        className="relative bg-bg rounded-[20px] overflow-hidden max-w-[860px] w-full max-h-[85vh] shadow-[0_25px_80px_rgba(0,0,0,0.3)] flex flex-col md:flex-row"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-black/60 transition-all"
+          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/50 transition-all md:top-4 md:right-4"
           aria-label="Close"
         >
           <X className="w-4 h-4" />
         </button>
 
-        {/* Image */}
-        <div className="relative w-full aspect-[4/3]">
+        {/* Image — left on desktop, top on mobile */}
+        <div className="relative w-full md:w-[44%] shrink-0 aspect-[3/2] md:aspect-auto md:min-h-full">
           {hasImage(speaker) ? (
             <Image
               src={speaker.image}
               alt={speaker.name}
               fill
               className="object-cover object-top"
-              sizes="680px"
+              sizes="(min-width: 768px) 380px, 100vw"
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e] flex items-center justify-center">
-              <div className="w-24 h-24 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-                <User className="w-12 h-12 text-white/15" />
+              <div className="w-20 h-20 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
+                <User className="w-10 h-10 text-white/15" />
               </div>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent" />
         </div>
 
-        {/* Content */}
-        <div className="px-8 pb-8 -mt-8 relative">
-          <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-purple mb-2 block">
+        {/* Content — right on desktop, below on mobile */}
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 flex flex-col justify-center">
+          <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-purple mb-2.5 block">
             2026 {speaker.role}
           </span>
-          <h3 className="font-serif text-2xl font-bold text-text mb-4">
+          <h3 className="font-serif text-[1.6rem] md:text-[1.8rem] font-bold text-text leading-tight mb-5">
             {speaker.name}
           </h3>
-          <Quote className="w-5 h-5 text-purple-light mb-2 opacity-50" />
-          <p className="font-serif text-[1.05rem] text-text/85 leading-relaxed italic mb-5">
-            &ldquo;{speaker.quote}&rdquo;
-          </p>
-          <p className="text-[0.9rem] text-text-secondary leading-relaxed">
+
+          <div className="mb-5 pl-4 border-l-[2.5px] border-purple-light/40">
+            <p className="font-serif text-[0.95rem] md:text-[1.05rem] text-text/80 leading-relaxed italic">
+              &ldquo;{speaker.quote}&rdquo;
+            </p>
+          </div>
+
+          <p className="text-[0.88rem] text-text-secondary leading-[1.7]">
             {speaker.bio}
           </p>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

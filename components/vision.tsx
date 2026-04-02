@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { VISION_FEATURES } from "@/lib/constants";
 import { Trophy, Activity, TrendingUp, Users } from "lucide-react";
 import { FadeIn } from "./fade-in";
@@ -12,8 +13,22 @@ const iconMap: Record<string, React.ElementType> = {
 
 export function Vision() {
   return (
-    <section id="about" className="relative z-2 py-28 lg:py-32">
-      <div className="max-w-[1140px] mx-auto px-6">
+    <section id="about" className="relative z-2 py-28 lg:py-32 overflow-hidden">
+      {/* DNA background image */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Image
+          src="/bg-dna.png"
+          alt=""
+          fill
+          className="object-cover object-center opacity-[0.07]"
+          sizes="100vw"
+          aria-hidden="true"
+        />
+        {/* Soft vignette to blend edges */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#faf9f7_70%)]" />
+      </div>
+
+      <div className="relative max-w-[1140px] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
           <FadeIn>
             <SectionHeader

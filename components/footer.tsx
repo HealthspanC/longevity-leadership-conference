@@ -13,30 +13,30 @@ export function Footer() {
       <div className="absolute top-[10%] right-[15%] w-[300px] h-[300px] rounded-full bg-rose/5 blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-[1140px] mx-auto px-6">
-        {/* Footer links */}
         <div className="pt-14 pb-7">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 mb-12">
-            {/* Brand */}
-            <div className="text-center md:text-left flex flex-col items-center md:items-start">
-              <Image
-                src="/brand/logo-white.png"
-                alt="Healthspan Collective"
-                width={3230}
-                height={786}
-                className="h-[52px] w-auto mb-4"
-              />
-              <p className="text-[0.85rem] text-white/45 leading-relaxed max-w-[300px]">
-                A Premium Executive Forum for the Longevity Industry. Hosted by
-                the Healthspan Collective in Playa Vista, CA.
-              </p>
-            </div>
+          {/* Brand — centered on mobile, left on desktop */}
+          <div className="text-center md:text-left flex flex-col items-center md:items-start mb-10 lg:mb-0 lg:float-left lg:max-w-[320px] lg:mr-12">
+            <Image
+              src="/brand/logo-white.png"
+              alt="Healthspan Collective"
+              width={3230}
+              height={786}
+              className="h-[44px] md:h-[52px] w-auto mb-4"
+            />
+            <p className="text-[0.85rem] text-white/45 leading-relaxed max-w-[300px]">
+              A Premium Executive Forum for the Longevity Industry. Hosted by
+              the Healthspan Collective in Playa Vista, CA.
+            </p>
+          </div>
 
+          {/* Link columns — 2-col on mobile, 3-col row on desktop */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12 mb-10 lg:mb-12 lg:overflow-hidden">
             {/* Event */}
             <div className="text-center md:text-left">
-              <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-[18px] text-white/35">
+              <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-4 md:mb-[18px] text-white/35">
                 Event
               </h4>
-              <ul className="flex flex-col gap-2.5 items-center md:items-start">
+              <ul className="flex flex-col gap-2 md:gap-2.5 items-center md:items-start">
                 {[...NAV_ITEMS.slice(0, 3), { label: "Buy Tickets", href: LINKS.tickets }].map(
                   (item) => (
                     <li key={item.label}>
@@ -57,10 +57,10 @@ export function Footer() {
 
             {/* Get Involved */}
             <div className="text-center md:text-left">
-              <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-[18px] text-white/35">
+              <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-4 md:mb-[18px] text-white/35">
                 Get Involved
               </h4>
-              <ul className="flex flex-col gap-2.5 items-center md:items-start">
+              <ul className="flex flex-col gap-2 md:gap-2.5 items-center md:items-start">
                 <li>
                   <a
                     href={LINKS.applySpeaker}
@@ -84,12 +84,34 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Follow */}
-            <div className="text-center md:text-left">
-              <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-[18px] text-white/35">
+            {/* Follow — icon row on mobile, text list on desktop */}
+            <div className="col-span-2 md:col-span-1 text-center md:text-left">
+              <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-4 md:mb-[18px] text-white/35">
                 Follow Us
               </h4>
-              <ul className="flex flex-col gap-2.5 items-center md:items-start">
+              {/* Mobile: icon buttons */}
+              <div className="flex gap-3 justify-center md:hidden">
+                <a
+                  href={LINKS.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="w-10 h-10 rounded-full bg-white/[0.08] border border-white/[0.12] flex items-center justify-center text-white/60 transition-all hover:bg-white/[0.14] hover:text-white"
+                >
+                  <Instagram className="w-4.5 h-4.5" />
+                </a>
+                <a
+                  href={LINKS.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="w-10 h-10 rounded-full bg-white/[0.08] border border-white/[0.12] flex items-center justify-center text-white/60 transition-all hover:bg-white/[0.14] hover:text-white"
+                >
+                  <Linkedin className="w-4.5 h-4.5" />
+                </a>
+              </div>
+              {/* Desktop: text links */}
+              <ul className="hidden md:flex flex-col gap-2.5 items-start">
                 <li>
                   <a
                     href={LINKS.instagram}
@@ -114,14 +136,17 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Clear float */}
+          <div className="clear-both" />
+
           {/* Bottom bar */}
           <div className="relative flex flex-col md:flex-row items-center justify-between pt-7 text-[0.78rem] text-white/30 gap-3.5">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-            <span>
+            <span className="text-center md:text-left">
               &copy; {new Date().getFullYear()} Longevity Leadership Conference.
               All rights reserved.
             </span>
-            <div className="flex gap-2.5">
+            <div className="hidden md:flex gap-2.5">
               <a
                 href={LINKS.instagram}
                 target="_blank"

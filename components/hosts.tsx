@@ -133,8 +133,35 @@ export function Hosts() {
       id="hosts"
       className="relative z-[3] py-24 lg:py-28 bg-purple-deep overflow-hidden"
     >
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />
+      {/* Animated gradient overlays */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute inset-0 opacity-100"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 20% 40%, rgba(192,96,128,0.18), transparent), radial-gradient(ellipse 70% 50% at 80% 60%, rgba(42,122,110,0.12), transparent), radial-gradient(ellipse 60% 60% at 50% 20%, rgba(91,58,140,0.22), transparent)",
+            animation: "hosts-gradient-1 12s ease-in-out infinite alternate",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-100"
+          style={{
+            background: "radial-gradient(ellipse 60% 50% at 70% 30%, rgba(168,124,224,0.12), transparent), radial-gradient(ellipse 70% 60% at 30% 70%, rgba(192,96,128,0.1), transparent)",
+            animation: "hosts-gradient-2 16s ease-in-out infinite alternate",
+          }}
+        />
+      </div>
+      <style jsx>{`
+        @keyframes hosts-gradient-1 {
+          0% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(3%, -2%) scale(1.05); }
+          100% { transform: translate(-2%, 3%) scale(1.02); }
+        }
+        @keyframes hosts-gradient-2 {
+          0% { transform: translate(0, 0) scale(1.02); }
+          50% { transform: translate(-4%, 2%) scale(1); }
+          100% { transform: translate(2%, -3%) scale(1.06); }
+        }
+      `}</style>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

@@ -199,13 +199,13 @@ export function Gallery() {
       <section
         ref={sectionRef}
         id="gallery"
-        className="relative z-[3] bg-bg"
+        className="relative z-[3]"
         style={{ height: `${SCROLL_MULTIPLIER * 100}vh` }}
       >
         {/* Sticky viewport */}
-        <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+        <div className="sticky top-0 h-screen overflow-hidden flex flex-col bg-bg">
           {/* Header */}
-          <div className="pt-28 pb-6 px-6 shrink-0">
+          <div className="pt-[116px] pb-5 px-6 shrink-0">
             <div className="max-w-[1140px] mx-auto">
               <div className="flex items-end justify-between">
                 <div>
@@ -282,6 +282,9 @@ export function Gallery() {
           </div>
         </div>
       </section>
+
+      {/* Spacer after sticky gallery so next section doesn't butt up against it */}
+      <div className="relative z-[3] h-16 lg:h-20 bg-bg" />
 
       {/* Lightbox modal */}
       {lightboxIdx !== null && (

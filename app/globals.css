@@ -98,3 +98,21 @@ body {
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
+
+/* Get Involved card animations */
+@keyframes involve-border-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes involve-shimmer {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes involve-orbital {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes involve-orbital-reverse {
+  to { transform: rotate(-360deg); }
+}

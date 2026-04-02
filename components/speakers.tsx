@@ -538,21 +538,6 @@ export function Speakers() {
           <MobileSpeakerCarousel onOpenModal={setModalSpeaker} />
         </FadeIn>
 
-        <FadeIn delay={200}>
-          <div className="text-center">
-            <p className="text-text-secondary mb-3.5 text-[0.9rem]">
-              Interested in sharing your expertise on stage?
-            </p>
-            <a
-              href={LINKS.applySpeaker}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 border-[1.5px] border-border text-text py-[15px] px-8 rounded-full font-semibold text-[0.95rem] transition-all hover:border-purple hover:text-purple hover:-translate-y-0.5"
-            >
-              Apply to Speak &rarr;
-            </a>
-          </div>
-        </FadeIn>
       </div>
 
       {modalSpeaker && (

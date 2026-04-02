@@ -149,7 +149,7 @@ export const INVOLVE_CARDS = [
     icon: "Mic",
     title: "Become a Speaker",
     description:
-      "Share your expertise and research with an elite audience of longevity professionals and investors.",
+      "Share your expertise with longevity leaders.",
     href: "https://docs.google.com/forms/d/e/1FAIpQLSfvrT-tIPExLp6EOz1bOII3gdJh-PcdocBuqToxdRBKXH9glQ/viewform",
     color: "purple" as const,
   },
@@ -157,7 +157,7 @@ export const INVOLVE_CARDS = [
     icon: "FileText",
     title: "Summit Partner",
     description:
-      "Align your brand with the premier longevity event and gain visibility among top decision-makers.",
+      "Gain visibility among top decision-makers.",
     href: "https://docs.google.com/forms/d/e/1FAIpQLSfbo7rlnAaR3ya-rT_zPTwsxmOANRoLuqs9iUpd3gaUN7ShcQ/viewform",
     color: "rose" as const,
   },

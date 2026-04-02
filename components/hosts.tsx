@@ -32,7 +32,7 @@ function HostCards() {
               )}
               onClick={() => setExpanded(isOpen ? null : host.name)}
             >
-              <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-purple-deep">
+              <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-bg">
                 <Image
                   src={host.image}
                   alt={host.name}

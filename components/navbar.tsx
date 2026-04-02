@@ -30,7 +30,7 @@ export function Navbar() {
       {/* Mobile overlay */}
       <div
         className={cn(
-          "fixed inset-0 z-[1001] flex flex-col items-center justify-center transition-all duration-500 lg:hidden overflow-hidden",
+          "fixed inset-0 z-[1001] flex flex-col items-center justify-center transition-all duration-300 lg:hidden overflow-hidden",
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
@@ -53,8 +53,8 @@ export function Navbar() {
 
         {/* Logo */}
         <div className={cn(
-          "mb-10 transition-all duration-500",
-          mobileOpen ? "opacity-100 translate-y-0 delay-100" : "opacity-0 -translate-y-4"
+          "mb-10 transition-all duration-300",
+          mobileOpen ? "opacity-100 translate-y-0 delay-75" : "opacity-0 -translate-y-4"
         )}>
           <Image
             src="/brand/logo-white.png"
@@ -83,15 +83,15 @@ export function Navbar() {
                 }
               }}
               className={cn(
-                "relative text-2xl font-serif font-medium text-white/80 hover:text-white py-3 px-8 rounded-lg transition-all duration-500",
+                "relative text-2xl font-serif font-medium text-white/80 hover:text-white py-3 px-8 rounded-lg transition-all duration-300",
                 "hover:bg-white/[0.05]",
                 "active:scale-[0.98]",
                 mobileOpen
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-6"
+                  : "opacity-0 translate-y-4"
               )}
               style={{
-                transitionDelay: mobileOpen ? `${150 + i * 70}ms` : "0ms",
+                transitionDelay: mobileOpen ? `${80 + i * 40}ms` : "0ms",
               }}
             >
               {item.label}
@@ -101,8 +101,8 @@ export function Navbar() {
 
         {/* Decorative divider */}
         <div className={cn(
-          "w-16 h-px my-6 bg-gradient-to-r from-transparent via-purple-light/40 to-transparent transition-all duration-700",
-          mobileOpen ? "opacity-100 scale-x-100 delay-500" : "opacity-0 scale-x-0"
+          "w-16 h-px my-6 bg-gradient-to-r from-transparent via-purple-light/40 to-transparent transition-all duration-400",
+          mobileOpen ? "opacity-100 scale-x-100 delay-300" : "opacity-0 scale-x-0"
         )} />
 
         {/* CTA button */}
@@ -112,10 +112,10 @@ export function Navbar() {
           rel="noopener noreferrer"
           onClick={() => setMobileOpen(false)}
           className={cn(
-            "bg-white text-purple-deep px-8 py-3 rounded-full font-semibold text-sm tracking-wide transition-all duration-500",
+            "bg-white text-purple-deep px-8 py-3 rounded-full font-semibold text-sm tracking-wide transition-all duration-300",
             "shadow-[0_0_30px_rgba(168,124,224,0.25)] hover:shadow-[0_0_40px_rgba(168,124,224,0.35)]",
             "hover:-translate-y-0.5 active:scale-[0.97]",
-            mobileOpen ? "opacity-100 translate-y-0 delay-[550ms]" : "opacity-0 translate-y-4"
+            mobileOpen ? "opacity-100 translate-y-0 delay-[350ms]" : "opacity-0 translate-y-4"
           )}
         >
           Get Tickets

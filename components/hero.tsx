@@ -57,7 +57,7 @@ export function Hero() {
                 href={LINKS.tickets}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 bg-white text-purple-deep py-4 px-9 rounded-full font-bold text-[0.95rem] transition-all hover:bg-purple-light hover:text-purple-deep hover:-translate-y-0.5 shadow-[0_4px_24px_rgba(255,255,255,0.15)] relative overflow-hidden"
+                className="group inline-flex items-center gap-2.5 bg-white text-purple-deep py-4 px-9 rounded-full font-bold text-[0.95rem] transition-all border border-transparent hover:bg-purple-deep hover:text-white hover:border-white hover:-translate-y-0.5 shadow-[0_4px_24px_rgba(255,255,255,0.15)] relative overflow-hidden"
               >
                 Reserve Your Seat
                 <ChevronRight className="w-4 h-4" />

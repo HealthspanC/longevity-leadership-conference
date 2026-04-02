@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -13,38 +14,20 @@ const slides = Array.from({ length: TOTAL_SLIDES }, (_, i) => {
   return `/deck/slide-${num}.jpg`;
 });
 
-export function EventDeck() {
-  const [current, setCurrent] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+function SlideViewer({
+  current,
+  go,
+  isFullscreen,
+  onToggleFullscreen,
+}: {
+  current: number;
+  go: (dir: -1 | 1) => void;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
+}) {
   const touchStartX = useRef(0);
   const touchDelta = useRef(0);
 
-  const go = useCallback(
-    (dir: -1 | 1) => {
-      setCurrent((prev) => {
-        const next = prev + dir;
-        if (next < 0) return TOTAL_SLIDES - 1;
-        if (next >= TOTAL_SLIDES) return 0;
-        return next;
-      });
-    },
-    []
-  );
-
-  // Keyboard navigation
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!isFullscreen) return;
-      if (e.key === "ArrowLeft") go(-1);
-      else if (e.key === "ArrowRight") go(1);
-      else if (e.key === "Escape") setIsFullscreen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [go, isFullscreen]);
-
-  // Touch/swipe
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchDelta.current = 0;
@@ -58,28 +41,17 @@ export function EventDeck() {
     }
   };
 
-  const toggleFullscreen = () => setIsFullscreen((f) => !f);
-
-  const viewer = (
-    <div
-      ref={containerRef}
-      className={cn(
-        "relative select-none",
-        isFullscreen &&
-          "fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
-      )}
-    >
+  return (
+    <div className="relative select-none">
       {/* Slide area */}
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-lg",
-          isFullscreen ? "max-w-[90vw] max-h-[90vh] aspect-video" : "aspect-video"
+          "relative w-full overflow-hidden rounded-lg aspect-video"
         )}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        {/* Preload adjacent slides */}
         {slides.map((src, i) => {
           const isVisible = i === current;
           const isAdjacent =
@@ -124,7 +96,7 @@ export function EventDeck() {
 
         {/* Fullscreen toggle */}
         <button
-          onClick={toggleFullscreen}
+          onClick={onToggleFullscreen}
           className="absolute top-2 right-2 md:top-4 md:right-4 w-9 h-9 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-black/60 transition-all z-10"
           aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
         >
@@ -143,28 +115,73 @@ export function EventDeck() {
           isFullscreen && "absolute bottom-6 left-1/2 -translate-x-1/2 w-[min(90vw,700px)]"
         )}
       >
-        {/* Progress bar */}
         <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
           <div
             className="h-full bg-purple-light rounded-full transition-all duration-500 ease-out"
             style={{ width: `${((current + 1) / TOTAL_SLIDES) * 100}%` }}
           />
         </div>
-        {/* Counter */}
         <span className="text-xs font-mono text-white/40 tabular-nums shrink-0">
           {String(current + 1).padStart(2, "0")} / {TOTAL_SLIDES}
         </span>
       </div>
-
-      {/* Fullscreen: close on backdrop click */}
-      {isFullscreen && (
-        <div
-          className="absolute inset-0 -z-10"
-          onClick={() => setIsFullscreen(false)}
-        />
-      )}
     </div>
   );
+}
+
+function FullscreenOverlay({
+  current,
+  go,
+  onClose,
+}: {
+  current: number;
+  go: (dir: -1 | 1) => void;
+  onClose: () => void;
+}) {
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="w-[90vw] max-h-[90vh]">
+        <SlideViewer
+          current={current}
+          go={go}
+          isFullscreen
+          onToggleFullscreen={onClose}
+        />
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+export function EventDeck() {
+  const [current, setCurrent] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const go = useCallback((dir: -1 | 1) => {
+    setCurrent((prev) => {
+      const next = prev + dir;
+      if (next < 0) return TOTAL_SLIDES - 1;
+      if (next >= TOTAL_SLIDES) return 0;
+      return next;
+    });
+  }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!isFullscreen) return;
+      if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "ArrowRight") go(1);
+      else if (e.key === "Escape") setIsFullscreen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go, isFullscreen]);
 
   return (
     <section className="relative z-[3] py-16 lg:py-20 bg-bg overflow-hidden">
@@ -189,13 +206,24 @@ export function EventDeck() {
               }}
             />
             <div className="relative">
-              {/* Placeholder keeps section height when viewer goes fullscreen (fixed) */}
-              {isFullscreen && <div className="aspect-video w-full" />}
-              {viewer}
+              <SlideViewer
+                current={current}
+                go={go}
+                isFullscreen={false}
+                onToggleFullscreen={() => setIsFullscreen(true)}
+              />
             </div>
           </div>
         </FadeIn>
       </div>
+
+      {isFullscreen && (
+        <FullscreenOverlay
+          current={current}
+          go={go}
+          onClose={() => setIsFullscreen(false)}
+        />
+      )}
     </section>
   );
 }

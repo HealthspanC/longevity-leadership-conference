@@ -18,7 +18,7 @@ export function PartnerBanner() {
         <FadeIn>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <p className="text-white/70 text-[0.9rem]">
-              Interested in partnering with the summit?
+              Interested in partnering with us?
             </p>
             <a
               href={INVOLVE_CARDS[1].href}

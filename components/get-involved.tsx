@@ -1,5 +1,5 @@
 import { INVOLVE_CARDS } from "@/lib/constants";
-import { Mic, FileText, PlusCircle, ChevronRight } from "lucide-react";
+import { Mic, FileText, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
@@ -7,7 +7,6 @@ import { SectionHeader } from "./section-header";
 const iconMap: Record<string, React.ElementType> = {
   Mic,
   FileText,
-  PlusCircle,
 };
 
 const colorStyles = {
@@ -59,7 +58,7 @@ export function GetInvolved() {
         </FadeIn>
 
         <FadeIn delay={100}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-[720px] mx-auto">
             {INVOLVE_CARDS.map((card) => {
               const Icon = iconMap[card.icon];
               const styles = colorStyles[card.color];

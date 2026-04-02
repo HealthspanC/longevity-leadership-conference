@@ -159,14 +159,6 @@ export const INVOLVE_CARDS = [
     href: "https://docs.google.com/forms/d/e/1FAIpQLSfbo7rlnAaR3ya-rT_zPTwsxmOANRoLuqs9iUpd3gaUN7ShcQ/viewform",
     color: "rose" as const,
   },
-  {
-    icon: "PlusCircle",
-    title: "Future Events",
-    description:
-      "Express your interest in participating in upcoming Longevity Leadership Conference events.",
-    href: "https://forms.gle/jFobRPFBdt8GXtCV8",
-    color: "teal" as const,
-  },
 ] as const;
 
 export const GALLERY_ITEMS = [

@@ -73,7 +73,7 @@ export function EventDeck() {
       <div
         className={cn(
           "relative w-full overflow-hidden rounded-lg",
-          isFullscreen ? "max-w-[90vw] max-h-[90vh]" : "aspect-video"
+          isFullscreen ? "max-w-[90vw] max-h-[90vh] aspect-video" : "aspect-video"
         )}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -189,6 +189,8 @@ export function EventDeck() {
               }}
             />
             <div className="relative">
+              {/* Placeholder keeps section height when viewer goes fullscreen (fixed) */}
+              {isFullscreen && <div className="aspect-video w-full" />}
               {viewer}
             </div>
           </div>

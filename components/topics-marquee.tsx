@@ -1,6 +1,3 @@
-"use client";
-
-
 const ROWS = [
   [
     "health", "longevity", "mindset optimization", "psychedelics",
@@ -31,7 +28,7 @@ const ROWS = [
 
 export function TopicsMarquee() {
   return (
-    <section className="relative z-[3] bg-bg pt-4 pb-10 lg:pt-6 lg:pb-12 overflow-hidden">
+    <section className="relative z-[3] bg-bg pt-4 pb-10 lg:pt-6 lg:pb-12 overflow-hidden" style={{ contain: "layout style" }}>
 
       <div className="text-center mb-6">
         <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase text-purple-mid before:content-[''] before:w-6 before:h-px before:bg-purple-mid">
@@ -51,9 +48,11 @@ export function TopicsMarquee() {
               <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-bg to-transparent" />
 
               <div
-                className="flex gap-3 w-max"
+                className="flex gap-3 w-max will-change-transform"
                 style={{
                   animation: `marquee-${direction} ${duration}s linear infinite`,
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
                 }}
               >
                 {[...topics, ...topics].map((topic, i) => (
@@ -70,16 +69,6 @@ export function TopicsMarquee() {
         })}
       </div>
 
-      <style jsx>{`
-        @keyframes marquee-left {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes marquee-right {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
-        }
-      `}</style>
     </section>
   );
 }

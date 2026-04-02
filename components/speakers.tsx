@@ -449,7 +449,7 @@ function SpeakerModal({
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity" />
+      <div className="absolute inset-0 bg-black/70 transition-opacity" />
 
       <div
         className="relative bg-bg rounded-[20px] overflow-hidden max-w-[860px] w-full max-h-[85vh] shadow-[0_25px_80px_rgba(0,0,0,0.3)] flex flex-col md:flex-row"

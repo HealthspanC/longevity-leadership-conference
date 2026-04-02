@@ -13,174 +13,74 @@ type Speaker = (typeof SPEAKERS)[number];
 const hasImage = (s: Speaker): s is Speaker & { image: string } =>
   "image" in s && typeof (s as Record<string, unknown>).image === "string";
 
-/* ── Featured Speaker (left panel) with crossfade ── */
-function FeaturedSpeaker({
+/* ── Speaker photo or placeholder ── */
+function SpeakerPhoto({
   speaker,
-  speakerIndex,
+  sizes,
+  className,
 }: {
-  speaker: (typeof SPEAKERS)[number];
-  speakerIndex: number;
+  speaker: Speaker;
+  sizes: string;
+  className?: string;
 }) {
-  const [displayed, setDisplayed] = useState(speaker);
-  const [displayedIndex, setDisplayedIndex] = useState(speakerIndex);
-  const [fading, setFading] = useState(false);
-
-  useEffect(() => {
-    if (speakerIndex === displayedIndex) return;
-    // Fade out
-    setFading(true);
-    const t = setTimeout(() => {
-      // Swap content at midpoint, then fade in
-      setDisplayed(speaker);
-      setDisplayedIndex(speakerIndex);
-      setFading(false);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [speaker, speakerIndex, displayedIndex]);
-
+  if (hasImage(speaker)) {
+    return (
+      <Image
+        src={speaker.image}
+        alt={speaker.name}
+        fill
+        className={cn("object-cover object-top", className)}
+        sizes={sizes}
+      />
+    );
+  }
   return (
-    <div className="relative rounded-[20px] overflow-hidden aspect-[3/4] lg:aspect-auto lg:h-full min-h-[420px]">
-      {/* Background: photo or placeholder gradient */}
-      {hasImage(displayed) ? (
-        <Image
-          src={displayed.image}
-          alt={displayed.name}
-          fill
-          className="object-cover object-top"
-          sizes="(min-width: 1024px) 40vw, 100vw"
-        />
-      ) : (
-        <>
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-28 h-28 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-              <User className="w-14 h-14 text-white/15" />
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Bottom gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 via-40% to-transparent" />
-
-      {/* Name + role caption — crossfade transition */}
+    <>
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
       <div
-        className={cn(
-          "absolute inset-x-0 bottom-0 p-6 md:p-7 z-[2] transition-all duration-300",
-          fading ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
-        )}
-      >
-        <h3 className="font-serif text-xl font-bold text-white leading-tight mb-1">
-          {displayed.name}
-        </h3>
-        <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-purple-light">
-          2026 {displayed.role}
-        </span>
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
+          <User className="w-8 h-8 text-white/15" />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
-/* ── Small Speaker Card (right carousel) ── */
-function SpeakerCard({
-  speaker,
-  isActive,
-  onClick,
-}: {
-  speaker: (typeof SPEAKERS)[number];
-  isActive: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <div
-      className={cn(
-        "relative rounded-[14px] overflow-hidden cursor-pointer transition-all duration-400",
-        "hover:shadow-[0_0_24px_rgba(168,124,224,0.2)] hover:-translate-y-0.5",
-        isActive &&
-          "ring-2 ring-purple-light shadow-[0_0_24px_rgba(168,124,224,0.25)]"
-      )}
-      onClick={onClick}
-    >
-      {/* Photo or placeholder */}
-      <div className="relative w-full aspect-[4/3] bg-purple-deep">
-        {hasImage(speaker) ? (
-          <Image
-            src={speaker.image}
-            alt={speaker.name}
-            fill
-            className="object-cover object-top"
-            sizes="260px"
-          />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
-            <div
-              className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
-                <User className="w-6 h-6 text-white/20" />
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Text below image */}
-      <div className="p-4 bg-bg-card">
-        <p className="text-[0.78rem] text-text-secondary leading-relaxed mb-3 line-clamp-3">
-          &ldquo;{speaker.bio}&rdquo;
-        </p>
-        <h4 className="font-serif text-base font-bold text-text leading-tight mb-0.5">
-          {speaker.name}
-        </h4>
-        <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
-          2026 {speaker.role}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-/* ── Carousel (right panel) — excludes the featured speaker ── */
-function SpeakerCarousel({
+/* ── Desktop: Unified speaker reel ── */
+function SpeakerReel({
   activeIndex,
-  onSelect,
+  onPrev,
+  onNext,
   onOpenModal,
 }: {
   activeIndex: number;
-  onSelect: (i: number) => void;
+  onPrev: () => void;
+  onNext: () => void;
   onOpenModal: (speaker: Speaker) => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
-  const scrollLeft = useRef(0);
+  const scrollLeftPos = useRef(0);
   const didDrag = useRef(false);
 
-  // All speakers except the currently featured one
-  const carouselSpeakers = SPEAKERS.map((s, i) => ({ speaker: s, originalIndex: i })).filter(
-    (_, i) => i !== activeIndex
-  );
+  // Rotate speakers so activeIndex is first
+  const rotated = [
+    ...SPEAKERS.slice(activeIndex),
+    ...SPEAKERS.slice(0, activeIndex),
+  ];
 
-  const scroll = useCallback((direction: "left" | "right") => {
+  // Reset scroll to start when active changes
+  useEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
-    const cardWidth = 260 + 16;
-    el.scrollBy({
-      left: direction === "right" ? cardWidth : -cardWidth,
-      behavior: "smooth",
-    });
-  }, []);
+    if (el) el.scrollTo({ left: 0, behavior: "smooth" });
+  }, [activeIndex]);
 
   /* ── Drag/swipe handlers ── */
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -189,7 +89,7 @@ function SpeakerCarousel({
     isDragging.current = true;
     didDrag.current = false;
     startX.current = e.clientX;
-    scrollLeft.current = el.scrollLeft;
+    scrollLeftPos.current = el.scrollLeft;
     el.style.scrollSnapType = "none";
   }, []);
 
@@ -199,7 +99,7 @@ function SpeakerCarousel({
     if (!el) return;
     const dx = e.clientX - startX.current;
     if (Math.abs(dx) > 5) didDrag.current = true;
-    el.scrollLeft = scrollLeft.current - dx;
+    el.scrollLeft = scrollLeftPos.current - dx;
   }, []);
 
   const handleMouseUp = useCallback(() => {
@@ -212,18 +112,18 @@ function SpeakerCarousel({
 
   return (
     <div className="relative">
-      {/* Arrow controls */}
+      {/* Arrow controls — top right */}
       <div className="flex items-center justify-end mb-5">
         <div className="flex gap-2">
           <button
-            onClick={() => scroll("left")}
+            onClick={onPrev}
             aria-label="Previous speaker"
             className="w-9 h-9 rounded-full border border-border-light flex items-center justify-center text-text-muted transition-all hover:border-purple hover:text-purple active:scale-95"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            onClick={() => scroll("right")}
+            onClick={onNext}
             aria-label="Next speaker"
             className="w-9 h-9 rounded-full border border-border-light flex items-center justify-center text-text-muted transition-all hover:border-purple hover:text-purple active:scale-95"
           >
@@ -232,33 +132,71 @@ function SpeakerCarousel({
         </div>
       </div>
 
-      {/* Scrollable cards — draggable */}
+      {/* Single row: featured (large) + rest (small) */}
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 cursor-grab select-none"
+        className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 cursor-grab select-none"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
-        {carouselSpeakers.map(({ speaker, originalIndex }) => (
-          <div
-            key={originalIndex}
-            className="w-[240px] md:w-[260px] shrink-0 snap-start"
-          >
-            <SpeakerCard
-              speaker={speaker}
-              isActive={false}
+        {rotated.map((speaker, i) => {
+          const isFeatured = i === 0;
+
+          if (isFeatured) {
+            return (
+              <div
+                key={`featured-${activeIndex}`}
+                className="shrink-0 w-[340px] cursor-pointer"
+                onClick={() => {
+                  if (!didDrag.current) onOpenModal(speaker);
+                }}
+              >
+                <div className="relative rounded-[18px] overflow-hidden h-full min-h-[440px]">
+                  <SpeakerPhoto speaker={speaker} sizes="340px" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 via-40% to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 z-[2]">
+                    <h3 className="font-serif text-xl font-bold text-white leading-tight mb-1">
+                      {speaker.name}
+                    </h3>
+                    <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-purple-light">
+                      2026 {speaker.role}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div
+              key={`card-${(activeIndex + i) % SPEAKERS.length}`}
+              className="shrink-0 w-[230px] cursor-pointer"
               onClick={() => {
-                if (!didDrag.current) {
-                  onSelect(originalIndex);
-                  onOpenModal(speaker);
-                }
+                if (!didDrag.current) onOpenModal(speaker);
               }}
-            />
-          </div>
-        ))}
+            >
+              <div className="relative rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.2)] hover:-translate-y-0.5">
+                <div className="relative w-full aspect-[4/3] bg-purple-deep">
+                  <SpeakerPhoto speaker={speaker} sizes="230px" />
+                </div>
+                <div className="p-4 bg-bg-card">
+                  <p className="text-[0.78rem] text-text-secondary leading-relaxed mb-3 line-clamp-3">
+                    &ldquo;{speaker.bio}&rdquo;
+                  </p>
+                  <h4 className="font-serif text-base font-bold text-text leading-tight mb-0.5">
+                    {speaker.name}
+                  </h4>
+                  <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
+                    2026 {speaker.role}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -273,38 +211,18 @@ function MobileSpeakerCard({
   onClick: () => void;
 }) {
   return (
-    <div className="relative rounded-[16px] overflow-hidden bg-bg-card cursor-pointer transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.15)]" onClick={onClick}>
-      {/* Photo or placeholder */}
+    <div
+      className="relative rounded-[16px] overflow-hidden bg-bg-card cursor-pointer transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.15)]"
+      onClick={onClick}
+    >
       <div className="relative w-full aspect-[3/2] bg-purple-deep">
-        {hasImage(speaker) ? (
-          <Image
-            src={speaker.image}
-            alt={speaker.name}
-            fill
-            className="object-cover object-top"
-            sizes="(min-width: 640px) 50vw, 100vw"
-          />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e]" />
-            <div
-              className="absolute inset-0 opacity-[0.03]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='1'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
-                <User className="w-7 h-7 text-white/20" />
-              </div>
-            </div>
-          </>
-        )}
-        {/* Bottom gradient */}
+        <SpeakerPhoto
+          speaker={speaker}
+          sizes="(min-width: 640px) 50vw, 100vw"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <Quote className="w-4 h-4 text-purple-light mb-2.5 opacity-50" />
         <p className="font-serif text-[0.95rem] text-text/90 leading-relaxed italic mb-3">
@@ -354,15 +272,12 @@ function SpeakerModal({
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
       onClick={onClose}
     >
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity" />
 
-      {/* Modal card */}
       <div
         className="relative bg-bg rounded-[20px] overflow-hidden max-w-[860px] w-full max-h-[85vh] shadow-[0_25px_80px_rgba(0,0,0,0.3)] flex flex-col md:flex-row"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-black/50 transition-all md:top-4 md:right-4"
@@ -371,26 +286,13 @@ function SpeakerModal({
           <X className="w-4 h-4" />
         </button>
 
-        {/* Image — left on desktop, top on mobile */}
         <div className="relative w-full md:w-[44%] shrink-0 aspect-[3/2] md:aspect-auto md:min-h-full">
-          {hasImage(speaker) ? (
-            <Image
-              src={speaker.image}
-              alt={speaker.name}
-              fill
-              className="object-cover object-top"
-              sizes="(min-width: 768px) 380px, 100vw"
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-dark via-purple-deep to-[#1a1a2e] flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-                <User className="w-10 h-10 text-white/15" />
-              </div>
-            </div>
-          )}
+          <SpeakerPhoto
+            speaker={speaker}
+            sizes="(min-width: 768px) 380px, 100vw"
+          />
         </div>
 
-        {/* Content — right on desktop, below on mobile */}
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 flex flex-col justify-center">
           <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-purple mb-2.5 block">
             2026 {speaker.role}
@@ -419,12 +321,18 @@ function SpeakerModal({
 export function Speakers() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [modalSpeaker, setModalSpeaker] = useState<Speaker | null>(null);
+  const total = SPEAKERS.length;
+  const goPrev = useCallback(
+    () => setActiveIndex((i) => (i - 1 + total) % total),
+    [total]
+  );
+  const goNext = useCallback(
+    () => setActiveIndex((i) => (i + 1) % total),
+    [total]
+  );
 
   return (
-    <section
-      id="speakers"
-      className="relative z-2 py-28 lg:py-32"
-    >
+    <section id="speakers" className="relative z-2 py-28 lg:py-32">
       <div className="max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <SectionHeader
@@ -436,22 +344,15 @@ export function Speakers() {
           />
         </FadeIn>
 
-        {/* Desktop: Split layout — Featured + Carousel */}
+        {/* Desktop: Unified speaker reel */}
         <FadeIn delay={100}>
-          <div className="hidden lg:grid lg:grid-cols-[minmax(360px,1fr)_1.4fr] gap-8 mb-14">
-            {/* Left — Featured speaker (click to open modal) */}
-            <div className="cursor-pointer" onClick={() => setModalSpeaker(SPEAKERS[activeIndex])}>
-              <FeaturedSpeaker speaker={SPEAKERS[activeIndex]} speakerIndex={activeIndex} />
-            </div>
-
-            {/* Right — Carousel */}
-            <div className="min-w-0">
-              <SpeakerCarousel
-                activeIndex={activeIndex}
-                onSelect={setActiveIndex}
-                onOpenModal={setModalSpeaker}
-              />
-            </div>
+          <div className="hidden lg:block mb-14">
+            <SpeakerReel
+              activeIndex={activeIndex}
+              onPrev={goPrev}
+              onNext={goNext}
+              onOpenModal={setModalSpeaker}
+            />
           </div>
         </FadeIn>
 
@@ -459,7 +360,11 @@ export function Speakers() {
         <FadeIn delay={100}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:hidden mb-14">
             {SPEAKERS.map((speaker, i) => (
-              <MobileSpeakerCard key={i} speaker={speaker} onClick={() => setModalSpeaker(speaker)} />
+              <MobileSpeakerCard
+                key={i}
+                speaker={speaker}
+                onClick={() => setModalSpeaker(speaker)}
+              />
             ))}
           </div>
         </FadeIn>
@@ -481,7 +386,6 @@ export function Speakers() {
         </FadeIn>
       </div>
 
-      {/* Speaker detail modal */}
       {modalSpeaker && (
         <SpeakerModal
           speaker={modalSpeaker}

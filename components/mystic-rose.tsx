@@ -21,8 +21,9 @@ export function MysticRose({ size = 80, className }: MysticRoseProps) {
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const maybeCtx = canvas.getContext("2d");
+    if (!maybeCtx) return;
+    const ctx = maybeCtx;
 
     const dpr = window.devicePixelRatio || 1;
     const w = canvas.width / dpr;
@@ -153,10 +154,11 @@ export function MysticRose({ size = 80, className }: MysticRoseProps) {
     canvas.addEventListener("mousemove", handleMove);
     canvas.addEventListener("mouseleave", handleLeave);
 
-    stateRef.current.animationId = requestAnimationFrame(draw);
+    const state = stateRef.current;
+    state.animationId = requestAnimationFrame(draw);
 
     return () => {
-      cancelAnimationFrame(stateRef.current.animationId);
+      cancelAnimationFrame(state.animationId);
       canvas.removeEventListener("mousemove", handleMove);
       canvas.removeEventListener("mouseleave", handleLeave);
     };

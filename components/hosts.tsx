@@ -133,17 +133,17 @@ export function Hosts() {
       id="hosts"
       className="relative z-[3] py-24 lg:py-28 bg-purple-deep overflow-hidden"
     >
-      {/* Animated gradient overlays */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Animated gradient overlays — oversized to hide edges during animation */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute inset-0 opacity-100"
+          className="absolute -inset-[15%] opacity-100"
           style={{
             background: "radial-gradient(ellipse 80% 60% at 20% 40%, rgba(192,96,128,0.18), transparent), radial-gradient(ellipse 70% 50% at 80% 60%, rgba(42,122,110,0.12), transparent), radial-gradient(ellipse 60% 60% at 50% 20%, rgba(91,58,140,0.22), transparent)",
             animation: "hosts-gradient-1 12s ease-in-out infinite alternate",
           }}
         />
         <div
-          className="absolute inset-0 opacity-100"
+          className="absolute -inset-[15%] opacity-100"
           style={{
             background: "radial-gradient(ellipse 60% 50% at 70% 30%, rgba(168,124,224,0.12), transparent), radial-gradient(ellipse 70% 60% at 30% 70%, rgba(192,96,128,0.1), transparent)",
             animation: "hosts-gradient-2 16s ease-in-out infinite alternate",

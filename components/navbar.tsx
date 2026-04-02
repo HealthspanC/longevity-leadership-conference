@@ -123,7 +123,7 @@ export function Navbar() {
       >
         <div className="flex items-center justify-between max-w-[1280px] mx-auto px-6">
           {/* Logo */}
-          <a href="#" className="relative shrink-0 h-[54px] md:h-[72px] w-[240px] md:w-[390px]">
+          <a href="#" className="relative shrink-0 h-[78px] md:h-[86px] w-[280px] md:w-[468px]">
             {/* Purple logo — visible on scroll */}
             <Image
               src="/brand/logo.png"
@@ -132,7 +132,7 @@ export function Navbar() {
               height={986}
               priority
               className={cn(
-                "h-full w-auto absolute left-0 top-0 transition-opacity duration-350",
+                "h-[52px] md:h-[65px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
                 scrolled ? "opacity-100" : "opacity-0"
               )}
             />
@@ -144,7 +144,7 @@ export function Navbar() {
               height={786}
               priority
               className={cn(
-                "h-[43px] md:h-[58px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
+                "h-[62px] md:h-[70px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
                 scrolled ? "opacity-0" : "opacity-100"
               )}
             />

@@ -19,15 +19,24 @@ interface GalleryTile {
 // tall  → narrow & tall (people standing, portraits)
 // square → even, with a slight zoom to crop into the subject
 const IMAGES: GalleryTile[] = [
-  { src: "/gallery/HX4A4198.jpg", alt: "Innovation Lab group photo",   shape: "wide" },
-  { src: "/gallery/HX4A3790.jpg", alt: "Networking by sponsor banner", shape: "tall", position: "25% center" },
-  { src: "/gallery/HX4A4146.jpg", alt: "Tru Niagen booth",            shape: "tall", position: "center 60%" },
-  { src: "/gallery/DSC02303.jpg", alt: "Panel discussion on stage",   shape: "wide" },
-  { src: "/gallery/HX4A3785.jpg", alt: "Vendor booth conversation",   shape: "square" },
-  { src: "/gallery/HX4A3829.jpg", alt: "OsteoStrong booth",           shape: "square" },
-  { src: "/gallery/DSC02355.jpg", alt: "Hosts on stage",              shape: "wide" },
-  { src: "/gallery/HX4A4127.jpg", alt: "Women chatting at booth",     shape: "tall" },
-  { src: "/gallery/HX4A3877.jpg", alt: "Attendees in conversation",   shape: "tall" },
+  { src: "/gallery/HX4A4198.jpg",  alt: "Innovation Lab group photo",          shape: "wide" },
+  { src: "/gallery/HX4A3790.jpg",  alt: "Networking by sponsor banner",        shape: "tall", position: "25% center" },
+  { src: "/gallery/HX4A4146.jpg",  alt: "Tru Niagen booth",                   shape: "tall", position: "center 60%" },
+  { src: "/gallery/DSC01036.JPG",  alt: "Hosts with sponsors at step-and-repeat", shape: "wide" },
+  { src: "/gallery/HX4A3879.jpg",  alt: "Attendees chatting at vendor booth",  shape: "tall" },
+  { src: "/gallery/DSC02303.jpg",  alt: "Panel discussion on stage",          shape: "wide" },
+  { src: "/gallery/HX4A3785.jpg",  alt: "Vendor booth conversation",          shape: "square" },
+  { src: "/gallery/HX4A3829.jpg",  alt: "OsteoStrong booth",                  shape: "square" },
+  { src: "/gallery/DSC01153.JPG",  alt: "Speakers presenting on main stage",  shape: "wide" },
+  { src: "/gallery/HX4A3950.jpg",  alt: "Attendees networking in hallway",     shape: "tall" },
+  { src: "/gallery/HX4A3631.jpg",  alt: "Speaker presenting research",        shape: "square", position: "35% center" },
+  { src: "/gallery/DSC01126.JPG",  alt: "Panelists at wellness session",      shape: "wide" },
+  { src: "/gallery/HX4A4078.jpg",  alt: "One-on-one conversation",            shape: "wide" },
+  { src: "/gallery/DSC02355.jpg",  alt: "Hosts on stage",                     shape: "wide" },
+  { src: "/gallery/HX4A4127.jpg",  alt: "Women chatting at booth",            shape: "tall" },
+  { src: "/gallery/HX4A3877.jpg",  alt: "Attendees in conversation",          shape: "tall" },
+  { src: "/gallery/DSC01209.JPG",  alt: "Medicine 4.0 keynote presentation",  shape: "wide" },
+  { src: "/gallery/Longevity Clinic Panel.JPG", alt: "Longevity clinic panelists", shape: "wide" },
 ];
 
 // --- Layout helpers ---

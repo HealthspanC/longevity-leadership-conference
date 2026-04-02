@@ -7,17 +7,19 @@ const ROWS = [
   [
     "health", "longevity", "mindset optimization", "psychedelics",
     "nutrition", "metabolic health", "biohacking", "sleep science",
-    "hormone therapy", "epigenetics",
   ],
   [
-    "stress recovery", "brain health", "healing", "supplementation",
-    "wellness technology", "cognition", "breathwork", "fasting protocols",
-    "peptide therapy", "inflammation",
+    "hormone therapy", "epigenetics", "stress recovery", "brain health",
+    "healing", "supplementation", "wellness technology", "cognition",
   ],
   [
+    "breathwork", "fasting protocols", "peptide therapy", "inflammation",
     "mobility", "gut health", "relationships", "muscle health",
+  ],
+  [
     "toxin elimination", "purpose & meaning", "cold exposure",
     "regenerative medicine", "stem cells", "heart health",
+    "red light therapy", "functional medicine",
   ],
 ];
 

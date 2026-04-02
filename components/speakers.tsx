@@ -463,7 +463,7 @@ function SpeakerModal({
           <X className="w-4 h-4" />
         </button>
 
-        <div className="relative w-full md:w-[44%] shrink-0 aspect-[3/2] md:aspect-auto md:min-h-full">
+        <div className="relative w-full md:w-[44%] shrink-0 aspect-[4/3] md:aspect-auto md:min-h-full">
           <SpeakerPhoto
             speaker={speaker}
             sizes="(min-width: 768px) 380px, 100vw"

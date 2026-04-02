@@ -71,7 +71,17 @@ export function Navbar() {
             <a
               key={item.href}
               href={item.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileOpen(false);
+                const id = item.href.replace("#", "");
+                const target = document.getElementById(id);
+                if (target) {
+                  setTimeout(() => {
+                    window.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+                  }, 350);
+                }
+              }}
               className={cn(
                 "relative text-2xl font-serif font-medium text-white/80 hover:text-white py-3 px-8 rounded-lg transition-all duration-500",
                 "hover:bg-white/[0.05]",
@@ -156,6 +166,15 @@ export function Navbar() {
               <li key={item.href}>
                 <a
                   href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const id = item.href.replace("#", "");
+                    const target = document.getElementById(id);
+                    if (target) {
+                      const y = target.getBoundingClientRect().top + window.scrollY;
+                      window.scrollTo({ top: y, behavior: "smooth" });
+                    }
+                  }}
                   className={cn(
                     "text-sm font-medium transition-colors",
                     scrolled

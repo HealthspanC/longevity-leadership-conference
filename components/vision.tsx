@@ -36,9 +36,10 @@ export function Vision() {
   }, []);
 
   return (
+    <>
+    <div id="about" className="relative z-[1]" />
     <section
       ref={sectionRef}
-      id="about"
       className="relative z-[1] py-28 lg:py-32 overflow-hidden bg-bg"
       style={{ position: "sticky", top: stickyTop }}
     >
@@ -48,12 +49,12 @@ export function Vision() {
           src="/bg-dna.png"
           alt=""
           fill
-          className="object-cover object-center opacity-[0.07]"
+          className="object-cover object-center opacity-[0.15]"
           sizes="100vw"
           aria-hidden="true"
         />
         {/* Soft vignette to blend edges */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#faf9f7_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#faf9f7_85%)]" />
       </div>
 
       <div className="relative max-w-[1140px] mx-auto px-6">
@@ -103,5 +104,6 @@ export function Vision() {
         </div>
       </div>
     </section>
+    </>
   );
 }

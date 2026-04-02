@@ -58,7 +58,7 @@ export function TopicsMarquee() {
       <div className="relative z-10 flex flex-col gap-3">
         {ROWS.map((topics, rowIdx) => {
           const direction = rowIdx % 2 === 0 ? "left" : "right";
-          const duration = 35 + rowIdx * 8;
+          const duration = 60 + rowIdx * 10;
 
           return (
             <div key={rowIdx} className="relative">
@@ -75,7 +75,7 @@ export function TopicsMarquee() {
                 {[...topics, ...topics].map((topic, i) => (
                   <span
                     key={`${topic}-${i}`}
-                    className="shrink-0 px-6 py-3 rounded-full border border-white/15 text-sm font-medium text-white/60 whitespace-nowrap transition-colors duration-300 hover:border-purple-light/50 hover:text-white hover:bg-white/[0.08] cursor-default"
+                    className="shrink-0 px-6 py-3 rounded-full border border-white/15 text-sm font-medium text-white/60 whitespace-nowrap transition-all duration-300 hover:border-[#ff3c8e] hover:text-white hover:bg-[#ff3c8e]/10 hover:shadow-[0_0_12px_rgba(255,60,142,0.25)] cursor-default"
                   >
                     {topic}
                   </span>

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { INVOLVE_CARDS } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
 
@@ -46,7 +47,7 @@ function SlideViewer({
       {/* Slide area */}
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-lg aspect-video"
+          "relative w-full overflow-hidden rounded-lg aspect-video border-4 border-purple-deep"
         )}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -194,26 +195,26 @@ export function EventDeck() {
             subtitle="Explore partnership opportunities and learn more about the Longevity Leadership Conference."
             centered
           />
+          <div className="flex items-center justify-center mt-6 mb-8">
+            <a
+              href={INVOLVE_CARDS[1].href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border-[1.5px] border-purple/30 text-purple-deep py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-purple-deep hover:text-white hover:border-purple-deep hover:-translate-y-0.5"
+            >
+              Become a Summit Partner
+              <ChevronRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </FadeIn>
 
         <FadeIn delay={100}>
-          <div className="relative rounded-2xl overflow-hidden bg-purple-deep p-4 md:p-6 shadow-xl shadow-purple-deep/20">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(91,58,140,0.15),transparent_50%),radial-gradient(circle_at_70%_50%,rgba(192,96,128,0.1),transparent_40%)] pointer-events-none" />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.05'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-            <div className="relative">
-              <SlideViewer
-                current={current}
-                go={go}
-                isFullscreen={false}
-                onToggleFullscreen={() => setIsFullscreen(true)}
-              />
-            </div>
-          </div>
+          <SlideViewer
+            current={current}
+            go={go}
+            isFullscreen={false}
+            onToggleFullscreen={() => setIsFullscreen(true)}
+          />
         </FadeIn>
       </div>
 

@@ -10,8 +10,6 @@ import { SpeakBanner } from "@/components/speak-banner";
 import { Gallery } from "@/components/gallery";
 import { TopicsMarquee } from "@/components/topics-marquee";
 import { EventDeck } from "@/components/event-deck";
-import { PartnerBanner } from "@/components/partner-banner";
-import { Subscribe } from "@/components/subscribe";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -29,9 +27,8 @@ export default function Home() {
         <Gallery />
         <TopicsMarquee />
         <EventDeck />
-        <PartnerBanner />
-        <Subscribe />
       </main>
+      <div className="h-16 lg:h-20 bg-bg" />
       <Footer />
     </>
   );

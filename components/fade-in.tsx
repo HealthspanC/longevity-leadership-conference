@@ -3,13 +3,22 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
+type Direction = "up" | "left" | "right";
+
+const hiddenTransform: Record<Direction, string> = {
+  up: "translate-y-6",
+  left: "translate-x-10",
+  right: "-translate-x-10",
+};
+
 interface FadeInProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  direction?: Direction;
 }
 
-export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
+export function FadeIn({ children, className, delay = 0, direction = "up" }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -37,8 +46,8 @@ export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
       className={cn(
         "transition-all duration-700 ease-out",
         isVisible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-6",
+          ? "opacity-100 translate-y-0 translate-x-0"
+          : `opacity-0 ${hiddenTransform[direction]}`,
         className
       )}
       style={{ transitionDelay: `${delay}ms` }}

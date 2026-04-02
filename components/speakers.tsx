@@ -202,42 +202,219 @@ function SpeakerReel({
   );
 }
 
-/* ── Mobile Speaker Card (equal treatment) ── */
-function MobileSpeakerCard({
-  speaker,
-  onClick,
+/* ── Mobile: Swipeable carousel for confirmed speakers ── */
+function MobileSpeakerCarousel({
+  onOpenModal,
 }: {
-  speaker: (typeof SPEAKERS)[number];
-  onClick: () => void;
+  onOpenModal: (speaker: Speaker) => void;
 }) {
+  const confirmed = SPEAKERS.filter(hasImage);
+  const tba = SPEAKERS.filter((s) => !hasImage(s));
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  // Track which card is active via scroll position
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const scrollLeft = el.scrollLeft;
+      const cardWidth = el.firstElementChild?.clientWidth ?? 1;
+      const gap = 16; // gap-4
+      const idx = Math.round(scrollLeft / (cardWidth + gap));
+      setActiveIdx(Math.min(idx, confirmed.length - 1));
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [confirmed.length]);
+
+  const scrollTo = useCallback((idx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.children[idx] as HTMLElement | undefined;
+    if (card) {
+      el.scrollTo({ left: card.offsetLeft - 24, behavior: "smooth" });
+    }
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setActiveIdx((i) => {
+      const next = Math.max(0, i - 1);
+      scrollTo(next);
+      return next;
+    });
+  }, [scrollTo]);
+
+  const goNext = useCallback(() => {
+    setActiveIdx((i) => {
+      const next = Math.min(confirmed.length - 1, i + 1);
+      scrollTo(next);
+      return next;
+    });
+  }, [scrollTo, confirmed.length]);
+
+  // Mouse drag support for desktop
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftPos = useRef(0);
+  const didDrag = useRef(false);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    isDragging.current = true;
+    didDrag.current = false;
+    startX.current = e.clientX;
+    scrollLeftPos.current = el.scrollLeft;
+    el.style.scrollSnapType = "none";
+    el.style.cursor = "grabbing";
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const el = scrollRef.current;
+    if (!el) return;
+    const dx = e.clientX - startX.current;
+    if (Math.abs(dx) > 5) didDrag.current = true;
+    el.scrollLeft = scrollLeftPos.current - dx;
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.style.scrollSnapType = "";
+    el.style.cursor = "";
+  }, []);
+
   return (
-    <div
-      className="relative rounded-[16px] overflow-hidden bg-bg-card cursor-pointer transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.15)]"
-      onClick={onClick}
-    >
-      <div className="relative w-full aspect-[3/2] bg-purple-deep">
-        <SpeakerPhoto
-          speaker={speaker}
-          sizes="(min-width: 640px) 50vw, 100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+    <div className="lg:hidden mb-14">
+      {/* Arrow controls + counter */}
+      {confirmed.length > 1 && (
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-sm text-text-muted font-medium tabular-nums">
+            {activeIdx + 1} / {confirmed.length}
+          </span>
+          <div className="flex gap-2">
+            <button
+              onClick={goPrev}
+              disabled={activeIdx === 0}
+              aria-label="Previous speaker"
+              className="w-9 h-9 rounded-full border border-border-light flex items-center justify-center text-text-muted transition-all hover:border-purple hover:text-purple active:scale-95 disabled:opacity-30 disabled:hover:border-border-light disabled:hover:text-text-muted"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={goNext}
+              disabled={activeIdx === confirmed.length - 1}
+              aria-label="Next speaker"
+              className="w-9 h-9 rounded-full border border-border-light flex items-center justify-center text-text-muted transition-all hover:border-purple hover:text-purple active:scale-95 disabled:opacity-30 disabled:hover:border-border-light disabled:hover:text-text-muted"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confirmed speakers — horizontal swipe cards */}
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6 cursor-grab select-none"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
+        {confirmed.map((speaker, i) => (
+          <div
+            key={i}
+            className="shrink-0 w-[80vw] max-w-[340px] snap-start cursor-pointer"
+            onClick={() => {
+              if (!didDrag.current) onOpenModal(speaker);
+            }}
+          >
+            <div className="relative rounded-[18px] overflow-hidden bg-bg-card shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+              {/* Taller image with gradient overlay */}
+              <div className="relative w-full aspect-[4/5] bg-purple-deep">
+                <SpeakerPhoto speaker={speaker} sizes="80vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 via-40% to-transparent" />
+                {/* Name overlay on image */}
+                <div className="absolute inset-x-0 bottom-0 p-5 z-[2]">
+                  <h3 className="font-serif text-xl font-bold text-white leading-tight mb-0.5">
+                    {speaker.name}
+                  </h3>
+                  <span className="text-[0.6rem] font-bold tracking-[0.18em] uppercase text-purple-light">
+                    2026 {speaker.role}
+                  </span>
+                </div>
+              </div>
+              {/* Compact info below */}
+              <div className="p-5">
+                <p className="font-serif text-[0.9rem] text-text/80 leading-relaxed italic line-clamp-2">
+                  &ldquo;{speaker.quote}&rdquo;
+                </p>
+                <p className="text-[0.75rem] text-purple font-semibold mt-3 tracking-wide uppercase">
+                  Tap to learn more &rarr;
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="p-5">
-        <Quote className="w-4 h-4 text-purple-light mb-2.5 opacity-50" />
-        <p className="font-serif text-[0.95rem] text-text/90 leading-relaxed italic mb-3">
-          &ldquo;{speaker.quote}&rdquo;
-        </p>
-        <p className="text-[0.8rem] text-text-secondary leading-relaxed mb-3">
-          {speaker.bio}
-        </p>
-        <div className="flex items-center justify-between">
-          <h4 className="font-bold text-sm text-text">{speaker.name}</h4>
-          <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
-            2026 {speaker.role}
-          </span>
+      {/* Active dots */}
+      {confirmed.length > 1 && (
+        <div className="flex justify-center gap-2 mt-4 mb-8">
+          {confirmed.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => scrollTo(i)}
+              aria-label={`Go to speaker ${i + 1}`}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-300",
+                i === activeIdx
+                  ? "w-6 bg-purple"
+                  : "w-1.5 bg-purple/25 hover:bg-purple/40"
+              )}
+            />
+          ))}
         </div>
-      </div>
+      )}
+
+      {/* TBA speakers — compact horizontal row */}
+      {tba.length > 0 && (
+        <div className="mt-2">
+          <p className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-text-muted mb-4">
+            More speakers coming soon
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {tba.map((speaker, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 p-3 rounded-[12px] bg-bg-card border border-border-light/50"
+              >
+                {/* Small circular placeholder */}
+                <div className="relative shrink-0 w-10 h-10 rounded-full overflow-hidden bg-purple-deep">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-dark to-[#1a1a2e]" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <User className="w-4 h-4 text-white/20" />
+                  </div>
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple block">
+                    2026
+                  </span>
+                  <span className="text-[0.75rem] font-semibold text-text leading-tight block truncate">
+                    {speaker.role}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -332,13 +509,13 @@ export function Speakers() {
   );
 
   return (
-    <section id="speakers" className="relative z-2 py-28 lg:py-32">
+    <section id="speakers" className="relative z-[3] py-28 lg:py-32 bg-bg">
       <div className="max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <SectionHeader
             label="Featured Speakers"
-            title="Industry Trailblazers"
-            accentWord="Trailblazers"
+            title="Industry Leaders"
+            accentWord="Leaders"
             subtitle="World-class clinicians, researchers, investors, and business leaders sharing breakthrough insights on longevity."
             centered
           />
@@ -356,17 +533,9 @@ export function Speakers() {
           </div>
         </FadeIn>
 
-        {/* Mobile: Equal grid of all speakers */}
+        {/* Mobile: Swipeable carousel + compact TBA grid */}
         <FadeIn delay={100}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:hidden mb-14">
-            {SPEAKERS.map((speaker, i) => (
-              <MobileSpeakerCard
-                key={i}
-                speaker={speaker}
-                onClick={() => setModalSpeaker(speaker)}
-              />
-            ))}
-          </div>
+          <MobileSpeakerCarousel onOpenModal={setModalSpeaker} />
         </FadeIn>
 
         <FadeIn delay={200}>

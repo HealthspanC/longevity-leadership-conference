@@ -1,112 +1,152 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+type TileShape = "wide" | "tall" | "square";
+
 interface GalleryTile {
-  title: string;
-  subtitle: string;
-  gradient: string;
-  aspect: "1/1" | "4/3";
-  // image?: string; — uncomment when adding real images
+  src: string;
+  alt: string;
+  shape: TileShape;
+  /** Override object-position for custom cropping (e.g. "center 70%") */
+  position?: string;
 }
 
-// Grid is arranged as columns, each column has a top and bottom tile.
-// Varying 1:1 and 4:3 ratios creates a dynamic mosaic feel.
-const COLUMNS: [GalleryTile, GalleryTile][] = [
-  [
-    {
-      title: "Keynote Presentations",
-      subtitle: "Groundbreaking longevity research.",
-      gradient: "linear-gradient(145deg, #2d1b4e 0%, #5b3a8c 60%, #7b52b5 100%)",
-      aspect: "4/3",
-    },
-    {
-      title: "Executive Networking",
-      subtitle: "Forging powerful connections.",
-      gradient: "linear-gradient(160deg, #3c2066, #6b4090)",
-      aspect: "1/1",
-    },
-  ],
-  [
-    {
-      title: "Biotech Showcase",
-      subtitle: "Live health-tech demonstrations.",
-      gradient: "linear-gradient(135deg, #1e3a4c, #2a6058, #2a7a6e)",
-      aspect: "1/1",
-    },
-    {
-      title: "Expert Panels",
-      subtitle: "Deep-dive healthspan discussions.",
-      gradient: "linear-gradient(150deg, #2d1b4e, #4a2d6e, #6b4090)",
-      aspect: "4/3",
-    },
-  ],
-  [
-    {
-      title: "Healthspan in Action",
-      subtitle: "Immersive wellness experiences.",
-      gradient: "linear-gradient(135deg, #4a2040, #7a3060, #c06080)",
-      aspect: "4/3",
-    },
-    {
-      title: "Investor Roundtables",
-      subtitle: "Connecting capital with ventures.",
-      gradient: "linear-gradient(140deg, #1a2e2a, #2a5a4e, #3a8a7a)",
-      aspect: "1/1",
-    },
-  ],
-  [
-    {
-      title: "Awards Ceremony",
-      subtitle: "Recognizing longevity pioneers.",
-      gradient: "linear-gradient(160deg, #1a1a2e, #2d1b4e, #3c2066)",
-      aspect: "1/1",
-    },
-    {
-      title: "Verizon Innovation Lab",
-      subtitle: "Silicon Beach, Playa Vista.",
-      gradient: "linear-gradient(135deg, #2d1b4e, #5b3a8c)",
-      aspect: "4/3",
-    },
-  ],
-  [
-    {
-      title: "VIP Reception",
-      subtitle: "Exclusive pre-event gathering.",
-      gradient: "linear-gradient(145deg, #3c2066, #5b3a8c, #7b52b5)",
-      aspect: "4/3",
-    },
-    {
-      title: "Fireside Chats",
-      subtitle: "Intimate leadership conversations.",
-      gradient: "linear-gradient(135deg, #1a2e2a, #2a5a4e)",
-      aspect: "1/1",
-    },
-  ],
-  [
-    {
-      title: "Longevity Lab",
-      subtitle: "Hands-on biomarker testing.",
-      gradient: "linear-gradient(150deg, #2a4a5e, #1e3a4c, #2a7a6e)",
-      aspect: "1/1",
-    },
-    {
-      title: "Closing Gala",
-      subtitle: "An unforgettable evening.",
-      gradient: "linear-gradient(160deg, #4a2040, #7a3060, #c06080)",
-      aspect: "4/3",
-    },
-  ],
+// Art-directed shapes per image. The layout uses these to size tiles.
+// wide  → short & wide (landscape scenes, stages)
+// tall  → narrow & tall (people standing, portraits)
+// square → even, with a slight zoom to crop into the subject
+const IMAGES: GalleryTile[] = [
+  { src: "/gallery/HX4A4198.jpg", alt: "Innovation Lab group photo",   shape: "wide" },
+  { src: "/gallery/HX4A3790.jpg", alt: "Networking by sponsor banner", shape: "tall", position: "25% center" },
+  { src: "/gallery/HX4A4146.jpg", alt: "Tru Niagen booth",            shape: "tall", position: "center 60%" },
+  { src: "/gallery/DSC02303.jpg", alt: "Panel discussion on stage",   shape: "wide" },
+  { src: "/gallery/HX4A3785.jpg", alt: "Vendor booth conversation",   shape: "square" },
+  { src: "/gallery/HX4A3829.jpg", alt: "OsteoStrong booth",           shape: "square" },
+  { src: "/gallery/DSC02355.jpg", alt: "Hosts on stage",              shape: "wide" },
+  { src: "/gallery/HX4A4127.jpg", alt: "Women chatting at booth",     shape: "tall" },
+  { src: "/gallery/HX4A3877.jpg", alt: "Attendees in conversation",   shape: "tall" },
 ];
 
-const TOTAL_TILES = COLUMNS.length * 2;
-const SCROLL_MULTIPLIER = 5; // number of 100vh sections for scroll distance
+// --- Layout helpers ---
+
+// Column width by the widest shape in the pair
+function colWidth(a: GalleryTile, b: GalleryTile | null): string {
+  const shapes = [a.shape, b?.shape].filter(Boolean) as TileShape[];
+  // tall images get extra-wide columns so the image fills nicely
+  if (shapes.includes("tall"))   return "clamp(280px, 36vw, 480px)";
+  if (shapes.includes("wide"))   return "clamp(280px, 38vw, 520px)";
+  return "clamp(240px, 28vw, 380px)"; // square
+}
+
+// Flex ratio determines vertical split between two tiles in a column
+function flexForShape(shape: TileShape): number {
+  if (shape === "wide")   return 2;   // short — takes less vertical space
+  if (shape === "tall")   return 5;   // tall — takes more vertical space
+  return 3;                            // square — middle ground
+}
+
+// Pair images into columns of 2
+function buildColumns(images: GalleryTile[]): [GalleryTile, GalleryTile | null][] {
+  const cols: [GalleryTile, GalleryTile | null][] = [];
+  for (let i = 0; i < images.length; i += 2) {
+    cols.push([images[i], images[i + 1] ?? null]);
+  }
+  return cols;
+}
+
+const COLUMNS = buildColumns(IMAGES);
+const TOTAL_TILES = IMAGES.length;
+const SCROLL_MULTIPLIER = 5;
+
+// --- Lightbox ---
+
+function Lightbox({
+  tile,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  tile: GalleryTile;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  // Close on Escape, navigate with arrows
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") onPrev();
+      if (e.key === "ArrowRight") onNext();
+    }
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKey);
+    };
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200" />
+
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-xl"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+
+      {/* Prev / Next arrows */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onPrev(); }}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-lg"
+        aria-label="Previous image"
+      >
+        ‹
+      </button>
+      <button
+        onClick={(e) => { e.stopPropagation(); onNext(); }}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-lg"
+        aria-label="Next image"
+      >
+        ›
+      </button>
+
+      {/* Image */}
+      <div
+        className="relative w-[90vw] h-[85vh] max-w-[1200px] animate-in zoom-in-95 fade-in duration-200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Image
+          src={tile.src}
+          alt={tile.alt}
+          fill
+          sizes="90vw"
+          className="object-contain"
+          priority
+        />
+      </div>
+    </div>
+  );
+}
+
+// --- Main Gallery ---
 
 export function Gallery() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -124,7 +164,6 @@ export function Gallery() {
 
       setProgress(pct);
 
-      // Translate the track horizontally
       const trackWidth = track.scrollWidth - window.innerWidth;
       track.style.transform = `translateX(${-pct * trackWidth}px)`;
     };
@@ -134,137 +173,163 @@ export function Gallery() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  let tileIndex = 0;
+  const openLightbox = useCallback((idx: number) => setLightboxIdx(idx), []);
+  const closeLightbox = useCallback(() => setLightboxIdx(null), []);
+  const prevImage = useCallback(() => {
+    setLightboxIdx((i) => (i !== null ? (i - 1 + TOTAL_TILES) % TOTAL_TILES : null));
+  }, []);
+  const nextImage = useCallback(() => {
+    setLightboxIdx((i) => (i !== null ? (i + 1) % TOTAL_TILES : null));
+  }, []);
+
+  // Track the global image index as we render columns
+  let globalIdx = 0;
 
   return (
-    <section
-      ref={sectionRef}
-      id="gallery"
-      className="relative z-2"
-      style={{ height: `${SCROLL_MULTIPLIER * 100}vh` }}
-    >
-      {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
-        {/* Header */}
-        <div className="pt-28 pb-6 px-6 shrink-0">
-          <div className="max-w-[1140px] mx-auto">
-            <div className="flex items-end justify-between">
-              <div>
-                <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase text-purple-mid mb-3.5 before:content-[''] before:w-6 before:h-px before:bg-purple-mid">
-                  Past Highlights
-                </span>
-                <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold leading-[1.15]">
-                  Event <span className="text-purple">Gallery</span>
-                </h2>
-              </div>
+    <>
+      <section
+        ref={sectionRef}
+        id="gallery"
+        className="relative z-[3] bg-bg"
+        style={{ height: `${SCROLL_MULTIPLIER * 100}vh` }}
+      >
+        {/* Sticky viewport */}
+        <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+          {/* Header */}
+          <div className="pt-28 pb-6 px-6 shrink-0">
+            <div className="max-w-[1140px] mx-auto">
+              <div className="flex items-end justify-between">
+                <div>
+                  <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase text-purple-mid mb-3.5 before:content-[''] before:w-6 before:h-px before:bg-purple-mid">
+                    Past Highlights
+                  </span>
+                  <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold leading-[1.15]">
+                    Event <span className="text-purple">Gallery</span>
+                  </h2>
+                </div>
 
-              {/* Progress indicator */}
-              <div className="hidden md:flex items-center gap-4 pb-2">
-                <span className="text-sm text-text-muted font-medium tabular-nums">
-                  {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
-                </span>
-                <div className="w-32 h-[2px] bg-border-light rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-purple rounded-full transition-all duration-150 ease-out"
-                    style={{ width: `${progress * 100}%` }}
-                  />
+                {/* Progress indicator */}
+                <div className="hidden md:flex items-center gap-4 pb-2">
+                  <span className="text-sm text-text-muted font-medium tabular-nums">
+                    {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
+                  </span>
+                  <div className="w-32 h-[2px] bg-border-light rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-purple rounded-full transition-all duration-150 ease-out"
+                      style={{ width: `${progress * 100}%` }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Horizontal mosaic grid */}
-        <div className="flex-1 relative min-h-0">
+          {/* Horizontal mosaic grid */}
+          <div className="flex-1 relative min-h-0">
+            <div
+              ref={trackRef}
+              className="absolute top-0 left-0 h-full flex gap-3 px-6 will-change-transform"
+              style={{ width: "max-content" }}
+            >
+              {COLUMNS.map((column, colIdx) => {
+                const [top, bottom] = column;
+                const topIdx = globalIdx++;
+                const bottomIdx = bottom ? globalIdx++ : -1;
+                const w = colWidth(top, bottom);
+
+                const topFlex = flexForShape(top.shape);
+                const bottomFlex = bottom ? flexForShape(bottom.shape) : 0;
+
+                return (
+                  <div
+                    key={colIdx}
+                    className="h-full flex flex-col gap-3 shrink-0"
+                    style={{ width: w }}
+                  >
+                    <Tile tile={top} flex={topFlex} onClick={() => openLightbox(topIdx)} />
+                    {bottom && (
+                      <Tile tile={bottom} flex={bottomFlex} onClick={() => openLightbox(bottomIdx)} />
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* End spacer */}
+              <div className="shrink-0 w-6" />
+            </div>
+          </div>
+
+          {/* Scroll hint */}
           <div
-            ref={trackRef}
-            className="absolute top-0 left-0 h-full flex gap-3 px-6 will-change-transform"
-            style={{ width: "max-content" }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-500"
+            style={{ opacity: progress > 0.05 ? 0 : 0.6 }}
           >
-            {COLUMNS.map((column, colIdx) => {
-              const [top, bottom] = column;
-              const topIdx = tileIndex++;
-              const bottomIdx = tileIndex++;
-
-              return (
-                <div
-                  key={colIdx}
-                  className="h-full flex flex-col gap-3 shrink-0"
-                  style={{ width: "clamp(220px, 28vw, 340px)" }}
-                >
-                  {/* Top tile */}
-                  <Tile tile={top} index={topIdx} />
-                  {/* Bottom tile */}
-                  <Tile tile={bottom} index={bottomIdx} />
-                </div>
-              );
-            })}
-
-            {/* End spacer */}
-            <div className="shrink-0 w-6" />
+            <span className="text-xs text-text-muted font-medium tracking-wider uppercase">
+              Scroll to explore
+            </span>
+            <div className="w-5 h-8 rounded-full border-2 border-text-muted/30 flex items-start justify-center p-1">
+              <div className="w-1 h-2 bg-text-muted/50 rounded-full animate-bounce" />
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Scroll hint */}
-        <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-500"
-          style={{ opacity: progress > 0.05 ? 0 : 0.6 }}
-        >
-          <span className="text-xs text-text-muted font-medium tracking-wider uppercase">
-            Scroll to explore
-          </span>
-          <div className="w-5 h-8 rounded-full border-2 border-text-muted/30 flex items-start justify-center p-1">
-            <div className="w-1 h-2 bg-text-muted/50 rounded-full animate-bounce" />
-          </div>
-        </div>
-      </div>
-    </section>
+      {/* Lightbox modal */}
+      {lightboxIdx !== null && (
+        <Lightbox
+          tile={IMAGES[lightboxIdx]}
+          onClose={closeLightbox}
+          onPrev={prevImage}
+          onNext={nextImage}
+        />
+      )}
+    </>
   );
 }
 
-function Tile({ tile, index }: { tile: GalleryTile; index: number }) {
-  // 1:1 tiles take less vertical space, 4:3 tiles take more
-  const flexValue = tile.aspect === "1/1" ? "3" : "4";
+// --- Tile ---
+
+function Tile({
+  tile,
+  flex,
+  onClick,
+}: {
+  tile: GalleryTile;
+  flex: number;
+  onClick: () => void;
+}) {
+  // Square images get a slight zoom to crop into the subject
+  const isSquare = tile.shape === "square";
 
   return (
     <div
       className="relative rounded-[12px] overflow-hidden group cursor-pointer"
-      style={{ flex: flexValue }}
+      style={{ flex }}
+      onClick={onClick}
     >
-      {/* Background — swap gradient for Image when adding photos */}
-      <div className="absolute inset-0" style={{ background: tile.gradient }} />
-
-      {/* Hatch texture */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.06'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
-        }}
+      <Image
+        src={tile.src}
+        alt={tile.alt}
+        fill
+        sizes="(max-width: 768px) 50vw, 520px"
+        className={cn(
+          "object-cover transition-transform duration-500 group-hover:scale-105",
+          isSquare && "scale-125"
+        )}
+        style={tile.position ? { objectPosition: tile.position } : undefined}
       />
 
-      {/* Shimmer */}
-      <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.04)_50%,transparent_70%)] bg-[length:200%_100%] animate-[gallery-shimmer_4s_ease-in-out_infinite] pointer-events-none" />
-
-      {/* Bottom gradient for text */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-      {/* Tile number */}
-      <div className="absolute top-4 left-5 text-white/10 font-serif text-[3rem] font-bold leading-none select-none">
-        {String(index + 1).padStart(2, "0")}
-      </div>
-
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-5 z-[2]">
-        <h3 className="font-serif text-lg font-bold text-white mb-1 leading-tight">
-          {tile.title}
-        </h3>
-        <p className="text-xs text-white/55 leading-relaxed">
-          {tile.subtitle}
-        </p>
-      </div>
-
       {/* Hover overlay */}
-      <div className="absolute inset-0 bg-white/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3]" />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-300 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="11" y1="8" x2="11" y2="14" />
+            <line x1="8" y1="11" x2="14" y2="11" />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }

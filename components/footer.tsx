@@ -23,7 +23,7 @@ export function Footer() {
               alt="Healthspan Collective"
               width={3230}
               height={786}
-              className="h-[36px] w-auto mb-4"
+              className="h-[52px] w-auto mb-4"
             />
             <p className="text-[0.88rem] text-white/50 leading-relaxed max-w-[300px]">
               A Premium Executive Forum for the Longevity Industry. Hosted by
@@ -79,16 +79,6 @@ export function Footer() {
                   className="text-[0.88rem] text-white/60 hover:text-white transition-colors"
                 >
                   Become a Partner
-                </a>
-              </li>
-              <li>
-                <a
-                  href={LINKS.applyFuture}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[0.88rem] text-white/60 hover:text-white transition-colors"
-                >
-                  Future Events
                 </a>
               </li>
             </ul>

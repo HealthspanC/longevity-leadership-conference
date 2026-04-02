@@ -42,7 +42,7 @@ export function Subscribe() {
   }
 
   return (
-    <section id="subscribe" className="relative z-2 pt-28 lg:pt-32 pb-0 bg-gradient-to-b from-bg from-60% to-purple-deep">
+    <section id="subscribe" className="relative z-[3] pt-28 lg:pt-32 pb-0 bg-bg">
       <div className="max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <div className="dark-panel-texture bg-purple-deep rounded-[28px] py-20 px-8 md:px-14 text-center relative overflow-hidden shadow-[0_20px_60px_rgba(45,27,78,0.2)]">

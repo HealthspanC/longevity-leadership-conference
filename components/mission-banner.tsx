@@ -4,7 +4,7 @@ import { FadeIn } from "./fade-in";
 
 export function MissionBanner() {
   return (
-    <section className="relative z-2 py-24 bg-purple-deep overflow-hidden">
+    <section className="relative z-[3] py-24 bg-purple-deep overflow-hidden">
       {/* Decorative overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.05'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")` }} />

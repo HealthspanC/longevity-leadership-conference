@@ -30,7 +30,7 @@ export function MysticRose({ size = 80, className }: MysticRoseProps) {
     const h = canvas.height / dpr;
     const cx = w / 2;
     const cy = h / 2;
-    const radius = Math.min(w, h) * 0.40;
+    const radius = Math.min(w, h) * 0.46;
     const state = stateRef.current;
 
     ctx.save();
@@ -45,8 +45,8 @@ export function MysticRose({ size = 80, className }: MysticRoseProps) {
     const hoverSpeed = 0.0015;
     const speed = baseSpeed + (hoverSpeed - baseSpeed) * state.hoverProgress;
 
-    // White circle background — flush behind the rose
-    const bgRadius = radius + 1;
+    // White circle background — match rose radius so no white rim shows
+    const bgRadius = radius;
     ctx.beginPath();
     ctx.arc(cx, cy, bgRadius, 0, Math.PI * 2);
     ctx.fillStyle = "#ffffff";
@@ -64,7 +64,7 @@ export function MysticRose({ size = 80, className }: MysticRoseProps) {
       }
 
       ctx.strokeStyle = "rgba(45, 10, 89, 0.5)";
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = Math.max(0.5, radius * 0.02);
       ctx.shadowBlur = 6;
       ctx.shadowColor = "#2d0059";
 
@@ -77,19 +77,21 @@ export function MysticRose({ size = 80, className }: MysticRoseProps) {
       }
       ctx.stroke();
 
-      // Node dots
+      // Node dots — scale with radius
+      const dotOuter = Math.max(2, radius * 0.055);
+      const dotInner = Math.max(1, radius * 0.02);
       ctx.shadowBlur = 12;
       ctx.shadowColor = "#d5b3ff";
       for (let i = 0; i < nodes; i++) {
         ctx.fillStyle = "rgba(168, 113, 255, 0.6)";
         ctx.beginPath();
-        ctx.arc(points[i].x, points[i].y, 4, 0, Math.PI * 2);
+        ctx.arc(points[i].x, points[i].y, dotOuter, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = "#ffffff";
         ctx.shadowBlur = 0;
         ctx.beginPath();
-        ctx.arc(points[i].x, points[i].y, 1.5, 0, Math.PI * 2);
+        ctx.arc(points[i].x, points[i].y, dotInner, 0, Math.PI * 2);
         ctx.fill();
       }
     }

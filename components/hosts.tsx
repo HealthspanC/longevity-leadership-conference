@@ -131,7 +131,7 @@ export function Hosts() {
   return (
     <section
       id="hosts"
-      className="relative z-2 py-24 lg:py-28 bg-purple-deep overflow-hidden"
+      className="relative z-[3] py-24 lg:py-28 bg-purple-deep overflow-hidden"
     >
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />

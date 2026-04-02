@@ -30,7 +30,7 @@ export function Navbar() {
       {/* Mobile overlay */}
       <div
         className={cn(
-          "fixed inset-0 z-[1001] flex flex-col items-center justify-center transition-all duration-500 md:hidden overflow-hidden",
+          "fixed inset-0 z-[1001] flex flex-col items-center justify-center transition-all duration-500 lg:hidden overflow-hidden",
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
@@ -151,7 +151,7 @@ export function Navbar() {
           </a>
 
           {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-7 list-none">
+          <ul className="hidden lg:flex items-center gap-7 list-none">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
                 <a
@@ -181,7 +181,7 @@ export function Navbar() {
 
           {/* Mobile hamburger */}
           <button
-            className="flex md:hidden p-1 bg-transparent"
+            className="flex lg:hidden p-1 bg-transparent"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >

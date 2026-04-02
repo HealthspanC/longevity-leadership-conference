@@ -4,6 +4,8 @@ import { useState } from "react";
 import { FadeIn } from "./fade-in";
 
 export function Subscribe() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -17,7 +19,7 @@ export function Subscribe() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, firstName, lastName }),
       });
 
       const data = await res.json();
@@ -29,6 +31,8 @@ export function Subscribe() {
       }
 
       setStatus("success");
+      setFirstName("");
+      setLastName("");
       setEmail("");
       setTimeout(() => setStatus("idle"), 4000);
     } catch {
@@ -55,29 +59,51 @@ export function Subscribe() {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-2.5 max-w-[460px] mx-auto"
+                className="flex flex-col gap-2.5 max-w-[460px] mx-auto"
               >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  required
-                  disabled={status === "loading"}
-                  aria-label="Email address"
-                  className="flex-1 bg-white/10 border border-white/15 rounded-full py-4 px-6 text-[0.95rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-white/30 focus:bg-white/15 disabled:opacity-60"
-                />
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="bg-white text-purple-deep py-4 px-7 rounded-full font-bold text-[0.95rem] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(255,255,255,0.2)] whitespace-nowrap disabled:opacity-60 disabled:hover:translate-y-0"
-                >
-                  {status === "loading"
-                    ? "Subscribing..."
-                    : status === "success"
-                      ? "Subscribed!"
-                      : "Subscribe"}
-                </button>
+                <div className="flex gap-2.5">
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="First name"
+                    disabled={status === "loading"}
+                    aria-label="First name"
+                    className="flex-1 bg-white/10 border border-white/15 rounded-full py-4 px-6 text-[0.95rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-white/30 focus:bg-white/15 disabled:opacity-60"
+                  />
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Last name"
+                    disabled={status === "loading"}
+                    aria-label="Last name"
+                    className="flex-1 bg-white/10 border border-white/15 rounded-full py-4 px-6 text-[0.95rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-white/30 focus:bg-white/15 disabled:opacity-60"
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    required
+                    disabled={status === "loading"}
+                    aria-label="Email address"
+                    className="flex-1 bg-white/10 border border-white/15 rounded-full py-4 px-6 text-[0.95rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-white/30 focus:bg-white/15 disabled:opacity-60"
+                  />
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="bg-white text-purple-deep py-4 px-7 rounded-full font-bold text-[0.95rem] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(255,255,255,0.2)] whitespace-nowrap disabled:opacity-60 disabled:hover:translate-y-0"
+                  >
+                    {status === "loading"
+                      ? "Subscribing..."
+                      : status === "success"
+                        ? "Subscribed!"
+                        : "Subscribe"}
+                  </button>
+                </div>
               </form>
               {status === "error" && (
                 <p className="text-xs text-rose-light mt-3">{errorMsg}</p>

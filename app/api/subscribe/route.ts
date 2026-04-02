@@ -5,7 +5,7 @@ const MOOSEND_LIST_ID = process.env.MOOSEND_LIST_ID;
 
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json();
+    const { email, firstName, lastName } = await req.json();
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
       return NextResponse.json(
@@ -28,8 +28,13 @@ export async function POST(req: NextRequest) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          Name: [firstName, lastName].filter(Boolean).join(" ") || undefined,
           Email: email,
           HasExternalDoubleOptIn: false,
+          CustomFields: [
+            ...(firstName ? [{ Name: "First Name", Value: firstName }] : []),
+            ...(lastName ? [{ Name: "Last Name", Value: lastName }] : []),
+          ],
         }),
       }
     );

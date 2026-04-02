@@ -17,7 +17,7 @@ export function Footer() {
         <div className="pt-14 pb-7">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 mb-12">
             {/* Brand */}
-            <div>
+            <div className="text-center md:text-left flex flex-col items-center md:items-start">
               <Image
                 src="/brand/logo-white.png"
                 alt="Healthspan Collective"
@@ -32,11 +32,11 @@ export function Footer() {
             </div>
 
             {/* Event */}
-            <div>
+            <div className="text-center md:text-left">
               <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-[18px] text-white/35">
                 Event
               </h4>
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2.5 items-center md:items-start">
                 {[...NAV_ITEMS.slice(0, 3), { label: "Buy Tickets", href: LINKS.tickets }].map(
                   (item) => (
                     <li key={item.label}>
@@ -56,11 +56,11 @@ export function Footer() {
             </div>
 
             {/* Get Involved */}
-            <div>
+            <div className="text-center md:text-left">
               <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-[18px] text-white/35">
                 Get Involved
               </h4>
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2.5 items-center md:items-start">
                 <li>
                   <a
                     href={LINKS.applySpeaker}
@@ -85,11 +85,11 @@ export function Footer() {
             </div>
 
             {/* Follow */}
-            <div>
+            <div className="text-center md:text-left">
               <h4 className="font-bold text-xs uppercase tracking-[0.12em] mb-[18px] text-white/35">
                 Follow Us
               </h4>
-              <ul className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2.5 items-center md:items-start">
                 <li>
                   <a
                     href={LINKS.instagram}

@@ -66,6 +66,7 @@ export const NAV_ITEMS = [
   { label: "Hosts", href: "#hosts" },
   { label: "Speakers", href: "#speakers" },
   { label: "Gallery", href: "#gallery" },
+  { label: "Partnerships", href: "#partnerships" },
   { label: "Subscribe", href: "#subscribe" },
 ] as const;
 

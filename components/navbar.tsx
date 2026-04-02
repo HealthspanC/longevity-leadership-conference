@@ -161,7 +161,7 @@ export function Navbar() {
           </a>
 
           {/* Desktop nav */}
-          <ul className="hidden lg:flex items-center gap-7 list-none">
+          <ul className="hidden lg:flex items-center gap-5 xl:gap-7 list-none">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
                 <a
@@ -176,13 +176,19 @@ export function Navbar() {
                     }
                   }}
                   className={cn(
-                    "text-sm font-medium transition-colors",
+                    "group relative text-[0.8rem] xl:text-sm font-medium transition-colors whitespace-nowrap py-1",
                     scrolled
                       ? "text-text-secondary hover:text-purple"
                       : "text-white/80 hover:text-white"
                   )}
                 >
                   {item.label}
+                  <span
+                    className={cn(
+                      "absolute left-0 -bottom-0.5 h-[1.5px] w-0 group-hover:w-full transition-all duration-300 ease-out rounded-full",
+                      scrolled ? "bg-purple" : "bg-white"
+                    )}
+                  />
                 </a>
               </li>
             ))}
@@ -191,7 +197,7 @@ export function Navbar() {
                 href={LINKS.tickets}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-purple-deep text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-all hover:bg-purple hover:-translate-y-0.5 shadow-[0_2px_12px_rgba(45,27,78,0.2)]"
+                className="shrink-0 whitespace-nowrap bg-purple-deep text-white px-5 xl:px-6 py-2.5 rounded-full font-semibold text-[0.8rem] xl:text-sm transition-all hover:bg-purple hover:-translate-y-0.5 shadow-[0_2px_12px_rgba(45,27,78,0.2)]"
               >
                 Get Tickets
               </a>

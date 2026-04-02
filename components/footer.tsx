@@ -1,127 +1,10 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import { LINKS, NAV_ITEMS } from "@/lib/constants";
 import { Instagram, Linkedin } from "lucide-react";
-import { FadeIn } from "./fade-in";
-
-function SubscribeForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus("loading");
-    setErrorMsg("");
-
-    try {
-      const res = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstName, lastName }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setStatus("error");
-        setErrorMsg(data.error || "Something went wrong.");
-        return;
-      }
-
-      setStatus("success");
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setTimeout(() => setStatus("idle"), 4000);
-    } catch {
-      setStatus("error");
-      setErrorMsg("Network error. Please try again.");
-    }
-  }
-
-  return (
-    <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12 gap-6">
-      {/* Left: text */}
-      <div className="lg:flex-1 text-center lg:text-left">
-        <h3 className="font-serif text-[1.4rem] font-bold text-white mb-1.5">
-          Never Miss an Update
-        </h3>
-        <p className="text-[0.85rem] text-white/50 leading-relaxed">
-          Subscribe for speaker announcements, early-bird access, and exclusive insights.
-        </p>
-      </div>
-
-      {/* Right: form */}
-      <div className="lg:flex-1">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-2"
-        >
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First name"
-              disabled={status === "loading"}
-              aria-label="First name"
-              className="flex-1 bg-white/[0.07] border border-white/[0.12] rounded-full py-2.5 px-5 text-[0.85rem] text-white placeholder:text-white/35 outline-none transition-all focus:border-purple-light/40 focus:bg-white/[0.1] disabled:opacity-60"
-            />
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last name"
-              disabled={status === "loading"}
-              aria-label="Last name"
-              className="flex-1 bg-white/[0.07] border border-white/[0.12] rounded-full py-2.5 px-5 text-[0.85rem] text-white placeholder:text-white/35 outline-none transition-all focus:border-purple-light/40 focus:bg-white/[0.1] disabled:opacity-60"
-            />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email address"
-              required
-              disabled={status === "loading"}
-              aria-label="Email address"
-              className="flex-1 bg-white/[0.07] border border-white/[0.12] rounded-full py-2.5 px-5 text-[0.85rem] text-white placeholder:text-white/35 outline-none transition-all focus:border-purple-light/40 focus:bg-white/[0.1] disabled:opacity-60"
-            />
-            <button
-              type="submit"
-              disabled={status === "loading"}
-              className="bg-white text-purple-deep py-2.5 px-6 rounded-full font-bold text-[0.85rem] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(255,255,255,0.2)] whitespace-nowrap disabled:opacity-60 disabled:hover:translate-y-0"
-            >
-              {status === "loading"
-                ? "Subscribing..."
-                : status === "success"
-                  ? "Subscribed!"
-                  : "Subscribe"}
-            </button>
-          </div>
-        </form>
-        {status === "error" && (
-          <p className="text-xs text-rose-light mt-2">{errorMsg}</p>
-        )}
-        {status !== "error" && (
-          <p className="text-xs text-white/30 mt-2 text-center sm:text-left">
-            We respect your privacy. Unsubscribe at any time.
-          </p>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export function Footer() {
   return (
-    <footer id="subscribe" className="relative z-2 bg-purple-deep overflow-hidden">
+    <footer className="relative z-2 bg-purple-deep overflow-hidden">
       {/* Texture overlay */}
       <div className="absolute inset-0 dark-panel-texture" />
 
@@ -130,16 +13,6 @@ export function Footer() {
       <div className="absolute top-[10%] right-[15%] w-[300px] h-[300px] rounded-full bg-rose/5 blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-[1140px] mx-auto px-6">
-        {/* Subscribe area */}
-        <div className="pt-14 lg:pt-16 pb-12 lg:pb-14">
-          <FadeIn>
-            <SubscribeForm />
-          </FadeIn>
-        </div>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
-
         {/* Footer links */}
         <div className="pt-14 pb-7">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 mb-12">

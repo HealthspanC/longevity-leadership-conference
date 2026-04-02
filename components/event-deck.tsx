@@ -116,13 +116,13 @@ function SlideViewer({
           isFullscreen && "absolute bottom-6 left-1/2 -translate-x-1/2 w-[min(90vw,700px)]"
         )}
       >
-        <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+        <div className={cn("flex-1 h-1 rounded-full overflow-hidden", isFullscreen ? "bg-white/10" : "bg-purple-deep/15")}>
           <div
-            className="h-full bg-purple-light rounded-full transition-all duration-500 ease-out"
+            className={cn("h-full rounded-full transition-all duration-500 ease-out", isFullscreen ? "bg-purple-light" : "bg-purple-deep")}
             style={{ width: `${((current + 1) / TOTAL_SLIDES) * 100}%` }}
           />
         </div>
-        <span className="text-xs font-mono text-white/40 tabular-nums shrink-0">
+        <span className={cn("text-xs font-mono tabular-nums shrink-0", isFullscreen ? "text-white/40" : "text-purple-deep/50")}>
           {String(current + 1).padStart(2, "0")} / {TOTAL_SLIDES}
         </span>
       </div>
@@ -185,46 +185,64 @@ export function EventDeck() {
   }, [go, isFullscreen]);
 
   return (
-    <section className="relative z-[3] py-16 lg:py-20 bg-bg overflow-hidden">
-      <div className="relative z-10 max-w-[1140px] mx-auto px-6">
-        <FadeIn>
-          <SectionHeader
-            label="Event Deck"
-            title="Partnership Overview"
-            accentWord="Overview"
-            subtitle="Explore partnership opportunities and learn more about the Longevity Leadership Conference."
-            centered
-          />
-          <div className="flex items-center justify-center mt-6 mb-8">
-            <a
-              href={INVOLVE_CARDS[1].href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border-[1.5px] border-purple/30 text-purple-deep py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-purple-deep hover:text-white hover:border-purple-deep hover:-translate-y-0.5"
-            >
-              Become a Summit Partner
-              <ChevronRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </FadeIn>
+    <>
+      {/* Purple banner header */}
+      <section className="relative z-[3] pt-16 lg:pt-20 pb-12 lg:pb-14 bg-purple-deep overflow-hidden">
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.05'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
 
-        <FadeIn delay={100}>
-          <SlideViewer
+        <div className="relative z-10 max-w-[1140px] mx-auto px-6">
+          <FadeIn>
+            <SectionHeader
+              label="Event Deck"
+              title="Partnership Overview"
+              accentWord="Overview"
+              subtitle="Explore partnership opportunities and learn more about the Longevity Leadership Conference."
+              centered
+              dark
+            />
+            <div className="flex items-center justify-center -mt-6">
+              <a
+                href={INVOLVE_CARDS[1].href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-white hover:text-purple-deep hover:-translate-y-0.5"
+              >
+                Become a Summit Partner
+                <ChevronRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Slide viewer */}
+      <section className="relative z-[3] py-12 lg:py-16 bg-bg overflow-hidden">
+        <div className="relative z-10 max-w-[1140px] mx-auto px-6">
+          <FadeIn>
+            <SlideViewer
+              current={current}
+              go={go}
+              isFullscreen={false}
+              onToggleFullscreen={() => setIsFullscreen(true)}
+            />
+          </FadeIn>
+        </div>
+
+        {isFullscreen && (
+          <FullscreenOverlay
             current={current}
             go={go}
-            isFullscreen={false}
-            onToggleFullscreen={() => setIsFullscreen(true)}
+            onClose={() => setIsFullscreen(false)}
           />
-        </FadeIn>
-      </div>
-
-      {isFullscreen && (
-        <FullscreenOverlay
-          current={current}
-          go={go}
-          onClose={() => setIsFullscreen(false)}
-        />
-      )}
-    </section>
+        )}
+      </section>
+    </>
   );
 }

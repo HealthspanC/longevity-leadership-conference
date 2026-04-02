@@ -509,7 +509,7 @@ export function Speakers() {
   );
 
   return (
-    <section id="speakers" className="relative z-[3] py-28 lg:py-32 bg-bg">
+    <section id="speakers" className="relative z-[3] pt-28 lg:pt-32 pb-2 lg:pb-3 bg-bg">
       <div className="max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <SectionHeader

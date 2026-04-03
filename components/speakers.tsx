@@ -30,6 +30,10 @@ function SpeakerPhoto({
         alt={speaker.name}
         fill
         className={cn("object-cover object-top", className)}
+        style={{
+          ...('imagePosition' in speaker && speaker.imagePosition ? { objectPosition: speaker.imagePosition } : {}),
+          ...('imageScale' in speaker && speaker.imageScale ? { transform: `scale(${speaker.imageScale})` } : {}),
+        }}
         sizes={sizes}
       />
     );
@@ -162,7 +166,7 @@ function SpeakerReel({
                       {speaker.name}
                     </h3>
                     <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-purple-light">
-                      2026 {speaker.role}
+                      {speaker.role}
                     </span>
                   </div>
                 </div>
@@ -190,7 +194,7 @@ function SpeakerReel({
                     {speaker.name}
                   </h4>
                   <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
-                    2026 {speaker.role}
+                    {speaker.role}
                   </span>
                 </div>
               </div>
@@ -346,15 +350,17 @@ function MobileSpeakerCarousel({
                     {speaker.name}
                   </h3>
                   <span className="text-[0.6rem] font-bold tracking-[0.18em] uppercase text-purple-light">
-                    2026 {speaker.role}
+                    {speaker.role}
                   </span>
                 </div>
               </div>
               {/* Compact info below */}
               <div className="p-5">
-                <p className="font-serif text-[0.9rem] text-text/80 leading-relaxed italic line-clamp-2">
-                  &ldquo;{speaker.quote}&rdquo;
-                </p>
+                {'quote' in speaker && speaker.quote && (
+                  <p className="font-serif text-[0.9rem] text-text/80 leading-relaxed italic line-clamp-2">
+                    &ldquo;{speaker.quote}&rdquo;
+                  </p>
+                )}
                 <p className="text-[0.75rem] text-purple font-semibold mt-3 tracking-wide uppercase">
                   Tap to learn more &rarr;
                 </p>
@@ -472,21 +478,25 @@ function SpeakerModal({
 
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 flex flex-col justify-center">
           <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-purple mb-2.5 block">
-            2026 {speaker.role}
+            {speaker.role}
           </span>
           <h3 className="font-serif text-[1.6rem] md:text-[1.8rem] font-bold text-text leading-tight mb-5">
             {speaker.name}
           </h3>
 
-          <div className="mb-5 pl-4 border-l-[2.5px] border-purple-light/40">
-            <p className="font-serif text-[0.95rem] md:text-[1.05rem] text-text/80 leading-relaxed italic">
-              &ldquo;{speaker.quote}&rdquo;
-            </p>
-          </div>
+          {'quote' in speaker && speaker.quote && (
+            <div className="mb-5 pl-4 border-l-[2.5px] border-purple-light/40">
+              <p className="font-serif text-[0.95rem] md:text-[1.05rem] text-text/80 leading-relaxed italic">
+                &ldquo;{speaker.quote}&rdquo;
+              </p>
+            </div>
+          )}
 
-          <p className="text-[0.88rem] text-text-secondary leading-[1.7]">
-            {speaker.bio}
-          </p>
+          <div className="text-[0.88rem] text-text-secondary leading-[1.7] space-y-3">
+            {speaker.bio.split('\n\n').map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
         </div>
       </div>
     </div>,

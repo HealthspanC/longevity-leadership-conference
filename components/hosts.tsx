@@ -199,8 +199,8 @@ export function Hosts() {
         <FadeIn>
           <SectionHeader
             label="Your Hosts"
-            title="Presented by the Healthspan Collective"
-            accentWord="Healthspan Collective"
+            title="Presented by the Healthspan Collective in Partnership with Mission Matters"
+            accentWord={["Healthspan Collective", "Mission Matters"]}
             subtitle="Dedicated to accelerating the science of longevity and building a global community of healthspan leaders."
             centered
             dark

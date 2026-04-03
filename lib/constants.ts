@@ -72,7 +72,7 @@ export const NAV_ITEMS = [
 
 export const STATS = [
   { value: 3, label: "Years Running", suffix: "" },
-  { value: 500, label: "Expected Attendees", suffix: "+" },
+  { value: 300, label: "Expected Attendees", suffix: "+" },
   { value: 30, label: "Expert Speakers", suffix: "+" },
   { value: 1, label: "Exclusive Day", suffix: "" },
 ] as const;
@@ -106,42 +106,42 @@ export const VISION_FEATURES = [
 
 export const SPEAKERS = [
   {
+    name: "Sanjiv Lal",
+    role: "Co-Founder at Regen Therapy",
+    image: "/speakers/sanjiv-lal.jpg",
+    bio: "Sanjiv Lal is a healthcare entrepreneur and strategic leader who has founded and scaled multiple laboratories, held leadership roles at major biotech firms. Sanjiv is a recognized voice in advancing regenerative medicine and a founder/partner at Motivant, a business-building family office.",
+  },
+  {
+    name: "Paola Tefler",
+    role: "Founder/CEO of SENS.AI",
+    image: "/speakers/paola-telfer.png",
+    imagePosition: "center 15%",
+    bio: "Paola is a tech entrepreneur with a passion to develop technology that improves lives! Electrical Engineer, MBA in the Management of Technology and Singularity University Alumni. Life-long explorer of human consciousness development and member of the Space-Aging Research Institute (SARI) XPRIZE team.",
+  },
+  {
+    name: "Ashley Hines",
+    role: "Health, Beauty & Technology Advocate",
+    image: "/speakers/ashley-hines.jpg",
+    imagePosition: "center 30%",
+    bio: "Ashley Hines is a clinical skincare educator with a background in the beauty industry who now focuses on advancing evidence-based approaches to skin health. Her work centers on translating the science of skin aging, barrier repair, and peptide signaling into practical education for clinicians, estheticians, and skin professionals.",
+  },
+  {
+    name: "Dr. Resham Uttamchandani, MD",
+    role: "ConciergeMD",
+    image: "/speakers/resham-uttamchandani.jpg",
+    bio: "Double board-certified physician in Family and Obesity Medicine with specialized training in metabolic health, functional medicine, and longevity. She earned her medical degree from the American University of the Caribbean and completed her Family Medicine residency at Eisenhower Medical Center.",
+  },
+  {
     name: "Todd Vande Hei",
-    role: "Clinical Research",
+    role: "Integrative Health & Root-Cause Healing",
     image: "/speakers/todd-vande-hei.png",
-    bio: "Founder of a Southern California-based healthcare company redefining medicine through root-cause healing, integrating advanced diagnostics with non-pharmaceutical interventions including strength training, nutrition, and lifestyle optimization.",
-    quote: "The future of medicine isn't in the pharmacy—it's in understanding the body's innate capacity to heal.",
+    bio: "Todd Vande Hei is the founder of a Southern California-based healthcare company redefining what it means to practice medicine. At the heart of his mission is a shift away from reactive, pharmaceutical-dependent care and toward a proactive model grounded in root-cause healing. His clinics integrate advanced diagnostics like DEXA scans and comprehensive lab work with primarily non-pharmaceutical interventions—including strength training, nutrition, lifestyle optimization, and stress management.\n\nWhen he's not leading his team or dissecting lab results, you'll find Todd out hunting, kitesurfing, or \"geeking out\" on the science of peak performance—always in pursuit of deeper truths about the body, the mind, and what it means to live well.",
   },
   {
     name: "Josephine Musco",
-    role: "Biotech & Innovation",
+    role: "Biotech & Wellness Innovation",
     image: "/speakers/josephine-musco.png",
-    bio: "Inventor, CEO, and patent holder at the forefront of biotechnology and wellness innovation. Founder of Olyxir, House of Malakai, and Château Bellevue—translating advanced science into scalable, category-defining enterprises.",
-    quote: "The future of human optimization lives at the intersection of scientific rigor and visionary leadership.",
-  },
-  {
-    name: "Speaker Announcement",
-    role: "Keynote",
-    bio: "Our 2026 keynote lineup is being finalized. Follow us for speaker announcements.",
-    quote: "The future of longevity starts with the conversations we have today.",
-  },
-  {
-    name: "Speaker Announcement",
-    role: "Investment",
-    bio: "Industry investors and business leaders driving healthspan innovation.",
-    quote: "The longevity economy is the most consequential market of our generation.",
-  },
-  {
-    name: "Speaker Announcement",
-    role: "Longevity Science",
-    bio: "Visionaries pioneering the future of the longevity ecosystem.",
-    quote: "We are at the inflection point between aging as inevitable and aging as treatable.",
-  },
-  {
-    name: "Speaker Announcement",
-    role: "Wellness",
-    bio: "Experts in preventive medicine and evidence-based wellness protocols.",
-    quote: "Prevention is the most powerful form of medicine we have.",
+    bio: "Josephine Musco is an inventor, CEO, and patent holder operating at the forefront of biotechnology, wellness innovation, and brand architecture. She is the founder of Olyxir, as well as House of Malakai and Château Bellevue, where she has transformed proprietary intellectual property into high growth, globally positioned companies.\n\nHer work focuses on translating advanced science, formulation, and systems thinking into scalable consumer and performance driven solutions. As an internationally sought after speaker, Musco presents on longevity, innovation, and the future of human optimization at conferences around the world. She is recognized for bridging scientific rigor with visionary leadership to build enduring, category defining enterprises.",
   },
 ] as const;
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
 import { Menu, X } from "lucide-react";
@@ -80,6 +81,8 @@ export function Navbar() {
                   setTimeout(() => {
                     window.scrollTo({ top: target.offsetTop, behavior: "smooth" });
                   }, 350);
+                } else {
+                  window.location.href = "/" + item.href;
                 }
               }}
               className={cn(
@@ -108,8 +111,6 @@ export function Navbar() {
         {/* CTA button */}
         <a
           href={LINKS.tickets}
-          target="_blank"
-          rel="noopener noreferrer"
           onClick={() => setMobileOpen(false)}
           className={cn(
             "bg-white text-purple-deep px-8 py-3 rounded-full font-semibold text-sm tracking-wide transition-all duration-300",
@@ -133,7 +134,7 @@ export function Navbar() {
       >
         <div className="flex items-center justify-between max-w-[1280px] mx-auto px-6">
           {/* Logo */}
-          <a href="#" className="relative shrink-0 h-[78px] md:h-[86px] w-[280px] md:w-[468px]">
+          <Link href="/" className="relative shrink-0 h-[78px] md:h-[86px] w-[280px] md:w-[468px]">
             {/* Purple logo — visible on scroll */}
             <Image
               src="/brand/logo.png"
@@ -158,7 +159,7 @@ export function Navbar() {
                 scrolled ? "opacity-0" : "opacity-100"
               )}
             />
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <ul className="hidden lg:flex items-center gap-5 xl:gap-7 list-none">
@@ -173,6 +174,8 @@ export function Navbar() {
                     if (target) {
                       const y = target.getBoundingClientRect().top + window.scrollY;
                       window.scrollTo({ top: y, behavior: "smooth" });
+                    } else {
+                      window.location.href = "/" + item.href;
                     }
                   }}
                   className={cn(
@@ -195,8 +198,6 @@ export function Navbar() {
             <li>
               <a
                 href={LINKS.tickets}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="shrink-0 whitespace-nowrap bg-purple-deep text-white px-5 xl:px-6 py-2.5 rounded-full font-semibold text-[0.8rem] xl:text-sm transition-all hover:bg-purple hover:-translate-y-0.5 shadow-[0_2px_12px_rgba(45,27,78,0.2)]"
               >
                 Get Tickets

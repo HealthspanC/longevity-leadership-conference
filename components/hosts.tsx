@@ -7,7 +7,6 @@ import { LINKS, HOSTS } from "@/lib/constants";
 import { Instagram, Linkedin, Youtube } from "lucide-react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
-import { MysticRose } from "./mystic-rose";
 
 const socialIcons = {
   linkedin: Linkedin,
@@ -210,15 +209,37 @@ export function Hosts() {
         {/* Editorial Host Profiles */}
         <HostCards />
 
-        {/* Colophon strip — icon centered in divider */}
+        {/* Colophon strip — dual logos centered in divider */}
         <FadeIn delay={200}>
           <div className="relative">
             {/* Divider line */}
-            <div className="absolute top-[80px] left-0 right-0 h-px bg-white/[0.12]" />
+            <div className="absolute top-[48px] left-0 right-0 h-px bg-white/[0.12]" />
 
-            {/* Animated Mystic Rose logo */}
-            <div className="flex justify-center mb-6 relative z-[1]">
-              <MysticRose size={160} />
+            {/* Partner logos — side by side */}
+            <div className="flex items-center justify-center gap-5 md:gap-7 mb-8 relative z-[1]">
+              {/* Healthspan Collective icon */}
+              <div className="relative w-[88px] h-[88px] md:w-[96px] md:h-[96px] rounded-full bg-white border border-white/20 overflow-hidden shadow-lg shadow-black/10">
+                <Image
+                  src="/brand/icon.png"
+                  alt="Healthspan Collective"
+                  fill
+                  className="object-contain p-[3px] -translate-y-[1px]"
+                />
+              </div>
+
+              {/* Connector */}
+              <span className="text-white/20 text-lg font-light select-none">×</span>
+
+              {/* Mission Matters logo */}
+              <div className="h-[88px] md:h-[96px] px-5 rounded-2xl bg-white border border-white/20 flex items-center justify-center shadow-lg shadow-black/10">
+                <Image
+                  src="/brand/mission-matters.png"
+                  alt="Mission Matters"
+                  width={600}
+                  height={200}
+                  className="h-[50px] md:h-[56px] w-auto object-contain"
+                />
+              </div>
             </div>
 
             {/* Description text — centered, minimal */}

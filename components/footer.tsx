@@ -25,7 +25,7 @@ export function Footer() {
             />
             <p className="text-[0.85rem] text-white/45 leading-relaxed max-w-[300px]">
               A Premium Executive Forum for the Longevity Industry. Hosted by
-              the Healthspan Collective in Playa Vista, CA.
+              the Healthspan Collective and Mission Matters in Playa Vista, CA.
             </p>
           </div>
 
@@ -41,7 +41,7 @@ export function Footer() {
                   (item) => (
                     <li key={item.label}>
                       <a
-                        href={item.href}
+                        href={item.href.startsWith("#") ? "/" + item.href : item.href}
                         {...(item.href.startsWith("http")
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}

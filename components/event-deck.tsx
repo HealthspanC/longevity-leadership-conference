@@ -214,7 +214,7 @@ export function EventDeck() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-white hover:text-purple-deep hover:-translate-y-0.5"
               >
-                Become a Summit Partner
+                Become a Partner
                 <ChevronRight className="w-3.5 h-3.5" />
               </a>
             </div>

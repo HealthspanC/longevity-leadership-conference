@@ -14,7 +14,7 @@ export const SITE = {
 } as const;
 
 export const LINKS = {
-  tickets: "https://luma.com/LLC26",
+  tickets: "/tickets",
   applyFuture: "https://forms.gle/jFobRPFBdt8GXtCV8",
   applySpeaker:
     "https://docs.google.com/forms/d/e/1FAIpQLSfvrT-tIPExLp6EOz1bOII3gdJh-PcdocBuqToxdRBKXH9glQ/viewform",
@@ -63,6 +63,7 @@ export const HOSTS = [
 
 export const NAV_ITEMS = [
   { label: "About", href: "#about" },
+  { label: "Sponsors", href: "#sponsors" },
   { label: "Hosts", href: "#hosts" },
   { label: "Speakers", href: "#speakers" },
   { label: "Gallery", href: "#gallery" },
@@ -142,6 +143,57 @@ export const SPEAKERS = [
     role: "Biotech & Wellness Innovation",
     image: "/speakers/josephine-musco.png",
     bio: "Josephine Musco is an inventor, CEO, and patent holder operating at the forefront of biotechnology, wellness innovation, and brand architecture. She is the founder of Olyxir, as well as House of Malakai and Château Bellevue, where she has transformed proprietary intellectual property into high growth, globally positioned companies.\n\nHer work focuses on translating advanced science, formulation, and systems thinking into scalable consumer and performance driven solutions. As an internationally sought after speaker, Musco presents on longevity, innovation, and the future of human optimization at conferences around the world. She is recognized for bridging scientific rigor with visionary leadership to build enduring, category defining enterprises.",
+  },
+] as const;
+
+export const SPONSORS = [
+  {
+    name: "Sponsor One",
+    tagline: "Sponsor tagline goes here",
+    logo: null,
+    description:
+      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
+    website: "#",
+  },
+  {
+    name: "Sponsor Two",
+    tagline: "Sponsor tagline goes here",
+    logo: null,
+    description:
+      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
+    website: "#",
+  },
+  {
+    name: "Sponsor Three",
+    tagline: "Sponsor tagline goes here",
+    logo: null,
+    description:
+      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
+    website: "#",
+  },
+  {
+    name: "Sponsor Four",
+    tagline: "Sponsor tagline goes here",
+    logo: null,
+    description:
+      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
+    website: "#",
+  },
+  {
+    name: "Sponsor Five",
+    tagline: "Sponsor tagline goes here",
+    logo: null,
+    description:
+      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
+    website: "#",
+  },
+  {
+    name: "Sponsor Six",
+    tagline: "Sponsor tagline goes here",
+    logo: null,
+    description:
+      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
+    website: "#",
   },
 ] as const;
 

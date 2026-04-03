@@ -3,13 +3,16 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
 import { Menu, X } from "lucide-react";
 
 export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isTicketsPage = pathname === "/tickets";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -198,7 +201,12 @@ export function Navbar() {
             <li>
               <a
                 href={LINKS.tickets}
-                className="shrink-0 whitespace-nowrap bg-purple-deep text-white px-5 xl:px-6 py-2.5 rounded-full font-semibold text-[0.8rem] xl:text-sm transition-all hover:bg-purple hover:-translate-y-0.5 shadow-[0_2px_12px_rgba(45,27,78,0.2)]"
+                className={cn(
+                  "shrink-0 whitespace-nowrap px-5 xl:px-6 py-2.5 rounded-full font-semibold text-[0.8rem] xl:text-sm transition-all hover:-translate-y-0.5",
+                  isTicketsPage && !scrolled
+                    ? "bg-white text-purple-deep hover:bg-white/90 shadow-[0_2px_16px_rgba(255,255,255,0.2)]"
+                    : "bg-purple-deep text-white hover:bg-purple shadow-[0_2px_12px_rgba(45,27,78,0.2)]"
+                )}
               >
                 Get Tickets
               </a>

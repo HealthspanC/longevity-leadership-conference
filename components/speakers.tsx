@@ -31,8 +31,8 @@ function SpeakerPhoto({
         fill
         className={cn("object-cover object-top", className)}
         style={{
-          ...('imagePosition' in speaker && speaker.imagePosition ? { objectPosition: speaker.imagePosition } : {}),
-          ...('imageScale' in speaker && speaker.imageScale ? { transform: `scale(${speaker.imageScale})` } : {}),
+          ...('imagePosition' in speaker ? { objectPosition: (speaker as { imagePosition: string }).imagePosition } : {}),
+          ...('imageScale' in speaker ? { transform: `scale(${(speaker as { imageScale: string }).imageScale})` } : {}),
         }}
         sizes={sizes}
       />
@@ -356,9 +356,9 @@ function MobileSpeakerCarousel({
               </div>
               {/* Compact info below */}
               <div className="p-5">
-                {'quote' in speaker && speaker.quote && (
+                {'quote' in speaker && (speaker as { quote?: string }).quote && (
                   <p className="font-serif text-[0.9rem] text-text/80 leading-relaxed italic line-clamp-2">
-                    &ldquo;{speaker.quote}&rdquo;
+                    &ldquo;{(speaker as { quote: string }).quote}&rdquo;
                   </p>
                 )}
                 <p className="text-[0.75rem] text-purple font-semibold mt-3 tracking-wide uppercase">
@@ -484,10 +484,10 @@ function SpeakerModal({
             {speaker.name}
           </h3>
 
-          {'quote' in speaker && speaker.quote && (
+          {'quote' in speaker && (speaker as { quote?: string }).quote && (
             <div className="mb-5 pl-4 border-l-[2.5px] border-purple-light/40">
               <p className="font-serif text-[0.95rem] md:text-[1.05rem] text-text/80 leading-relaxed italic">
-                &ldquo;{speaker.quote}&rdquo;
+                &ldquo;{(speaker as { quote: string }).quote}&rdquo;
               </p>
             </div>
           )}

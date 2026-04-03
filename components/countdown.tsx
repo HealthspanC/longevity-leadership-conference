@@ -45,7 +45,7 @@ export function Countdown() {
 
   return (
     <div className="text-center relative z-2 flex flex-col items-center justify-center">
-      <div className="text-[0.6rem] md:text-[0.65rem] font-bold tracking-[0.2em] md:tracking-[0.25em] uppercase text-white/40 mb-4 md:mb-5 whitespace-nowrap">
+      <div className="text-[0.65rem] md:text-[0.75rem] font-bold tracking-[0.2em] md:tracking-[0.25em] uppercase text-white/55 mb-4 md:mb-5 whitespace-nowrap">
         The Future of Health Begins In
       </div>
       <div className="flex gap-3 md:gap-5 justify-center" role="timer" aria-label="Countdown to conference">
@@ -56,7 +56,7 @@ export function Countdown() {
                 ? String(item.value).padStart(2, "0")
                 : item.value}
             </div>
-            <div className="text-[0.55rem] uppercase tracking-[0.2em] text-purple-light/60 mt-2 font-bold">
+            <div className="text-[0.6rem] md:text-[0.7rem] uppercase tracking-[0.18em] text-purple-light mt-2 font-bold">
               {item.label}
             </div>
           </div>

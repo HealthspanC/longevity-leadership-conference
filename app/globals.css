@@ -69,6 +69,18 @@ body {
   pointer-events: none;
 }
 
+/* Hero video iframe — responsive cover sizing */
+.hero-video-iframe {
+  width: max(400%, 350vh);
+  height: max(400%, 300vh);
+}
+@media (min-width: 768px) {
+  .hero-video-iframe {
+    width: max(185%, 165vh);
+    height: max(185%, 110vh);
+  }
+}
+
 /* Gallery shimmer animation */
 @keyframes gallery-shimmer {
   0% { background-position: 200% 0; }

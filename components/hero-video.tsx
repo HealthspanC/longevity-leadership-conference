@@ -47,8 +47,7 @@ export function HeroVideo() {
           ref={iframeRef}
           src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
           allow="autoplay; fullscreen"
-          style={{ width: 'max(200%, 250vh)', height: 'max(200%, 150vh)' }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none hero-video-iframe"
           title="Conference highlight reel"
         />
       )}

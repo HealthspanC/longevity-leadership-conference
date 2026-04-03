@@ -78,33 +78,6 @@ export const STATS = [
   { value: 1, label: "Exclusive Day", suffix: "" },
 ] as const;
 
-export const VISION_FEATURES = [
-  {
-    icon: "Trophy",
-    title: "Premium Executive Forum",
-    description:
-      "An intimate setting for high-level dialogue among the most influential minds shaping the longevity industry.",
-  },
-  {
-    icon: "Activity",
-    title: "Clinical Breakthroughs",
-    description:
-      "Presentations from doctors, researchers, and clinicians at the forefront of healthspan science and regenerative medicine.",
-  },
-  {
-    icon: "TrendingUp",
-    title: "Investment & Innovation",
-    description:
-      "Connect with investors and entrepreneurs driving the next wave of longevity innovation and biotech breakthroughs.",
-  },
-  {
-    icon: "Users",
-    title: "Unparalleled Networking",
-    description:
-      "Forge meaningful connections with fellow leaders committed to extending human healthspan and vitality.",
-  },
-] as const;
-
 export const SPEAKERS = [
   {
     name: "Sanjiv Lal",

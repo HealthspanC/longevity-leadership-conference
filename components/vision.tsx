@@ -197,7 +197,11 @@ export function Vision() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-20 lg:mb-24">
             {/* Who This Is For */}
             <FadeIn delay={0}>
-              <div className="group relative bg-bg-card border border-border-light rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:border-purple-pale hover:shadow-[0_8px_32px_rgba(91,58,140,0.10)] h-full">
+              <div className="group relative bg-bg-card rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:shadow-[0_8px_32px_rgba(91,58,140,0.12)] hover:-translate-y-0.5 h-full overflow-hidden ring-1 ring-border-light hover:ring-purple-mid/25">
+                {/* Gradient top border */}
+                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-purple via-purple-light to-purple opacity-60 group-hover:opacity-100 transition-opacity duration-350" />
+                {/* Hover left accent */}
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-purple to-rose opacity-0 transition-opacity duration-350 group-hover:opacity-100" />
                 <h3 className="font-serif text-[1.2rem] font-bold text-text mb-5">
                   Who This Is For
                 </h3>
@@ -218,7 +222,11 @@ export function Vision() {
 
             {/* What Makes It Different */}
             <FadeIn delay={100}>
-              <div className="group relative bg-bg-card border border-border-light rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:border-purple-pale hover:shadow-[0_8px_32px_rgba(91,58,140,0.10)] h-full">
+              <div className="group relative bg-bg-card rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:shadow-[0_8px_32px_rgba(91,58,140,0.12)] hover:-translate-y-0.5 h-full overflow-hidden ring-1 ring-border-light hover:ring-purple-mid/25">
+                {/* Gradient top border */}
+                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-rose via-purple-light to-purple opacity-60 group-hover:opacity-100 transition-opacity duration-350" />
+                {/* Hover left accent */}
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-purple to-rose opacity-0 transition-opacity duration-350 group-hover:opacity-100" />
                 <h3 className="font-serif text-[1.2rem] font-bold text-text mb-5">
                   What Makes It Different
                 </h3>
@@ -244,7 +252,11 @@ export function Vision() {
 
             {/* What to Expect */}
             <FadeIn delay={200}>
-              <div className="group relative bg-bg-card border border-border-light rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:border-purple-pale hover:shadow-[0_8px_32px_rgba(91,58,140,0.10)] h-full">
+              <div className="group relative bg-bg-card rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:shadow-[0_8px_32px_rgba(91,58,140,0.12)] hover:-translate-y-0.5 h-full overflow-hidden ring-1 ring-border-light hover:ring-purple-mid/25">
+                {/* Gradient top border */}
+                <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-purple-light via-purple to-rose opacity-60 group-hover:opacity-100 transition-opacity duration-350" />
+                {/* Hover left accent */}
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-purple to-rose opacity-0 transition-opacity duration-350 group-hover:opacity-100" />
                 <h3 className="font-serif text-[1.2rem] font-bold text-text mb-5">
                   What to Expect
                 </h3>

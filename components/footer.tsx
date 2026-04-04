@@ -24,7 +24,7 @@ export function Footer() {
               className="h-[44px] md:h-[52px] w-auto mb-4"
             />
             <p className="text-[0.85rem] text-white/45 leading-relaxed max-w-[300px]">
-              A Premium Executive Forum for the Longevity Industry. Hosted by
+              A Premium Forum for the Longevity Industry. Hosted by
               the Healthspan Collective and Mission Matters in Playa Vista, CA.
             </p>
           </div>

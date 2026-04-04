@@ -212,11 +212,11 @@ export function Hosts() {
         {/* Colophon strip — dual logos centered in divider */}
         <FadeIn delay={200}>
           <div className="relative">
-            {/* Divider line */}
-            <div className="absolute top-[48px] left-0 right-0 h-px bg-white/[0.12]" />
+            {/* Full-width flat line with ECG between logos */}
+            <div className="absolute top-[47px] left-0 right-0 h-px bg-white/[0.12]" />
 
             {/* Partner logos — side by side */}
-            <div className="flex items-center justify-center gap-5 md:gap-7 mb-8 relative z-[1]">
+            <div className="flex items-center justify-center mb-8 relative z-[1]">
               {/* Healthspan Collective icon */}
               <div className="relative w-[88px] h-[88px] md:w-[96px] md:h-[96px] rounded-full bg-white border border-white/20 overflow-hidden shadow-lg shadow-black/10">
                 <Image
@@ -227,8 +227,22 @@ export function Hosts() {
                 />
               </div>
 
-              {/* Connector */}
-              <span className="text-white/20 text-lg font-light select-none">×</span>
+              {/* ECG heartbeat connector */}
+              <svg
+                viewBox="0 0 100 32"
+                className="w-[56px] md:w-[72px] h-[32px] shrink-0 -mx-2 md:-mx-3"
+                aria-hidden="true"
+              >
+                <path
+                  d="M0,16 L15,16 L22,9 L30,23 L38,4 L46,28 L54,9 L62,20 L70,16 L100,16"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.12)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
 
               {/* Mission Matters logo */}
               <div className="h-[88px] md:h-[96px] px-5 rounded-2xl bg-white border border-white/20 flex items-center justify-center shadow-lg shadow-black/10">

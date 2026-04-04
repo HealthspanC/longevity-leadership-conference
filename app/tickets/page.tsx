@@ -97,6 +97,11 @@ export default function TicketsPage() {
             {/* Trust signals */}
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-center">
               <div>
+                <p className="text-[1.8rem] font-serif font-bold text-text">3</p>
+                <p className="text-[0.75rem] text-text-secondary uppercase tracking-[0.1em]">Years Running</p>
+              </div>
+              <div className="hidden sm:block w-px h-10 bg-border-light" />
+              <div>
                 <p className="text-[1.8rem] font-serif font-bold text-text">300+</p>
                 <p className="text-[0.75rem] text-text-secondary uppercase tracking-[0.1em]">Expected Attendees</p>
               </div>

@@ -213,7 +213,7 @@ export function Hosts() {
         <FadeIn delay={200}>
           <div className="relative">
             {/* Full-width flat line with ECG between logos */}
-            <div className="absolute top-[47px] left-0 right-0 h-px bg-white/[0.12]" />
+            <div className="absolute top-[44px] md:top-[48px] left-0 right-0 h-px bg-white/[0.12]" />
 
             {/* Partner logos — side by side */}
             <div className="flex items-center justify-center mb-8 relative z-[1]">

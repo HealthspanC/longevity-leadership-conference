@@ -13,6 +13,28 @@ type Speaker = (typeof SPEAKERS)[number];
 const hasImage = (s: Speaker): s is Speaker & { image: string } =>
   "image" in s && typeof (s as Record<string, unknown>).image === "string";
 
+const TAG_STYLES: Record<string, string> = {
+  Keynote: "bg-purple text-white",
+  Panelist: "border border-purple text-purple",
+  Moderator: "bg-purple-wash text-purple",
+};
+
+function SpeakerTag({ speaker, dark = false }: { speaker: Speaker; dark?: boolean }) {
+  const tag = "tag" in speaker ? (speaker as { tag: string }).tag : null;
+  if (!tag) return null;
+  return (
+    <span
+      className={cn(
+        "inline-block text-[0.55rem] font-bold tracking-[0.15em] uppercase px-2.5 py-[3px] rounded-full leading-none",
+        dark ? (tag === "Keynote" ? "bg-white/20 text-white" : tag === "Panelist" ? "border border-white/30 text-white/80" : "bg-white/10 text-white/70")
+          : TAG_STYLES[tag] ?? ""
+      )}
+    >
+      {tag}
+    </span>
+  );
+}
+
 /* ── Speaker photo or placeholder ── */
 function SpeakerPhoto({
   speaker,
@@ -161,13 +183,16 @@ function SpeakerReel({
                 <div className="relative rounded-[18px] overflow-hidden h-full min-h-[440px]">
                   <SpeakerPhoto speaker={speaker} sizes="340px" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 via-40% to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 z-[2]">
+                  <div className="absolute inset-x-0 bottom-0 p-6 z-[2] flex flex-col items-start">
                     <h3 className="font-serif text-xl font-bold text-white leading-tight mb-1">
                       {speaker.name}
                     </h3>
                     <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-purple-light">
                       {speaker.role}
                     </span>
+                    <div className="mt-2.5">
+                      <SpeakerTag speaker={speaker} dark />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -186,7 +211,7 @@ function SpeakerReel({
                 <div className="relative w-full aspect-[4/3] bg-purple-deep">
                   <SpeakerPhoto speaker={speaker} sizes="230px" />
                 </div>
-                <div className="p-4 bg-bg-card">
+                <div className="p-4 bg-bg-card flex flex-col items-start">
                   <p className="text-[0.78rem] text-text-secondary leading-relaxed mb-3 line-clamp-3">
                     &ldquo;{speaker.bio}&rdquo;
                   </p>
@@ -196,6 +221,9 @@ function SpeakerReel({
                   <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-purple">
                     {speaker.role}
                   </span>
+                  <div className="mt-2.5">
+                    <SpeakerTag speaker={speaker} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -345,13 +373,16 @@ function MobileSpeakerCarousel({
                 <SpeakerPhoto speaker={speaker} sizes="80vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 via-40% to-transparent" />
                 {/* Name overlay on image */}
-                <div className="absolute inset-x-0 bottom-0 p-5 z-[2]">
+                <div className="absolute inset-x-0 bottom-0 p-5 z-[2] flex flex-col items-start">
                   <h3 className="font-serif text-xl font-bold text-white leading-tight mb-0.5">
                     {speaker.name}
                   </h3>
                   <span className="text-[0.6rem] font-bold tracking-[0.18em] uppercase text-purple-light">
                     {speaker.role}
                   </span>
+                  <div className="mt-2.5">
+                    <SpeakerTag speaker={speaker} dark />
+                  </div>
                 </div>
               </div>
               {/* Compact info below */}
@@ -480,9 +511,12 @@ function SpeakerModal({
           <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-purple mb-2.5 block">
             {speaker.role}
           </span>
-          <h3 className="font-serif text-[1.6rem] md:text-[1.8rem] font-bold text-text leading-tight mb-5">
+          <h3 className="font-serif text-[1.6rem] md:text-[1.8rem] font-bold text-text leading-tight mb-2">
             {speaker.name}
           </h3>
+          <div className="mb-5">
+            <SpeakerTag speaker={speaker} />
+          </div>
 
           {'quote' in speaker && (speaker as { quote?: string }).quote && (
             <div className="mb-5 pl-4 border-l-[2.5px] border-purple-light/40">

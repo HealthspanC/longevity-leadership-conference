@@ -139,13 +139,14 @@ export function Vision() {
                 <span className="absolute -top-4 -left-2 text-[4rem] leading-none text-purple-light/25 font-serif select-none">
                   &ldquo;
                 </span>
-                The future of longevity will not be built in isolation&mdash;it
-                will be built in rooms like this. The Longevity Leadership
-                Conference brings together the clinicians, founders, and
-                investors who are actively shaping the next era of healthspan.
-                This is not a passive event. It&rsquo;s where real relationships
-                form, capital connects with innovation, and the operators
-                defining this industry move forward&mdash;together.
+                Every meaningful shift in medicine started with a small group
+                of people who trusted each other enough to think out loud.
+                That&rsquo;s what we&rsquo;re building here. The Longevity
+                Leadership Conference brings together the clinicians, founders,
+                and investors actively shaping the next era of healthspan
+                forming lasting relationships and connecting capital to
+                innovation, all in the premise to move the industry forward,
+                together.
               </blockquote>
 
               <div className="mt-7 flex items-center justify-center gap-3">
@@ -173,21 +174,15 @@ export function Vision() {
             <div className="max-w-[820px] mx-auto mb-20 lg:mb-24">
               <div className="relative pl-7 border-l-[3px] border-purple-light/40">
                 <p className="text-[1.05rem] leading-[1.85] text-text-secondary mb-5">
-                  The Longevity Leadership Conference is a high-signal, one-day
-                  gathering designed for the people actively building the
-                  longevity industry.
-                </p>
-                <p className="text-[1.05rem] leading-[1.85] text-text-secondary mb-5">
-                  This is not a consumer wellness event. It is a curated, B2B
-                  environment where clinicians, founders, researchers, and
-                  investors come together to exchange insights, form
-                  partnerships, and identify real opportunities in a rapidly
-                  evolving market.
+                  The Longevity Leadership Conference is a one-day gathering
+                  designed for the decision-makers in the longevity industry.
                 </p>
                 <p className="text-[1.05rem] leading-[1.85] text-text font-medium italic">
                   Structured more like a mastermind than a traditional
                   conference, the experience is designed to maximize meaningful
-                  interaction&mdash;not passive consumption.
+                  interaction exploring where the science is heading, where
+                  capital is flowing, and where the most consequential
+                  opportunities in longevity are taking shape.
                 </p>
               </div>
             </div>

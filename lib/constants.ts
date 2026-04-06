@@ -74,7 +74,7 @@ export const NAV_ITEMS = [
 export const STATS = [
   { value: 3, label: "Years Running", suffix: "" },
   { value: 300, label: "Expected Attendees", suffix: "+" },
-  { value: 30, label: "Expert Speakers", suffix: "+" },
+  { value: 20, label: "Expert Speakers", suffix: "+" },
   { value: 1, label: "Exclusive Day", suffix: "" },
 ] as const;
 

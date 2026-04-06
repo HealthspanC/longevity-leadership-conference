@@ -213,7 +213,7 @@ function SpeakerReel({
                 </div>
                 <div className="p-4 bg-bg-card flex flex-col items-start">
                   <p className="text-[0.78rem] text-text-secondary leading-relaxed mb-3 line-clamp-3">
-                    &ldquo;{speaker.bio}&rdquo;
+                    {speaker.bio}
                   </p>
                   <h4 className="font-serif text-base font-bold text-text leading-tight mb-0.5">
                     {speaker.name}
@@ -389,7 +389,7 @@ function MobileSpeakerCarousel({
               <div className="p-5">
                 {'quote' in speaker && (speaker as { quote?: string }).quote && (
                   <p className="font-serif text-[0.9rem] text-text/80 leading-relaxed italic line-clamp-2">
-                    &ldquo;{(speaker as { quote: string }).quote}&rdquo;
+                    {(speaker as { quote: string }).quote}
                   </p>
                 )}
                 <p className="text-[0.75rem] text-purple font-semibold mt-3 tracking-wide uppercase">
@@ -521,7 +521,7 @@ function SpeakerModal({
           {'quote' in speaker && (speaker as { quote?: string }).quote && (
             <div className="mb-5 pl-4 border-l-[2.5px] border-purple-light/40">
               <p className="font-serif text-[0.95rem] md:text-[1.05rem] text-text/80 leading-relaxed italic">
-                &ldquo;{(speaker as { quote: string }).quote}&rdquo;
+                {(speaker as { quote: string }).quote}
               </p>
             </div>
           )}

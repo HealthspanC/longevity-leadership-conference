@@ -79,7 +79,7 @@ export default function TicketsPage() {
                 <iframe
                   src="https://luma.com/embed/event/evt-x1JHI9BBgriHX92/simple"
                   width="600"
-                  height="450"
+                  height="800"
                   frameBorder="0"
                   style={{
                     border: "none",
@@ -107,7 +107,7 @@ export default function TicketsPage() {
               </div>
               <div className="hidden sm:block w-px h-10 bg-border-light" />
               <div>
-                <p className="text-[1.8rem] font-serif font-bold text-text">30+</p>
+                <p className="text-[1.8rem] font-serif font-bold text-text">20+</p>
                 <p className="text-[0.75rem] text-text-secondary uppercase tracking-[0.1em]">Expert Speakers</p>
               </div>
               <div className="hidden sm:block w-px h-10 bg-border-light" />

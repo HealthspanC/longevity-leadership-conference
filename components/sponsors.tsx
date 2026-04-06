@@ -511,6 +511,29 @@ export function Sponsors() {
             ))}
           </div>
         </FadeIn>
+
+        {/* Venue Partner */}
+        <FadeIn delay={200}>
+          <div className="max-w-[900px] mx-auto mb-14">
+            <div className="flex flex-col items-center gap-4">
+              <span className="text-[0.65rem] font-bold tracking-[0.25em] uppercase text-text-muted">
+                Venue Partner
+              </span>
+              <a
+                href="#venue"
+                className="group relative flex items-center justify-center w-full max-w-[280px] py-8 px-10 rounded-[16px] bg-white ring-1 ring-border-light transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.15)] hover:-translate-y-0.5 hover:ring-purple-mid/20"
+              >
+                <Image
+                  src="/sponsors/verizon.png"
+                  alt="Verizon"
+                  width={220}
+                  height={48}
+                  className="object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                />
+              </a>
+            </div>
+          </div>
+        </FadeIn>
       </div>
 
       {modalSponsor && (

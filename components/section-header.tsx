@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
-  label: string;
+  label?: string;
   title: string;
   accentWord?: string | string[];
   subtitle?: string;
@@ -22,16 +22,18 @@ export function SectionHeader({
 
   return (
     <div className={cn(centered && "text-center", "mb-14")}>
-      <span
-        className={cn(
-          "inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase mb-3.5",
-          dark ? "text-purple-light" : "text-purple-mid",
-          "before:content-[''] before:w-6 before:h-px",
-          dark ? "before:bg-purple-light" : "before:bg-purple-mid"
-        )}
-      >
-        {label}
-      </span>
+      {label && (
+        <span
+          className={cn(
+            "inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase mb-3.5",
+            dark ? "text-purple-light" : "text-purple-mid",
+            "before:content-[''] before:w-6 before:h-px",
+            dark ? "before:bg-purple-light" : "before:bg-purple-mid"
+          )}
+        >
+          {label}
+        </span>
+      )}
       <h2
         className={cn(
           "font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold leading-[1.15] mb-4",

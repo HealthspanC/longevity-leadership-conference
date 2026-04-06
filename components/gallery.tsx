@@ -24,7 +24,7 @@ const IMAGES: GalleryTile[] = [
   { src: "/gallery/HX4A4146.jpg",  alt: "Tru Niagen booth",                   shape: "tall", position: "center 60%" },
   { src: "/gallery/DSC01036.JPG",  alt: "Hosts with sponsors at step-and-repeat", shape: "wide" },
   { src: "/gallery/HX4A3879.jpg",  alt: "Attendees chatting at vendor booth",  shape: "tall" },
-  { src: "/gallery/DSC02303.jpg",  alt: "Panel discussion on stage",          shape: "wide" },
+  { src: "/gallery/HX4A4038.jpg",  alt: "Panel discussion on stage",          shape: "wide" },
   { src: "/gallery/HX4A3785.jpg",  alt: "Vendor booth conversation",          shape: "square", position: "30% center" },
   { src: "/gallery/HX4A3829.jpg",  alt: "OsteoStrong booth",                  shape: "square" },
   { src: "/gallery/DSC01153.JPG",  alt: "Speakers presenting on main stage",  shape: "wide" },

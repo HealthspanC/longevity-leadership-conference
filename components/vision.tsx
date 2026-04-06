@@ -130,8 +130,8 @@ export function Vision() {
             <div className="max-w-[820px] mx-auto text-center mb-20 lg:mb-24">
               <SectionHeader
                 label="About the Conference"
-                title="Built for the Builders"
-                accentWord="Builders"
+                title="For Industry Insiders"
+                accentWord="Insiders"
                 centered
               />
 
@@ -152,7 +152,7 @@ export function Vision() {
               <div className="mt-7 flex items-center justify-center gap-3">
                 <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-light/20">
                   <Image
-                    src="/hosts/elias.jpg"
+                    src="/hosts/elias-1.png"
                     alt="Elias Arjan"
                     width={80}
                     height={80}

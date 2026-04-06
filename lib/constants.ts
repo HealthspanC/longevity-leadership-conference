@@ -50,7 +50,7 @@ export const HOSTS = [
   {
     name: "Elias Arjan",
     title: "Founder/CEO - Healthspan Collective",
-    image: "/hosts/elias.jpg",
+    image: "/hosts/elias-1.png",
     imagePosition: "center 20%",
     bio: "Elias Arjan is the host and visionary behind the Healthspan Productions, and a leading healthspan advocate, educator, and speaker. As a co-founder of PRUVN Research, Elias is known for his relentless commitment to evidence-based wellness and cutting-edge longevity science.",
     social: {
@@ -103,6 +103,13 @@ export const SPEAKERS = [
     bio: "Ashley Hines is a clinical skincare educator with a background in the beauty industry who now focuses on advancing evidence-based approaches to skin health. Her work centers on translating the science of skin aging, barrier repair, and peptide signaling into practical education for clinicians, estheticians, and skin professionals.",
   },
   {
+    name: "Gayland Hethcoat",
+    role: "Counsel at ArentFox Schiff",
+    tag: "Keynote" as const,
+    image: "/speakers/gayland-hethcoat.png",
+    bio: "Gayland Hethcoat is an attorney specializing in privacy, compliance, and transactional matters for health care providers and longevity companies. He is Counsel at ArentFox Schiff, where he co-leads the firm's Longevity & Healthspan Industry Group – a cross-sector initiative supporting the longevity ecosystem and the first of its kind among Am Law 100 law firms.\n\nGayland's clients include longevity medical clinics, biomarker testing companies, digital health platforms, and other businesses operating at the frontier of healthspan, preventive care, and technological innovation. He is frequently sought to advise on complex and cutting-edge legal and regulatory issues and is also a key member of deal teams for mergers, acquisitions, and other strategic transactions involving health care and health technology businesses.",
+  },
+  {
     name: "Dr. Resham Uttamchandani, MD",
     role: "ConciergeMD",
     tag: "Keynote" as const,
@@ -122,6 +129,34 @@ export const SPEAKERS = [
     tag: "Keynote" as const,
     image: "/speakers/josephine-musco.png",
     bio: "Josephine Musco is an inventor, CEO, and patent holder operating at the forefront of biotechnology, wellness innovation, and brand architecture. She is the founder of Olyxir, as well as House of Malakai and Château Bellevue, where she has transformed proprietary intellectual property into high growth, globally positioned companies.\n\nHer work focuses on translating advanced science, formulation, and systems thinking into scalable consumer and performance driven solutions. As an internationally sought after speaker, Musco presents on longevity, innovation, and the future of human optimization at conferences around the world. She is recognized for bridging scientific rigor with visionary leadership to build enduring, category defining enterprises.",
+  },
+  {
+    name: "Dr. Sara Soulati",
+    role: "Founder of Intelligence Circulation™",
+    tag: "Keynote" as const,
+    image: "/speakers/dr-sara-soulati.jpg",
+    bio: "Sara Soulati is a global pioneer of circulation-based therapy and the founder of Intelligence Circulation™.\n\nSince launching the world's first outpatient circulation clinic in 1996, she has built and scaled the largest network of circulation centers, delivering 300,000+ clinical sessions to over 24,000 patients. She later evolved this work into The Second Heart Experience™, redefining cardiovascular care and performance optimization—working with elite athletes across the U.S. Olympic Sprint Team, NFL, NBA, and world-champion boxers.\n\nAs founder of Soulaire, Soulati is advancing a new era of human well-being by transforming circulation from a last-resort intervention into a foundation for vitality, longevity, and peak performance.",
+  },
+  {
+    name: "Jeremy Hoffmann",
+    role: "Founder & CEO, Quantum Wellness Spa",
+    tag: "Keynote" as const,
+    image: "/speakers/jeremy-hoffmann.jpg",
+    bio: "Jeremy Hoffmann is an entrepreneur and investor passionate about building businesses and communities that expand human aliveness.\n\nAs founder & CEO of Quantum Wellness Spa, Adapt or Die Cafe, and Not Coffee he pioneers intentional wellness experiences that reset the nervous system and foster connection to self and others.",
+  },
+  {
+    name: "Nick Capozzi",
+    role: "Revenue & Sales Leader in Longevity",
+    tag: "Keynote" as const,
+    image: "/speakers/nick-capozzi.jpg",
+    bio: "Nick Capozzi is a revenue and sales leader with 25+ years of experience across multiple industries, with the last several years focused exclusively on longevity, healthspan, and wellness. He has held fractional CRO roles with some of the most innovative companies in the space and now works directly with clinics and practitioners to help them build the revenue systems their clinical expertise deserves.\n\nNick understands the science well enough to sell it, and the business well enough to build around it.",
+  },
+  {
+    name: "Reshma Patel, PA-C",
+    role: "Founder, Ananda Integrative Medicine",
+    tag: "Keynote" as const,
+    image: "/speakers/reshma-patel.png",
+    bio: "Reshma Patel, PA-C, combines conventional western medicine with an integrative, functional and holistic approach to wellness at Ananda Integrative Medicine, in Los Angeles.\n\nBoard Certified by NCCPA · Certified by Women's Hormone Network · Certified Genomics Provider by Fagron Genomic US · Certified Genomics Provider by Nutrition Genome · Certified Functional Nutrition by MindBodyGreen · Member of The Menopause Society · Member of A4M (American Academy of Anti Aging Medicine)",
   },
 ] as const;
 

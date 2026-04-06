@@ -291,10 +291,11 @@ export function EventDeck() {
                 <div>
                   <Link
                     href={LINKS.tickets}
-                    className="inline-flex items-center gap-2.5 bg-white text-purple-deep py-4 px-9 rounded-full font-bold text-[0.95rem] transition-all hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
+                    className="group/btn relative inline-flex items-center gap-2.5 bg-white text-purple-deep py-4 px-9 rounded-full font-bold text-[0.95rem] transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_40px_rgba(91,58,140,0.4)] hover:bg-gradient-to-r hover:from-white hover:to-purple-light/10"
                   >
-                    Secure Your Seat
-                    <ChevronRight className="w-4 h-4" />
+                    <span className="absolute inset-0 rounded-full opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_50%_100%,rgba(91,58,140,0.15),transparent_70%)]" />
+                    <span className="relative">Secure Your Seat</span>
+                    <ChevronRight className="relative w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                   </Link>
                 </div>
               </div>

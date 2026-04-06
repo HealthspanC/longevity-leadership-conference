@@ -255,6 +255,7 @@ export function EventDeck() {
               aria-hidden="true"
             />
             <div className="absolute inset-0 bg-[#0d0a14]/50" />
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-b from-transparent to-[#0d0a14]" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-purple/[0.06] blur-[150px]" />
           </div>
 
@@ -302,6 +303,10 @@ export function EventDeck() {
             </FadeIn>
           </div>
         </div>
+
+        {/* ── Gradient blend into purple divider ── */}
+        <div className="h-16 bg-gradient-to-b from-[#0d0a14] to-purple-deep" />
+        <div className="dark-panel-texture bg-purple-deep h-3" />
       </section>
     </>
   );

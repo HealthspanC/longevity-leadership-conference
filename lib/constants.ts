@@ -89,7 +89,7 @@ export const SPEAKERS = [
   {
     name: "Paola Tefler",
     role: "Founder/CEO of SENS.AI",
-    tag: "Panelist" as const,
+    tag: "Keynote" as const,
     image: "/speakers/paola-telfer.png",
     imagePosition: "center 15%",
     bio: "Paola is a tech entrepreneur with a passion to develop technology that improves lives! Electrical Engineer, MBA in the Management of Technology and Singularity University Alumni. Life-long explorer of human consciousness development and member of the Space-Aging Research Institute (SARI) XPRIZE team.",
@@ -97,7 +97,7 @@ export const SPEAKERS = [
   {
     name: "Ashley Hines",
     role: "Health, Beauty & Technology Advocate",
-    tag: "Moderator" as const,
+    tag: "Keynote" as const,
     image: "/speakers/ashley-hines.jpg",
     imagePosition: "center 30%",
     bio: "Ashley Hines is a clinical skincare educator with a background in the beauty industry who now focuses on advancing evidence-based approaches to skin health. Her work centers on translating the science of skin aging, barrier repair, and peptide signaling into practical education for clinicians, estheticians, and skin professionals.",
@@ -105,7 +105,7 @@ export const SPEAKERS = [
   {
     name: "Dr. Resham Uttamchandani, MD",
     role: "ConciergeMD",
-    tag: "Panelist" as const,
+    tag: "Keynote" as const,
     image: "/speakers/resham-uttamchandani.jpg",
     bio: "Double board-certified physician in Family and Obesity Medicine with specialized training in metabolic health, functional medicine, and longevity. She earned her medical degree from the American University of the Caribbean and completed her Family Medicine residency at Eisenhower Medical Center.",
   },
@@ -119,7 +119,7 @@ export const SPEAKERS = [
   {
     name: "Josephine Musco",
     role: "Biotech & Wellness Innovation",
-    tag: "Moderator" as const,
+    tag: "Keynote" as const,
     image: "/speakers/josephine-musco.png",
     bio: "Josephine Musco is an inventor, CEO, and patent holder operating at the forefront of biotechnology, wellness innovation, and brand architecture. She is the founder of Olyxir, as well as House of Malakai and Château Bellevue, where she has transformed proprietary intellectual property into high growth, globally positioned companies.\n\nHer work focuses on translating advanced science, formulation, and systems thinking into scalable consumer and performance driven solutions. As an internationally sought after speaker, Musco presents on longevity, innovation, and the future of human optimization at conferences around the world. She is recognized for bridging scientific rigor with visionary leadership to build enduring, category defining enterprises.",
   },

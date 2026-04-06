@@ -9,7 +9,7 @@ import { INVOLVE_CARDS } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
 
-const TOTAL_SLIDES = 20;
+const TOTAL_SLIDES = 17;
 const slides = Array.from({ length: TOTAL_SLIDES }, (_, i) => {
   const num = String(i + 1).padStart(2, "0");
   return `/deck/slide-${num}.jpg`;

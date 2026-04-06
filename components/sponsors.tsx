@@ -84,38 +84,22 @@ function RevealHeader() {
   );
 }
 
-/* ── Placeholder Logo ── */
+/* ── Sponsor Logo ── */
 function SponsorLogo({
   sponsor,
   className,
-  dark = false,
 }: {
   sponsor: Sponsor;
   className?: string;
-  dark?: boolean;
 }) {
-  if (sponsor.logo) {
-    return (
-      <Image
-        src={sponsor.logo}
-        alt={sponsor.name}
-        width={300}
-        height={200}
-        className={cn("max-h-full max-w-full object-contain", className)}
-      />
-    );
-  }
-
   return (
-    <span
-      className={cn(
-        "font-serif text-[1.5rem] font-bold text-center leading-tight px-4",
-        dark ? "text-white/70" : "text-purple-mid/60",
-        className
-      )}
-    >
-      {sponsor.name}
-    </span>
+    <Image
+      src={sponsor.logo}
+      alt={sponsor.name}
+      width={300}
+      height={200}
+      className={cn("max-h-full max-w-full object-contain", className)}
+    />
   );
 }
 
@@ -465,7 +449,7 @@ function SponsorModal({
             ))}
           </div>
 
-          {sponsor.website && sponsor.website !== "#" && (
+          {sponsor.website && (
             <a
               href={sponsor.website}
               target="_blank"
@@ -498,16 +482,34 @@ export function Sponsors() {
       <div className="max-w-[1140px] mx-auto px-6">
         <RevealHeader />
 
-        {/* Desktop: Scrollable reel */}
+        {/* Sponsor grid */}
         <FadeIn delay={100}>
-          <div className="hidden lg:block mb-14">
-            <SponsorReel onOpenModal={setModalSponsor} />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6 max-w-[900px] mx-auto mb-14">
+            {SPONSORS.map((sponsor, i) => (
+              <div
+                key={i}
+                className="cursor-pointer"
+                onClick={() => setModalSponsor(sponsor)}
+              >
+                <div className="relative rounded-[14px] sm:rounded-[18px] overflow-hidden transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.25)] hover:-translate-y-0.5 ring-1 ring-purple-mid/[0.12] hover:ring-purple-mid/[0.25]">
+                  {/* Logo area */}
+                  <div className="relative w-full aspect-[4/3] bg-white flex items-center justify-center p-8 sm:p-10">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(91,58,140,0.06),transparent_70%)]" />
+                    <SponsorLogo sponsor={sponsor} className="relative z-[1]" />
+                  </div>
+                  {/* Info below */}
+                  <div className="p-4 sm:p-5 bg-gradient-to-br from-purple-deep via-[#3c2066] to-[#2d1b4e]">
+                    <p className="text-[0.78rem] text-white/50 leading-relaxed mb-2 line-clamp-1">
+                      {sponsor.tagline}
+                    </p>
+                    <h4 className="font-serif text-base font-bold text-white leading-tight">
+                      {sponsor.name}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </FadeIn>
-
-        {/* Mobile: Swipeable carousel */}
-        <FadeIn delay={100}>
-          <MobileSponsorCarousel onOpenModal={setModalSponsor} />
         </FadeIn>
       </div>
 

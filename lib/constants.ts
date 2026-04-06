@@ -127,52 +127,28 @@ export const SPEAKERS = [
 
 export const SPONSORS = [
   {
-    name: "Sponsor One",
-    tagline: "Sponsor tagline goes here",
-    logo: null,
+    name: "Regen Therapy",
+    tagline: "Regenerative Medicine & Wellness",
+    logo: "/sponsors/regen-therapy.png",
     description:
-      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
-    website: "#",
+      "Regen Therapy is at the forefront of regenerative medicine, offering advanced therapeutic solutions designed to restore, rejuvenate, and optimize human health and performance.",
+    website: "https://regentherapy.com",
   },
   {
-    name: "Sponsor Two",
-    tagline: "Sponsor tagline goes here",
-    logo: null,
+    name: "Routine",
+    tagline: "Peptide Skincare Science",
+    logo: "/sponsors/routine.png",
     description:
-      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
-    website: "#",
+      "Routine is a peptide-powered skincare brand rooted in clinical science, delivering targeted formulations that support skin health, barrier repair, and longevity from the outside in.",
+    website: "https://routineskin.com",
   },
   {
-    name: "Sponsor Three",
-    tagline: "Sponsor tagline goes here",
-    logo: null,
+    name: "SENS.AI",
+    tagline: "Neurotechnology for Peak Performance",
+    logo: "/sponsors/sensai.png",
     description:
-      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
-    website: "#",
-  },
-  {
-    name: "Sponsor Four",
-    tagline: "Sponsor tagline goes here",
-    logo: null,
-    description:
-      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
-    website: "#",
-  },
-  {
-    name: "Sponsor Five",
-    tagline: "Sponsor tagline goes here",
-    logo: null,
-    description:
-      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
-    website: "#",
-  },
-  {
-    name: "Sponsor Six",
-    tagline: "Sponsor tagline goes here",
-    logo: null,
-    description:
-      "Sponsor description goes here. This is placeholder text that will be replaced with actual sponsor information once confirmed.",
-    website: "#",
+      "SENS.AI develops cutting-edge neurotechnology that empowers individuals to optimize brain health, cognitive performance, and overall well-being through personalized neurofeedback solutions.",
+    website: "https://sens.ai",
   },
 ] as const;
 

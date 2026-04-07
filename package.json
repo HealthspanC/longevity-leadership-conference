@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "@vimeo/player": "^2.30.3",
     "clsx": "^2.1.1",
     "lucide-react": "^0.511.0",

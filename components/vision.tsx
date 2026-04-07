@@ -139,7 +139,7 @@ export function Vision() {
                 <span className="absolute -top-4 -left-2 text-[4rem] leading-none text-purple-light/25 font-serif select-none">
                   &ldquo;
                 </span>
-                Every meaningful shift in medicine started with a small group
+                Every meaningful shift in society started with a small group
                 of people who trusted each other enough to think out loud.
                 That&rsquo;s what we&rsquo;re building here. The Longevity
                 Leadership Conference brings together the clinicians, founders,

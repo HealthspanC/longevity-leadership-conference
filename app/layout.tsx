@@ -14,6 +14,7 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://longevityleadershipconference.com"),
   title: "3rd Annual Longevity Leadership Conference | April 30, 2026",

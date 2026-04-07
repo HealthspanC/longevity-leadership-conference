@@ -79,7 +79,7 @@ export default function TicketsPage() {
                 <iframe
                   src="https://luma.com/embed/event/evt-x1JHI9BBgriHX92/simple"
                   width="600"
-                  height="800"
+                  height="1200"
                   frameBorder="0"
                   style={{
                     border: "none",

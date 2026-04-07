@@ -158,6 +158,13 @@ export const SPEAKERS = [
     image: "/speakers/reshma-patel.png",
     bio: "Reshma Patel, PA-C, combines conventional western medicine with an integrative, functional and holistic approach to wellness at Ananda Integrative Medicine, in Los Angeles.\n\nBoard Certified by NCCPA · Certified by Women's Hormone Network · Certified Genomics Provider by Fagron Genomic US · Certified Genomics Provider by Nutrition Genome · Certified Functional Nutrition by MindBodyGreen · Member of The Menopause Society · Member of A4M (American Academy of Anti Aging Medicine)",
   },
+  {
+    name: "Dr. Kayte Susse",
+    role: "Clinical Educator & Strategic Advisor",
+    tag: "Keynote" as const,
+    image: "/speakers/dr-kayte-susse.jpg",
+    bio: "Dr. Kayte Susse is a Clinical Educator and Strategic Advisor for Regen Therapy, Generation Labs, and a portfolio of health and biotech ventures at the forefront of longevity and regenerative medicine. She translates advanced diagnostics and therapeutics into real-world applications across clinical, commercial, and educational settings.\n\nA recognized advocate for women's health and biotech safety — shaped in part by her own recovery from breast implant illness. She is the creator of Biohack Your Beauty, an educational platform exploring aesthetics, biotechnology, and human optimization.",
+  },
 ] as const;
 
 export const SPONSORS = [
@@ -184,6 +191,30 @@ export const SPONSORS = [
     description:
       "SENS.AI develops cutting-edge neurotechnology that empowers individuals to optimize brain health, cognitive performance, and overall well-being through personalized neurofeedback solutions.",
     website: "https://sens.ai",
+  },
+  {
+    name: "ConciergeMD",
+    tagline: "The Peptide Shot Bar",
+    logo: "/sponsors/concierge-md.png",
+    description:
+      "The Peptide Shot Bar is a physician-led, on-site wellness experience that gives guests direct access to cutting-edge peptide therapy in a fun, approachable format. A licensed medical provider is on-site to administer complimentary sample shots, answer questions, and guide each guest toward the peptide that best fits their health and wellness goals.",
+    website: "https://conciergemdla.com",
+  },
+  {
+    name: "ArentFox Schiff",
+    tagline: "Legal Counsel for Longevity & Healthspan",
+    logo: "/sponsors/afs-logo.png",
+    description:
+      "ArentFox Schiff is a nationally recognized law firm providing strategic legal counsel to companies and innovators across the longevity and healthspan ecosystem.",
+    website: "https://arentfox.com",
+  },
+  {
+    name: "Pulse PEMF",
+    tagline: "Pulsed Electromagnetic Field Therapy",
+    logo: "/sponsors/pulse-pemf.png",
+    description:
+      "Pulse PEMF delivers advanced pulsed electromagnetic field technology designed to support cellular recovery, reduce inflammation, and enhance overall wellness and performance.",
+    website: "https://pulsepemf.com",
   },
 ] as const;
 

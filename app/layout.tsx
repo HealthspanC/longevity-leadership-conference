@@ -50,9 +50,9 @@ export const metadata: Metadata = {
     siteName: "Longevity Leadership Conference",
     images: [
       {
-        url: "https://longevityleadershipconference.com/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "https://longevityleadershipconference.com/og-image2.png",
+        width: 1000,
+        height: 1000,
         alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
       },
     ],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: "3rd Annual Longevity Leadership Conference",
     description:
       "A Premium Executive Forum for the Longevity Industry. April 30, 2026.",
-    images: ["https://longevityleadershipconference.com/og-image.png"],
+    images: ["https://longevityleadershipconference.com/og-image2.png"],
   },
   robots: {
     index: true,

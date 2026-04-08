@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { TicketEmbed } from "@/components/ticket-embed";
 import { SITE } from "@/lib/constants";
 import { MapPin, Calendar, Clock } from "lucide-react";
 
@@ -62,38 +63,7 @@ export default function TicketsPage() {
           <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/[0.03] to-transparent pointer-events-none" />
 
           <div className="relative max-w-[800px] mx-auto px-6">
-            {/* Embed card with premium border */}
-            <div className="bg-white rounded-[20px] ring-1 ring-purple-mid/[0.1] shadow-[0_8px_40px_rgba(91,58,140,0.08)] overflow-hidden">
-              {/* Card header */}
-              <div className="px-8 pt-8 pb-4 text-center border-b border-black/[0.04]">
-                <h2 className="font-serif text-[1.4rem] font-bold text-text mb-1">
-                  Select Your Ticket
-                </h2>
-                <p className="text-[0.85rem] text-text-secondary">
-                  Limited availability &mdash; early registration recommended
-                </p>
-              </div>
-
-              {/* Luma embed */}
-              <div className="flex justify-center p-6 md:p-8">
-                <iframe
-                  src="https://luma.com/embed/event/evt-x1JHI9BBgriHX92/simple"
-                  width="600"
-                  height="1200"
-                  frameBorder="0"
-                  loading="lazy"
-                  style={{
-                    border: "none",
-                    borderRadius: "8px",
-                    maxWidth: "100%",
-                  }}
-                  allow="fullscreen; payment"
-                  aria-hidden="false"
-                  tabIndex={0}
-                  title="Get tickets on Luma"
-                />
-              </div>
-            </div>
+            <TicketEmbed />
 
             {/* Trust signals */}
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-center">

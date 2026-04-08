@@ -144,7 +144,7 @@ export function Navbar() {
               alt="Healthspan Collective"
               width={3309}
               height={986}
-              priority
+              sizes="(max-width: 768px) 280px, 468px"
               className={cn(
                 "h-[52px] md:h-[65px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
                 scrolled ? "opacity-100" : "opacity-0"
@@ -157,6 +157,8 @@ export function Navbar() {
               width={3230}
               height={786}
               priority
+              quality={100}
+              sizes="(max-width: 768px) 280px, 468px"
               className={cn(
                 "h-[62px] md:h-[70px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
                 scrolled ? "opacity-0" : "opacity-100"

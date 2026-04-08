@@ -4,9 +4,9 @@
     {
       "name": "llc-dev",
       "runtimeExecutable": "/usr/local/bin/node",
-      "runtimeArgs": ["/usr/local/bin/npx", "next", "dev", "--port", "3001"],
+      "runtimeArgs": ["/usr/local/bin/npx", "next", "dev"],
       "env": { "PATH": "/usr/local/bin:/usr/bin:/bin" },
-      "port": 3001
+      "autoPort": true
     }
   ]
 }

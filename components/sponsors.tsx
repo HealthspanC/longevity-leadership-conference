@@ -420,10 +420,10 @@ function SponsorModal({
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all md:top-4 md:right-4"
+          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-purple-deep/8 backdrop-blur-sm flex items-center justify-center text-purple-deep/40 hover:text-purple-deep hover:bg-purple-deep/12 md:bg-white/8 md:text-white/40 md:hover:text-white md:hover:bg-white/15 transition-all duration-200 cursor-pointer"
           aria-label="Close"
         >
-          <X className="w-4 h-4" />
+          <X className="w-[18px] h-[18px] stroke-[1.5]" />
         </button>
 
         {/* Logo side — white */}

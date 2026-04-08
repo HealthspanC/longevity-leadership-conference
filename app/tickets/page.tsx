@@ -81,6 +81,7 @@ export default function TicketsPage() {
                   width="600"
                   height="1200"
                   frameBorder="0"
+                  loading="lazy"
                   style={{
                     border: "none",
                     borderRadius: "8px",

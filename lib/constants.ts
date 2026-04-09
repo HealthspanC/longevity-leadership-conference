@@ -182,7 +182,7 @@ export const SPONSORS = [
     logo: "/sponsors/routine.png",
     description:
       "Routine is a peptide-powered skincare brand rooted in clinical science, delivering targeted formulations that support skin health, barrier repair, and longevity from the outside in.",
-    website: "https://routineskin.com",
+    website: "https://www.routineskin.com/healthspancollective",
   },
   {
     name: "SENS.AI",

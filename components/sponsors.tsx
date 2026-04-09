@@ -104,53 +104,107 @@ function SponsorLogo({
 }
 
 /* ── Desktop: Horizontal scrolling reel ── */
+function SponsorCard({
+  sponsor,
+  onOpenModal,
+}: {
+  sponsor: Sponsor;
+  onOpenModal: (sponsor: Sponsor) => void;
+}) {
+  return (
+    <div
+      className="shrink-0 w-[260px] cursor-pointer"
+      onClick={() => onOpenModal(sponsor)}
+    >
+      <div className="relative rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.25)] hover:-translate-y-0.5 ring-1 ring-purple-mid/[0.12] hover:ring-purple-mid/[0.25]">
+        {/* Logo area — white with radial glow */}
+        <div className="relative w-full aspect-[4/3] bg-white flex items-center justify-center p-8">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(91,58,140,0.06),transparent_70%)]" />
+          <SponsorLogo sponsor={sponsor} className="relative z-[1]" />
+        </div>
+        {/* Info below — dark purple */}
+        <div className="p-4 bg-gradient-to-br from-purple-deep via-[#3c2066] to-[#2d1b4e]">
+          <p className="text-[0.78rem] text-white/50 leading-relaxed mb-3 line-clamp-1">
+            {sponsor.tagline}
+          </p>
+          <h4 className="font-serif text-base font-bold text-white leading-tight">
+            {sponsor.name}
+          </h4>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SponsorReel({
   onOpenModal,
 }: {
   onOpenModal: (sponsor: Sponsor) => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeftPos = useRef(0);
-  const didDrag = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
+  const pauseTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    isDragging.current = true;
-    didDrag.current = false;
-    startX.current = e.clientX;
-    scrollLeftPos.current = el.scrollLeft;
-    el.style.scrollSnapType = "none";
-  }, []);
+  // Card width (260) + gap (20) = 280px per item
+  const itemWidth = 280;
+  const totalWidth = SPONSORS.length * itemWidth;
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    const el = scrollRef.current;
+  // Start marquee only when section is visible
+  useEffect(() => {
+    const el = containerRef.current;
     if (!el) return;
-    const dx = e.clientX - startX.current;
-    if (Math.abs(dx) > 5) didDrag.current = true;
-    el.scrollLeft = scrollLeftPos.current - dx;
-  }, []);
-
-  const handleMouseUp = useCallback(() => {
-    if (!isDragging.current) return;
-    isDragging.current = false;
-    const el = scrollRef.current;
-    if (!el) return;
-    el.style.scrollSnapType = "";
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   const scroll = useCallback((dir: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    const amount = 280;
-    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
+    // Pause auto-scroll briefly after manual navigation
+    setPaused(true);
+    if (pauseTimeout.current) clearTimeout(pauseTimeout.current);
+    pauseTimeout.current = setTimeout(() => setPaused(false), 4000);
+    el.scrollBy({ left: dir === "left" ? -itemWidth : itemWidth, behavior: "smooth" });
   }, []);
 
+  // Auto-scroll: smoothly increment scrollLeft, loop seamlessly
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || paused || !inView) return;
+    let raf: number;
+    let last = performance.now();
+    const speed = 0.5; // px per frame at 60fps feel — slow & elegant
+
+    const tick = (now: number) => {
+      const dt = now - last;
+      last = now;
+      el.scrollLeft += speed * (dt / 16.67);
+      // Seamless loop: when we've scrolled past the first set, jump back
+      if (el.scrollLeft >= totalWidth) {
+        el.scrollLeft -= totalWidth;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [paused, inView, totalWidth]);
+
   return (
-    <div className="relative">
+    <div
+      ref={containerRef}
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => {
+        if (pauseTimeout.current) clearTimeout(pauseTimeout.current);
+        setPaused(false);
+      }}
+    >
       {/* Arrow controls — top right */}
       <div className="flex items-center justify-end mb-5">
         <div className="flex gap-2">
@@ -171,41 +225,19 @@ function SponsorReel({
         </div>
       </div>
 
-      {/* Scrollable row */}
+      {/* Infinite scrolling row — duplicated for seamless loop */}
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 cursor-grab select-none"
+        className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 select-none"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
       >
+        {/* First set */}
         {SPONSORS.map((sponsor, i) => (
-          <div
-            key={i}
-            className="shrink-0 w-[260px] cursor-pointer"
-            onClick={() => {
-              if (!didDrag.current) onOpenModal(sponsor);
-            }}
-          >
-            <div className="relative rounded-[14px] overflow-hidden transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.25)] hover:-translate-y-0.5 ring-1 ring-purple-mid/[0.12] hover:ring-purple-mid/[0.25]">
-              {/* Logo area — white with radial glow */}
-              <div className="relative w-full aspect-[4/3] bg-white flex items-center justify-center p-8">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(91,58,140,0.06),transparent_70%)]" />
-                <SponsorLogo sponsor={sponsor} className="relative z-[1]" />
-              </div>
-              {/* Info below — dark purple */}
-              <div className="p-4 bg-gradient-to-br from-purple-deep via-[#3c2066] to-[#2d1b4e]">
-                <p className="text-[0.78rem] text-white/50 leading-relaxed mb-3 line-clamp-1">
-                  {sponsor.tagline}
-                </p>
-                <h4 className="font-serif text-base font-bold text-white leading-tight">
-                  {sponsor.name}
-                </h4>
-              </div>
-            </div>
-          </div>
+          <SponsorCard key={`a-${i}`} sponsor={sponsor} onOpenModal={onOpenModal} />
+        ))}
+        {/* Duplicate set for seamless loop */}
+        {SPONSORS.map((sponsor, i) => (
+          <SponsorCard key={`b-${i}`} sponsor={sponsor} onOpenModal={onOpenModal} />
         ))}
       </div>
     </div>

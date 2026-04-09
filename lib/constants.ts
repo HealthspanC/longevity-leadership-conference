@@ -216,6 +216,14 @@ export const SPONSORS = [
       "Pulse PEMF delivers advanced pulsed electromagnetic field technology designed to support cellular recovery, reduce inflammation, and enhance overall wellness and performance.",
     website: "https://pulsepemf.com",
   },
+  {
+    name: "Sensate",
+    tagline: "Vagus Nerve Stimulation Technology",
+    logo: "/sponsors/sensate.png",
+    description:
+      "Sensate is a wearable device that uses patented infrasonic resonance technology to tone the vagus nerve, helping users manage stress, improve sleep, and enhance relaxation in just 10 minutes a day.",
+    website: "https://us.getsensate.com",
+  },
 ] as const;
 
 export const INVOLVE_CARDS = [

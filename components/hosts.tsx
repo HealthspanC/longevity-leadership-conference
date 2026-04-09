@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { LINKS, HOSTS } from "@/lib/constants";
-import { Instagram, Linkedin, Youtube } from "lucide-react";
+import { Instagram, Linkedin, Youtube, X } from "lucide-react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
+
+type Host = (typeof HOSTS)[number];
 
 const socialIcons = {
   linkedin: Linkedin,
@@ -14,115 +17,244 @@ const socialIcons = {
   youtube: Youtube,
 } as const;
 
+/* ── Host Modal (tablet only, portaled to body) ── */
+function HostModal({
+  host,
+  onClose,
+}: {
+  host: Host;
+  onClose: () => void;
+}) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger entrance animation on next frame
+    requestAnimationFrame(() => setVisible(true));
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      className={cn(
+        "fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300",
+        visible ? "opacity-100" : "opacity-0"
+      )}
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/70" />
+
+      <div
+        className={cn(
+          "relative bg-purple-deep rounded-[20px] overflow-hidden max-w-[720px] w-full max-h-[85vh] shadow-[0_25px_80px_rgba(0,0,0,0.3)] flex flex-row transition-all duration-300",
+          visible
+            ? "opacity-100 scale-100 translate-y-0"
+            : "opacity-0 scale-95 translate-y-4"
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/8 backdrop-blur-sm flex items-center justify-center text-white/40 hover:text-white hover:bg-white/15 transition-all duration-200 cursor-pointer"
+          aria-label="Close"
+        >
+          <X className="w-[18px] h-[18px] stroke-[1.5]" />
+        </button>
+
+        {/* Photo side */}
+        <div className="relative w-[42%] shrink-0 min-h-[400px]">
+          <Image
+            src={host.image}
+            alt={host.name}
+            fill
+            className="object-cover"
+            style={{
+              objectPosition:
+                "imagePosition" in host ? host.imagePosition : "center 20%",
+            }}
+            sizes="320px"
+          />
+          <div className="absolute inset-0 bg-purple-deep/10 mix-blend-multiply" />
+        </div>
+
+        {/* Content side */}
+        <div className="flex-1 overflow-y-auto p-8 flex flex-col justify-center bg-gradient-to-br from-purple-deep via-[#3c2066] to-[#2d1b4e]">
+          <span className="text-[0.6rem] font-bold tracking-[0.2em] uppercase text-purple-light mb-2.5 block">
+            {host.title}
+          </span>
+          <h3 className="font-serif text-[1.8rem] font-bold text-white leading-tight mb-4">
+            {host.name}
+          </h3>
+          <p className="text-[0.88rem] text-white/65 leading-[1.75] mb-6">
+            {host.bio}
+          </p>
+
+          {/* Social links */}
+          <div className="flex gap-3">
+            {(
+              Object.entries(host.social) as [
+                keyof typeof socialIcons,
+                string,
+              ][]
+            ).map(([platform, url]) => {
+              const Icon = socialIcons[platform];
+              return (
+                <a
+                  key={platform}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={platform}
+                  className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.12] flex items-center justify-center text-white/60 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function HostCards() {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [modalHost, setModalHost] = useState<Host | null>(null);
+
+  const handleCardClick = useCallback(
+    (host: Host) => {
+      // md+ (768px+): open modal; mobile: tap to expand inline
+      if (window.innerWidth >= 768) {
+        setExpanded(null);
+        setModalHost(host);
+      } else {
+        setExpanded((prev) => (prev === host.name ? null : host.name));
+      }
+    },
+    []
+  );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-16">
-      {HOSTS.map((host, i) => {
-        const isOpen = expanded === host.name;
-        return (
-          <FadeIn key={host.name} delay={i * 120}>
-            <div
-              className={cn(
-                "group relative rounded-[16px] overflow-hidden cursor-pointer transition-shadow duration-500",
-                "hover:shadow-[0_0_30px_rgba(168,124,224,0.2)]",
-                isOpen && "!shadow-[0_0_30px_rgba(168,124,224,0.2)]"
-              )}
-              onClick={() => setExpanded(isOpen ? null : host.name)}
-            >
-              <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-bg">
-                <Image
-                  src={host.image}
-                  alt={host.name}
-                  fill
-                  className={cn(
-                    "object-cover transition-transform duration-700 ease-out",
-                    "group-hover:scale-[1.05]",
-                    isOpen && "!scale-[1.05]"
-                  )}
-                  style={{
-                    objectPosition:
-                      "imagePosition" in host
-                        ? host.imagePosition
-                        : "center 20%",
-                  }}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-16">
+        {HOSTS.map((host, i) => {
+          const isOpen = expanded === host.name;
+          return (
+            <FadeIn key={host.name} delay={i * 120}>
+              <div
+                className={cn(
+                  "group relative rounded-[16px] overflow-hidden cursor-pointer transition-shadow duration-500",
+                  "hover:shadow-[0_0_30px_rgba(168,124,224,0.2)]",
+                  isOpen && "max-md:!shadow-[0_0_30px_rgba(168,124,224,0.2)]"
+                )}
+                onClick={() => handleCardClick(host)}
+              >
+                <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-bg">
+                  <Image
+                    src={host.image}
+                    alt={host.name}
+                    fill
+                    className={cn(
+                      "object-cover transition-transform duration-700 ease-out",
+                      "group-hover:scale-[1.05]",
+                      isOpen && "max-md:!scale-[1.05]"
+                    )}
+                    style={{
+                      objectPosition:
+                        "imagePosition" in host
+                          ? host.imagePosition
+                          : "center 20%",
+                    }}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
 
-                {/* Subtle purple tint overlay */}
-                <div className="absolute inset-0 bg-purple-deep/15 mix-blend-multiply" />
+                  {/* Subtle purple tint overlay */}
+                  <div className="absolute inset-0 bg-purple-deep/15 mix-blend-multiply" />
 
-                {/* Bottom gradient — default */}
-                <div className={cn(
-                  "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500",
-                  "group-hover:opacity-0",
-                  isOpen && "!opacity-0"
-                )} />
-                {/* Bottom gradient — expanded (taller, denser) */}
-                <div className={cn(
-                  "absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 via-60% to-transparent transition-opacity duration-500",
-                  "opacity-0 group-hover:opacity-100",
-                  isOpen && "!opacity-100"
-                )} />
-
-                {/* Name + Title + Bio */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
-                  <div className="inline-flex mb-2">
-                    <span className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3.5 py-1">
-                      {host.title}
-                    </span>
-                  </div>
-                  <h3 className={cn(
-                    "font-serif text-2xl md:text-[1.7rem] font-bold text-white leading-tight mb-0 transition-all duration-500",
-                    "group-hover:mb-3",
-                    isOpen && "!mb-3"
-                  )}>
-                    {host.name}
-                  </h3>
-
-                  {/* Bio — tap on mobile, hover on desktop */}
+                  {/* Bottom gradient — default */}
                   <div className={cn(
-                    "max-h-0 opacity-0 transition-all duration-500 ease-out overflow-hidden",
-                    "md:group-hover:max-h-[300px] md:group-hover:opacity-100",
-                    isOpen && "!max-h-[300px] !opacity-100"
-                  )}>
-                    <p className="text-[0.8rem] text-white/70 leading-relaxed md:mt-0">
-                      {host.bio}
-                    </p>
+                    "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500",
+                    "lg:group-hover:opacity-0",
+                    isOpen && "max-md:!opacity-0"
+                  )} />
+                  {/* Bottom gradient — expanded (taller, denser) */}
+                  <div className={cn(
+                    "absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 via-60% to-transparent transition-opacity duration-500",
+                    "opacity-0 lg:group-hover:opacity-100",
+                    isOpen && "max-md:!opacity-100"
+                  )} />
 
-                    {/* Social */}
-                    <div className="flex gap-2.5 mt-3 mb-1">
-                      {(
-                        Object.entries(host.social) as [
-                          keyof typeof socialIcons,
-                          string,
-                        ][]
-                      ).map(([platform, url]) => {
-                        const Icon = socialIcons[platform];
-                        return (
-                          <a
-                            key={platform}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={platform}
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-8 h-8 rounded-full bg-white/[0.15] border border-white/[0.2] flex items-center justify-center text-white/80 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
-                          >
-                            <Icon className="w-3.5 h-3.5" />
-                          </a>
-                        );
-                      })}
+                  {/* Name + Title + Bio */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
+                    <div className="inline-flex mb-2">
+                      <span className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3.5 py-1">
+                        {host.title}
+                      </span>
+                    </div>
+                    <h3 className={cn(
+                      "font-serif text-2xl md:text-[1.7rem] font-bold text-white leading-tight mb-0 transition-all duration-500",
+                      "lg:group-hover:mb-3",
+                      isOpen && "max-md:!mb-3"
+                    )}>
+                      {host.name}
+                    </h3>
+
+                    {/* Bio — tap on mobile only, hover on lg+ desktop */}
+                    <div className={cn(
+                      "max-h-0 opacity-0 transition-all duration-500 ease-out overflow-hidden",
+                      "lg:group-hover:max-h-[300px] lg:group-hover:opacity-100",
+                      isOpen && "max-md:!max-h-[300px] max-md:!opacity-100"
+                    )}>
+                      <p className="text-[0.8rem] text-white/70 leading-relaxed md:mt-0">
+                        {host.bio}
+                      </p>
+
+                      {/* Social */}
+                      <div className="flex gap-2.5 mt-3 mb-1">
+                        {(
+                          Object.entries(host.social) as [
+                            keyof typeof socialIcons,
+                            string,
+                          ][]
+                        ).map(([platform, url]) => {
+                          const Icon = socialIcons[platform];
+                          return (
+                            <a
+                              key={platform}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={platform}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-8 h-8 rounded-full bg-white/[0.15] border border-white/[0.2] flex items-center justify-center text-white/80 transition-all hover:bg-white hover:text-purple-deep hover:border-white hover:-translate-y-0.5"
+                            >
+                              <Icon className="w-3.5 h-3.5" />
+                            </a>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </FadeIn>
-        );
-      })}
-    </div>
+            </FadeIn>
+          );
+        })}
+      </div>
+
+      {modalHost && (
+        <HostModal host={modalHost} onClose={() => setModalHost(null)} />
+      )}
+    </>
   );
 }
 

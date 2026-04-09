@@ -189,7 +189,7 @@ export function Vision() {
           </FadeIn>
 
           {/* ── Zone 3: Three Pillars ────────────────────────── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-20 lg:mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-20 lg:mb-24">
             {/* Who This Is For */}
             <FadeIn delay={0}>
               <div className="group relative bg-bg-card rounded-[16px] p-7 shadow-sm transition-all duration-350 hover:shadow-[0_8px_32px_rgba(91,58,140,0.12)] hover:-translate-y-0.5 h-full overflow-hidden ring-1 ring-border-light hover:ring-purple-mid/25">

@@ -34,7 +34,7 @@ const IMAGES: GalleryTile[] = [
   { src: "/gallery/HX4A3631.jpg",  alt: "Speaker presenting research",        shape: "square", position: "35% center" },
   { src: "/gallery/HX4A3785.jpg",  alt: "Vendor booth conversation",          shape: "square", position: "30% center" },
   { src: "/gallery/HX4A4078.jpg",  alt: "One-on-one conversation",            shape: "wide" },
-  { src: "/gallery/DSC01126.JPG",  alt: "Panelists at wellness session",      shape: "wide", position: "35% center" },
+  { src: "/gallery/DSC01126.JPG",  alt: "Panelists at wellness session",      shape: "wide", position: "46% center" },
   { src: "/gallery/DSC02355.jpg",  alt: "Hosts on stage",                     shape: "wide" },
   { src: "/gallery/HX4A4127.jpg",  alt: "Women chatting at booth",            shape: "tall", position: "35% center" },
   { src: "/gallery/DSC01209.JPG",  alt: "Medicine 4.0 keynote presentation",  shape: "wide" },

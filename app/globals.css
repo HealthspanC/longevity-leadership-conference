@@ -104,6 +104,12 @@ body {
 }
 @media (min-width: 768px) {
   .hero-video-iframe {
+    width: max(260%, 220vh);
+    height: max(260%, 160vh);
+  }
+}
+@media (min-width: 1024px) {
+  .hero-video-iframe {
     width: max(185%, 165vh);
     height: max(185%, 110vh);
   }

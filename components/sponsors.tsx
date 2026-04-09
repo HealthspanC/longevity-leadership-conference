@@ -157,7 +157,7 @@ function SponsorReel({
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.15 }
+      { threshold: 1.0 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -225,20 +225,25 @@ function SponsorReel({
         </div>
       </div>
 
-      {/* Infinite scrolling row — duplicated for seamless loop */}
-      <div
-        ref={scrollRef}
-        className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 select-none"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {/* First set */}
-        {SPONSORS.map((sponsor, i) => (
-          <SponsorCard key={`a-${i}`} sponsor={sponsor} onOpenModal={onOpenModal} />
-        ))}
-        {/* Duplicate set for seamless loop */}
-        {SPONSORS.map((sponsor, i) => (
-          <SponsorCard key={`b-${i}`} sponsor={sponsor} onOpenModal={onOpenModal} />
-        ))}
+      {/* Scrolling row with edge fades */}
+      <div className="relative">
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 z-10 bg-gradient-to-r from-bg/80 to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 z-10 bg-gradient-to-l from-bg/80 to-transparent" />
+
+        <div
+          ref={scrollRef}
+          className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 select-none"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {/* First set */}
+          {SPONSORS.map((sponsor, i) => (
+            <SponsorCard key={`a-${i}`} sponsor={sponsor} onOpenModal={onOpenModal} />
+          ))}
+          {/* Duplicate set for seamless loop */}
+          {SPONSORS.map((sponsor, i) => (
+            <SponsorCard key={`b-${i}`} sponsor={sponsor} onOpenModal={onOpenModal} />
+          ))}
+        </div>
       </div>
     </div>
   );

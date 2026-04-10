@@ -540,6 +540,14 @@ export function Sponsors() {
               </span>
               <a
                 href="#venue"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const target = document.getElementById("venue");
+                  if (target) {
+                    const y = target.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({ top: y, behavior: "smooth" });
+                  }
+                }}
                 className="group relative flex items-center justify-center w-full max-w-[200px] sm:max-w-[280px] py-6 px-8 sm:py-8 sm:px-10 rounded-[16px] bg-white ring-1 ring-border-light transition-all duration-300 hover:shadow-[0_0_24px_rgba(168,124,224,0.15)] hover:-translate-y-0.5 hover:ring-purple-mid/20"
               >
                 <Image

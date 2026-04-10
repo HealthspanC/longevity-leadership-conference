@@ -220,11 +220,11 @@ export function Gallery() {
                 </div>
 
                 {/* Progress indicator */}
-                <div className="hidden md:flex items-center gap-4 pb-2">
-                  <span className="text-sm text-text-muted font-medium tabular-nums">
+                <div className="flex items-center gap-3 md:gap-4 pb-2">
+                  <span className="text-xs md:text-sm text-text-muted font-medium tabular-nums">
                     {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
                   </span>
-                  <div className="w-32 h-[2px] bg-border-light rounded-full overflow-hidden">
+                  <div className="w-20 md:w-32 h-[2px] bg-border-light rounded-full overflow-hidden">
                     <div
                       className="h-full bg-purple rounded-full transition-all duration-150 ease-out"
                       style={{ width: `${progress * 100}%` }}

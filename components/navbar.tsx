@@ -82,7 +82,7 @@ export function Navbar() {
                 const target = document.getElementById(id);
                 if (target) {
                   setTimeout(() => {
-                    window.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+                    window.scrollTo({ top: target.offsetTop - 100, behavior: "smooth" });
                   }, 350);
                 } else {
                   window.location.href = "/" + item.href;
@@ -177,7 +177,7 @@ export function Navbar() {
                     const id = item.href.replace("#", "");
                     const target = document.getElementById(id);
                     if (target) {
-                      const y = target.getBoundingClientRect().top + window.scrollY;
+                      const y = target.getBoundingClientRect().top + window.scrollY - 100;
                       window.scrollTo({ top: y, behavior: "smooth" });
                     } else {
                       window.location.href = "/" + item.href;

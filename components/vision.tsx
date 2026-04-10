@@ -125,6 +125,21 @@ export function Vision() {
         </div>
 
         <div className="relative max-w-[1140px] mx-auto px-6">
+          {/* ── Positioning Statement ────────────────────── */}
+          <FadeIn>
+            <div className="text-center mb-16 lg:mb-20">
+              <div className="inline-flex items-center gap-4 mb-5">
+                <div className="w-10 h-px bg-gradient-to-r from-transparent to-purple-light/40" />
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-light/50" />
+                <div className="w-10 h-px bg-gradient-to-l from-transparent to-purple-light/40" />
+              </div>
+              <p className="font-serif text-[clamp(1.1rem,2vw,1.4rem)] italic text-text/80 max-w-[600px] mx-auto leading-relaxed">
+                If you are serious about building in the longevity space, this
+                is a room you want to be in.
+              </p>
+            </div>
+          </FadeIn>
+
           {/* ── Zone 1: Founder Quote ────────────────────────── */}
           <FadeIn>
             <div className="max-w-[820px] mx-auto text-center mb-20 lg:mb-24">
@@ -135,7 +150,7 @@ export function Vision() {
                 centered
               />
 
-              <blockquote className="relative font-serif text-[clamp(1.15rem,2.2vw,1.55rem)] italic leading-[1.75] text-text/85 max-w-[720px] mx-auto">
+              <blockquote className="relative font-serif text-[clamp(1.05rem,2vw,1.4rem)] italic leading-[1.75] text-text/85 max-w-[720px] mx-auto">
                 <span className="absolute -top-4 -left-2 text-[4rem] leading-none text-purple-light/25 font-serif select-none">
                   &ldquo;
                 </span>
@@ -271,20 +286,6 @@ export function Vision() {
             </FadeIn>
           </div>
 
-          {/* ── Zone 4: Positioning Closer ────────────────────── */}
-          <FadeIn>
-            <div className="text-center">
-              <div className="inline-flex items-center gap-4 mb-5">
-                <div className="w-10 h-px bg-gradient-to-r from-transparent to-purple-light/40" />
-                <div className="w-1.5 h-1.5 rounded-full bg-purple-light/50" />
-                <div className="w-10 h-px bg-gradient-to-l from-transparent to-purple-light/40" />
-              </div>
-              <p className="font-serif text-[clamp(1.1rem,2vw,1.4rem)] italic text-text/80 max-w-[600px] mx-auto leading-relaxed">
-                If you are serious about building in the longevity space, this
-                is a room you want to be in.
-              </p>
-            </div>
-          </FadeIn>
         </div>
       </section>
     </>

@@ -84,11 +84,13 @@ function SpeakerReel({
   onPrev,
   onNext,
   onOpenModal,
+  progress = 0,
 }: {
   activeIndex: number;
   onPrev: () => void;
   onNext: () => void;
   onOpenModal: (speaker: Speaker) => void;
+  progress?: number;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -138,8 +140,15 @@ function SpeakerReel({
 
   return (
     <div className="relative">
-      {/* Arrow controls — top right */}
-      <div className="flex items-center justify-end mb-5">
+      {/* Arrow controls + progress — top right */}
+      <div className="flex items-center justify-end gap-4 mb-5">
+        {/* Progress bar — overall position through all speakers */}
+        <div className="w-28 h-[3px] bg-purple/15 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-purple rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${((activeIndex + progress) / SPEAKERS.length) * 100}%` }}
+          />
+        </div>
         <div className="flex gap-2">
           <button
             onClick={onPrev}
@@ -543,17 +552,81 @@ export function Speakers() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [modalSpeaker, setModalSpeaker] = useState<Speaker | null>(null);
   const total = SPEAKERS.length;
-  const goPrev = useCallback(
-    () => setActiveIndex((i) => (i - 1 + total) % total),
-    [total]
-  );
-  const goNext = useCallback(
-    () => setActiveIndex((i) => (i + 1) % total),
-    [total]
-  );
+
+  // Auto-advance state
+  const AUTO_INTERVAL = 6000; // 6 seconds
+  const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const timerStart = useRef(Date.now());
+  const rafRef = useRef<number>(undefined);
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((i) => (i - 1 + total) % total);
+    timerStart.current = Date.now();
+    setProgress(0);
+  }, [total]);
+
+  const goNext = useCallback(() => {
+    setActiveIndex((i) => (i + 1) % total);
+    timerStart.current = Date.now();
+    setProgress(0);
+  }, [total]);
+
+  // IntersectionObserver — only auto-advance when section is in view
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  // Auto-advance timer with progress tracking
+  useEffect(() => {
+    if (paused || !inView || modalSpeaker) {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      return;
+    }
+
+    timerStart.current = Date.now();
+    setProgress(0);
+
+    const tick = () => {
+      const elapsed = Date.now() - timerStart.current;
+      const pct = Math.min(elapsed / AUTO_INTERVAL, 1);
+      setProgress(pct);
+
+      if (pct >= 1) {
+        setActiveIndex((i) => (i + 1) % total);
+        timerStart.current = Date.now();
+        setProgress(0);
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [paused, inView, total, modalSpeaker]);
 
   return (
-    <section id="speakers" className="relative z-[3] pt-28 lg:pt-32 pb-2 lg:pb-3 bg-bg">
+    <section
+      ref={sectionRef}
+      id="speakers"
+      className="relative z-[3] pt-28 lg:pt-32 pb-2 lg:pb-3 bg-bg"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => {
+        setPaused(false);
+        timerStart.current = Date.now();
+        setProgress(0);
+      }}
+    >
       <div className="max-w-[1140px] mx-auto px-6">
         <FadeIn>
           <SectionHeader
@@ -573,6 +646,7 @@ export function Speakers() {
               onPrev={goPrev}
               onNext={goNext}
               onOpenModal={setModalSpeaker}
+              progress={progress}
             />
           </div>
         </FadeIn>

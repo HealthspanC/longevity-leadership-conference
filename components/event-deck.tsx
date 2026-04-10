@@ -3,27 +3,26 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, MapPin } from "lucide-react";
 import { INVOLVE_CARDS, LINKS } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
 
 const VENUE_IMAGES = [
   { src: "/venue/innovation-lab-exterior.jpg", alt: "Verizon Innovation Lab lobby", origin: "center", objectPos: "object-[20%_center]" },
-  { src: "/venue/innovation-lab.jpg", alt: "Verizon Innovation Lab XR stage", origin: "center", objectPos: "object-center" },
   { src: "/venue/innovation-lab-3.jpg", alt: "Verizon Innovation Lab floor", origin: "left", objectPos: "object-[20%_center]" },
   { src: "/venue/innovation-lab-4.jpg", alt: "Verizon Innovation Lab corridor", origin: "right", objectPos: "object-[70%_center]" },
 ];
 
 const CYCLE_DURATION = 6000;
 
-function VenueImageCycler() {
+/* ── Full-bleed venue segment with cycling background ── */
+function VenueSegment() {
   const [active, setActive] = useState(0);
-  // Track zoom state per image independently so outgoing image stays zoomed
+  const [prev, setPrev] = useState(0);
   const [zoomed, setZoomed] = useState<Record<number, boolean>>({ 0: false });
 
   useEffect(() => {
-    // Kick off first zoom
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setZoomed({ 0: true });
@@ -31,11 +30,10 @@ function VenueImageCycler() {
     });
 
     const interval = setInterval(() => {
-      setActive((prev) => {
-        const next = (prev + 1) % VENUE_IMAGES.length;
-        // Start next image at scale(1), outgoing stays zoomed in
+      setActive((cur) => {
+        const next = (cur + 1) % VENUE_IMAGES.length;
+        setPrev(cur); // keep outgoing image visible underneath
         setZoomed((z) => ({ ...z, [next]: false }));
-        // Start zoom on new image after it fades in
         setTimeout(() => {
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -51,22 +49,32 @@ function VenueImageCycler() {
   }, []);
 
   return (
-    <div className="relative aspect-[4/3] rounded-[16px] overflow-hidden shadow-[0_8px_32px_rgba(91,58,140,0.08)] ring-1 ring-border-light">
+    <div className="relative h-[70vh] lg:h-[80vh] min-h-[520px] overflow-hidden">
+      {/* Cycling background images — all behind overlays */}
       {VENUE_IMAGES.map((img, i) => {
         const isActive = i === active;
+        const isPrev = i === prev;
         const isZoomed = zoomed[i] ?? false;
+        // Active fades in on top (z-2), previous stays fully visible underneath (z-1)
+        // All others hidden at z-0
+        const layerZ = isActive ? 2 : isPrev ? 1 : 0;
+        const layerOpacity = isActive || isPrev ? 1 : 0;
         return (
           <div
             key={i}
-            className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
-            style={{ opacity: isActive ? 1 : 0 }}
+            className="absolute inset-0"
+            style={{
+              opacity: layerOpacity,
+              zIndex: layerZ,
+              transition: isActive ? "opacity 1500ms ease-in-out" : "opacity 0ms",
+            }}
           >
             <Image
               src={img.src}
               alt={img.alt}
               fill
               className={`object-cover ${img.objectPos}`}
-              sizes="(max-width: 1024px) 100vw, 50vw"
+              sizes="100vw"
               priority={i === 0}
               style={{
                 transformOrigin: img.origin,
@@ -79,26 +87,56 @@ function VenueImageCycler() {
           </div>
         );
       })}
-    </div>
-  );
-}
 
-/* ── Placeholder for venue images until real photos are added ── */
-function ImagePlaceholder({
-  label,
-  className,
-}: {
-  label: string;
-  className?: string;
-}) {
-  return (
-    <div
-      className={`relative overflow-hidden bg-[#1a1028] flex items-center justify-center ${className ?? ""}`}
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(91,58,140,0.15),transparent_70%)]" />
-      <span className="text-white/20 text-sm font-medium tracking-wide">
-        {label}
-      </span>
+      {/* Dark overlays for readability — above images */}
+      <div className="absolute inset-0 z-[3] bg-gradient-to-t from-[#0d0a14] via-[#0d0a14]/60 to-[#0d0a14]/40 pointer-events-none" />
+      <div className="absolute inset-0 z-[3] bg-gradient-to-r from-[#0d0a14]/80 via-transparent to-transparent pointer-events-none" />
+
+      {/* Content overlay — bottom-left aligned */}
+      <div className="absolute inset-0 z-[4] flex items-end">
+        <div className="max-w-[1140px] w-full mx-auto px-6 pb-16 lg:pb-20">
+          <FadeIn>
+            <div className="max-w-[560px]">
+              <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase text-purple-light mb-4 before:content-[''] before:w-6 before:h-px before:bg-purple-light">
+                The Venue
+              </span>
+              <h3
+                className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold text-white leading-[1.1] mb-5"
+                style={{ textShadow: "0 2px 24px rgba(0,0,0,0.5)" }}
+              >
+                Verizon <span className="text-purple-light">Innovation</span> Lab
+              </h3>
+              <p
+                className="text-[1.05rem] leading-[1.85] text-white/75 mb-6"
+                style={{ textShadow: "0 1px 12px rgba(0,0,0,0.4)" }}
+              >
+                The Longevity Leadership Conference takes place inside the
+                Verizon Innovation Lab in Los Angeles&mdash;a private,
+                cutting-edge environment where next-generation technologies are
+                actively developed and brought to life.
+              </p>
+              <div className="flex items-center gap-2 text-white/50 text-sm">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Los Angeles, California</span>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </div>
+
+      {/* Image indicator dots */}
+      <div className="absolute bottom-6 right-6 lg:bottom-8 lg:right-8 z-[4] flex items-center gap-2">
+        {VENUE_IMAGES.map((_, i) => (
+          <div
+            key={i}
+            className="w-1.5 h-1.5 rounded-full transition-all duration-500"
+            style={{
+              backgroundColor: i === active ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.25)",
+              transform: i === active ? "scale(1.4)" : "scale(1)",
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -106,7 +144,7 @@ function ImagePlaceholder({
 export function EventDeck() {
   return (
     <>
-      {/* ── Purple banner header ── */}
+      {/* ── Partner with Us — purple banner ── */}
       <section
         className="relative z-[3] pt-16 lg:pt-20 pb-12 lg:pb-14 bg-purple-deep overflow-hidden"
       >
@@ -142,37 +180,8 @@ export function EventDeck() {
         </div>
       </section>
 
-      {/* ── Section 1: The Venue — Split Layout ── */}
-      <section id="venue" className="relative z-[3] py-24 lg:py-32 bg-bg overflow-hidden">
-        <div className="max-w-[1140px] mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            {/* Left — Copy */}
-            <FadeIn>
-              <div>
-                <SectionHeader
-                  label="The Venue"
-                  title="Verizon Innovation Lab"
-                  accentWord="Innovation"
-                />
-                <p className="text-[1.05rem] leading-[1.85] text-text-secondary -mt-6">
-                  The Longevity Leadership Conference takes place inside the
-                  Verizon Innovation Lab in Los Angeles&mdash;a private,
-                  cutting-edge environment where next-generation technologies are
-                  actively developed and brought to life.
-                </p>
-              </div>
-            </FadeIn>
-
-            {/* Right — Venue Image (auto-cycling) */}
-            <FadeIn delay={200} direction="right">
-              <VenueImageCycler />
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 2: XR Stage — Cinematic Hero ── */}
-      <section className="relative z-[3] bg-[#0d0a14] overflow-hidden">
+      {/* ── Section 1: XR Stage — Cinematic Hero ── */}
+      <section id="venue" className="relative z-[3] bg-[#0d0a14] overflow-hidden">
         {/* Image mosaic */}
         <div className="relative h-[60vh] lg:h-[75vh] min-h-[480px]">
           <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-3 gap-[2px]">
@@ -303,6 +312,9 @@ export function EventDeck() {
             </FadeIn>
           </div>
         </div>
+
+        {/* ── Venue — full-bleed cinematic segment ── */}
+        <VenueSegment />
 
         {/* ── Gradient blend into purple divider ── */}
         <div className="h-16 bg-gradient-to-b from-[#0d0a14] to-purple-deep" />

@@ -149,38 +149,6 @@ export function Vision() {
                 accentWord="Insiders"
                 centered
               />
-
-              <blockquote className="relative font-serif text-[clamp(1.05rem,2vw,1.4rem)] italic leading-[1.75] text-text/85 max-w-[720px] mx-auto">
-                <span className="absolute -top-4 -left-2 text-[4rem] leading-none text-purple-light/25 font-serif select-none">
-                  &ldquo;
-                </span>
-                Every meaningful shift in society started with a small group
-                of people who trusted each other enough to think out loud.
-                That&rsquo;s what we&rsquo;re building here. The Longevity
-                Leadership Conference brings together the clinicians, founders,
-                and investors actively shaping the next era of healthspan
-                forming lasting relationships and connecting capital to
-                innovation, all in the premise to move the industry forward,
-                together.
-              </blockquote>
-
-              <div className="mt-7 flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-light/20">
-                  <Image
-                    src="/hosts/elias-1.png"
-                    alt="Elias Arjan"
-                    width={80}
-                    height={80}
-                    className="w-full h-full object-cover object-[center_20%]"
-                  />
-                </div>
-                <div className="text-left">
-                  <p className="text-sm font-bold text-text">Elias Arjan</p>
-                  <p className="text-xs text-text-secondary">
-                    Chief Community Officer, Healthspan Collective
-                  </p>
-                </div>
-              </div>
             </div>
           </FadeIn>
 
@@ -285,6 +253,43 @@ export function Vision() {
               </div>
             </FadeIn>
           </div>
+
+          {/* ── Founder Quote ── */}
+          <FadeIn>
+            <div className="max-w-[820px] mx-auto text-center mt-20 lg:mt-24 mb-10 lg:mb-14">
+              <blockquote className="relative font-serif text-[clamp(1.05rem,2vw,1.4rem)] italic leading-[1.75] text-text/85 max-w-[720px] mx-auto">
+                <span className="absolute -top-4 -left-2 text-[4rem] leading-none text-purple-light/25 font-serif select-none">
+                  &ldquo;
+                </span>
+                Every meaningful shift in society started with a small group
+                of people who trusted each other enough to think out loud.
+                That&rsquo;s what we&rsquo;re building here. The Longevity
+                Leadership Conference brings together the clinicians, founders,
+                and investors actively shaping the next era of healthspan
+                forming lasting relationships and connecting capital to
+                innovation, all in the premise to move the industry forward,
+                together.
+              </blockquote>
+
+              <div className="mt-7 flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-light/20">
+                  <Image
+                    src="/hosts/elias-1.png"
+                    alt="Elias Arjan"
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-cover object-[center_20%]"
+                  />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-bold text-text">Elias Arjan</p>
+                  <p className="text-xs text-text-secondary">
+                    Chief Community Officer, Healthspan Collective
+                  </p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
 
         </div>
       </section>

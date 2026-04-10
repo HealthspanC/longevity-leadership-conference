@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { ChevronRight, MapPin } from "lucide-react";
 import { INVOLVE_CARDS, LINKS } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
@@ -171,6 +172,7 @@ export function EventDeck() {
                 href={INVOLVE_CARDS[1].href}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track('Partner Click', { location: 'partner-section' })}
                 className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-white hover:text-purple-deep hover:-translate-y-0.5"
               >
                 Become a Partner
@@ -302,6 +304,7 @@ export function EventDeck() {
                 <div>
                   <Link
                     href={LINKS.tickets}
+                    onClick={() => track('Ticket Click', { location: 'xr-stage' })}
                     className="group/btn relative inline-flex items-center gap-2.5 bg-white text-purple-deep py-4 px-9 rounded-full font-bold text-[0.95rem] transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_40px_rgba(91,58,140,0.4)] hover:bg-gradient-to-r hover:from-white hover:to-purple-light/10"
                   >
                     <span className="absolute inset-0 rounded-full opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_50%_100%,rgba(91,58,140,0.15),transparent_70%)]" />

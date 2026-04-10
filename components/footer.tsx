@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { track } from "@vercel/analytics";
 import { LINKS, NAV_ITEMS } from "@/lib/constants";
 import { Instagram, Linkedin } from "lucide-react";
 
@@ -76,6 +79,7 @@ export function Footer() {
                     href={LINKS.applyPartner}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => track('Partner Click', { location: 'footer' })}
                     className="text-[0.85rem] text-white/55 hover:text-white transition-colors"
                   >
                     Become a Partner

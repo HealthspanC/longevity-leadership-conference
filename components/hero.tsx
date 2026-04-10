@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { track } from "@vercel/analytics";
 import { SITE, LINKS } from "@/lib/constants";
 import { Calendar, Clock, MapPin, ChevronRight } from "lucide-react";
 import { FadeIn } from "./fade-in";
@@ -65,6 +68,7 @@ export function Hero() {
             <div className="flex flex-wrap gap-3.5 items-center">
               <a
                 href={LINKS.tickets}
+                onClick={() => track('Ticket Click', { location: 'hero' })}
                 className="group inline-flex items-center gap-2.5 bg-white text-purple-deep py-4 px-9 rounded-full font-bold text-[0.95rem] transition-all border border-transparent hover:bg-purple-deep hover:text-white hover:border-white hover:-translate-y-0.5 shadow-[0_4px_24px_rgba(255,255,255,0.15)] relative overflow-hidden"
               >
                 Reserve Your Seat

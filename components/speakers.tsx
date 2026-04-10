@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import { track } from "@vercel/analytics";
 import { SPEAKERS, LINKS } from "@/lib/constants";
 import { User, ChevronLeft, ChevronRight, Quote, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -551,6 +552,10 @@ function SpeakerModal({
 export function Speakers() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [modalSpeaker, setModalSpeaker] = useState<Speaker | null>(null);
+  const openModal = useCallback((speaker: Speaker) => {
+    track('Speaker View', { name: speaker.name });
+    setModalSpeaker(speaker);
+  }, []);
   const total = SPEAKERS.length;
 
   // Auto-advance state
@@ -645,7 +650,7 @@ export function Speakers() {
               activeIndex={activeIndex}
               onPrev={goPrev}
               onNext={goNext}
-              onOpenModal={setModalSpeaker}
+              onOpenModal={openModal}
               progress={progress}
             />
           </div>
@@ -653,7 +658,7 @@ export function Speakers() {
 
         {/* Mobile: Swipeable carousel + compact TBA grid */}
         <FadeIn delay={100}>
-          <MobileSpeakerCarousel onOpenModal={setModalSpeaker} />
+          <MobileSpeakerCarousel onOpenModal={openModal} />
         </FadeIn>
 
       </div>

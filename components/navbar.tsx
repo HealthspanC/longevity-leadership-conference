@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
 import { Menu, X } from "lucide-react";
@@ -114,7 +115,7 @@ export function Navbar() {
         {/* CTA button */}
         <a
           href={LINKS.tickets}
-          onClick={() => setMobileOpen(false)}
+          onClick={() => { track('Ticket Click', { location: 'mobile-nav' }); setMobileOpen(false); }}
           className={cn(
             "bg-white text-purple-deep px-8 py-3 rounded-full font-semibold text-sm tracking-wide transition-all duration-300",
             "shadow-[0_0_30px_rgba(168,124,224,0.25)] hover:shadow-[0_0_40px_rgba(168,124,224,0.35)]",
@@ -203,6 +204,7 @@ export function Navbar() {
             <li>
               <a
                 href={LINKS.tickets}
+                onClick={() => track('Ticket Click', { location: 'navbar' })}
                 className={cn(
                   "shrink-0 whitespace-nowrap px-5 xl:px-6 py-2.5 rounded-full font-semibold text-[0.8rem] xl:text-sm transition-all hover:-translate-y-0.5",
                   isTicketsPage && !scrolled

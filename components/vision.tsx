@@ -108,7 +108,7 @@ export function Vision() {
       <div id="about" className="relative z-[1]" />
       <section
         ref={sectionRef}
-        className="relative z-[1] py-28 lg:py-32 overflow-hidden bg-bg"
+        className="relative z-[1] pt-20 lg:pt-24 pb-28 lg:pb-32 overflow-hidden bg-bg"
         style={{ position: "sticky", top: stickyTop }}
       >
         {/* DNA background image */}

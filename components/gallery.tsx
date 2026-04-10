@@ -234,18 +234,6 @@ export function Gallery() {
                   </div>
                 </div>
 
-                {/* Progress indicator — mobile */}
-                <div className="flex md:hidden items-center gap-3 mt-3">
-                  <div className="flex-1 h-[2px] bg-border-light rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-purple rounded-full transition-all duration-150 ease-out"
-                      style={{ width: `${progress * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-xs text-text-muted font-medium tabular-nums shrink-0">
-                    {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
-                  </span>
-                </div>
               </div>
             </div>
           </div>

@@ -209,27 +209,42 @@ export function Gallery() {
           {/* Header */}
           <div className="pt-[116px] pb-5 px-6 shrink-0">
             <div className="max-w-[1140px] mx-auto">
-              <div className="flex items-end justify-between">
-                <div>
-                  <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase text-purple-mid mb-3.5 before:content-[''] before:w-6 before:h-px before:bg-purple-mid">
-                    Past Highlights
-                  </span>
-                  <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold leading-[1.15]">
-                    Event <span className="text-purple">Gallery</span>
-                  </h2>
+              <div>
+                <div className="flex items-end justify-between">
+                  <div>
+                    <span className="inline-flex items-center gap-2.5 text-[0.7rem] font-bold tracking-[0.25em] uppercase text-purple-mid mb-3.5 before:content-[''] before:w-6 before:h-px before:bg-purple-mid">
+                      Past Highlights
+                    </span>
+                    <h2 className="font-serif text-[clamp(2rem,4.5vw,3.2rem)] font-bold leading-[1.15]">
+                      Event <span className="text-purple">Gallery</span>
+                    </h2>
+                  </div>
+
+                  {/* Progress indicator — desktop */}
+                  <div className="hidden md:flex items-center gap-4 pb-2">
+                    <span className="text-sm text-text-muted font-medium tabular-nums">
+                      {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
+                    </span>
+                    <div className="w-32 h-[2px] bg-border-light rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-purple rounded-full transition-all duration-150 ease-out"
+                        style={{ width: `${progress * 100}%` }}
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Progress indicator */}
-                <div className="flex items-center gap-3 md:gap-4 pb-2">
-                  <span className="text-xs md:text-sm text-text-muted font-medium tabular-nums">
-                    {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
-                  </span>
-                  <div className="w-20 md:w-32 h-[2px] bg-border-light rounded-full overflow-hidden">
+                {/* Progress indicator — mobile */}
+                <div className="flex md:hidden items-center gap-3 mt-3">
+                  <div className="flex-1 h-[2px] bg-border-light rounded-full overflow-hidden">
                     <div
                       className="h-full bg-purple rounded-full transition-all duration-150 ease-out"
                       style={{ width: `${progress * 100}%` }}
                     />
                   </div>
+                  <span className="text-xs text-text-muted font-medium tabular-nums shrink-0">
+                    {String(Math.min(Math.round(progress * TOTAL_TILES) + 1, TOTAL_TILES)).padStart(2, "0")} / {String(TOTAL_TILES).padStart(2, "0")}
+                  </span>
                 </div>
               </div>
             </div>

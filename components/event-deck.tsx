@@ -10,6 +10,7 @@ import { SectionHeader } from "./section-header";
 
 const VENUE_IMAGES = [
   { src: "/venue/innovation-lab-exterior.jpg", alt: "Verizon Innovation Lab lobby", origin: "center", objectPos: "object-[20%_center]" },
+  { src: "/venue/innovation-lab.jpg", alt: "Verizon Innovation Lab XR stage", origin: "center", objectPos: "object-center" },
   { src: "/venue/innovation-lab-3.jpg", alt: "Verizon Innovation Lab floor", origin: "left", objectPos: "object-[20%_center]" },
   { src: "/venue/innovation-lab-4.jpg", alt: "Verizon Innovation Lab corridor", origin: "right", objectPos: "object-[70%_center]" },
 ];

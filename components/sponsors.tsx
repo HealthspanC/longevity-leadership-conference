@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { SPONSORS } from "@/lib/constants";
 import { X, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { FadeIn } from "./fade-in";
-import { Experiences } from "./experiences";
 
 type Sponsor = (typeof SPONSORS)[number];
 
@@ -531,12 +530,6 @@ export function Sponsors() {
         <FadeIn delay={100}>
           <MobileSponsorCarousel onOpenModal={setModalSponsor} />
         </FadeIn>
-      </div>
-
-      {/* Full-bleed Experiences section */}
-      <Experiences />
-
-      <div className="max-w-[1140px] mx-auto px-6">
         {/* Venue Partner */}
         <FadeIn delay={200}>
           <div className="max-w-[900px] mx-auto mb-14">

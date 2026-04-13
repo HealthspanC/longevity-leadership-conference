@@ -235,45 +235,6 @@ export const SPONSORS = [
   },
 ] as const;
 
-export const EXPERIENCES = [
-  {
-    id: "peptide-shot-bar",
-    name: "The Peptide Shot Bar",
-    tagline: "Physician-Led Peptide Therapy",
-    sponsor: "ConciergeMD",
-    sponsorLogo: "/sponsors/concierge-md.png",
-    icon: "Beaker" as const,
-    accentColor: "#a87ce0",
-    description:
-      "Step up to a physician-staffed shot bar offering targeted peptide therapies administered on-site. Select from a curated menu of evidence-based peptide protocols designed to support recovery, cognition, and metabolic performance.",
-    cta: "Complimentary for all attendees",
-  },
-  {
-    id: "iv-lounge",
-    name: "IV Lounge",
-    tagline: "Regenerative IV Therapy",
-    sponsor: "Regen Therapy",
-    sponsorLogo: "/sponsors/regen-therapy.png",
-    icon: "Droplets" as const,
-    accentColor: "#2a7a6e",
-    description:
-      "Recline in a dedicated lounge and receive a custom IV infusion formulated with vitamins, minerals, and amino acids selected for cellular recovery and sustained energy throughout the day.",
-    cta: "Available to all ticket holders",
-  },
-  {
-    id: "pemf-lounge",
-    name: "PEMF Lounge",
-    tagline: "Pulsed Electromagnetic Field Therapy",
-    sponsor: "Pulse PEMF",
-    sponsorLogo: "/sponsors/pulse-pemf.png",
-    icon: "Zap" as const,
-    accentColor: "#c06080",
-    description:
-      "Experience the science of pulsed electromagnetic fields in a hands-on therapy lounge. Targeted PEMF sessions promote cellular recovery, reduce inflammation, and enhance circulation in real-time.",
-    cta: "Open sessions throughout the day",
-  },
-] as const;
-
 export const INVOLVE_CARDS = [
   {
     icon: "Mic",

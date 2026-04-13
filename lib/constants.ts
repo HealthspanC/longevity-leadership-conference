@@ -235,6 +235,50 @@ export const SPONSORS = [
   },
 ] as const;
 
+export const EXPERIENCES = [
+  {
+    id: "peptide-shot-bar",
+    name: "The Peptide Shot Bar",
+    tagline: "Physician-Led Peptide Therapy",
+    sponsor: "ConciergeMD",
+    sponsorLogo: "/sponsors/concierge-md.png",
+    icon: "Beaker" as const,
+    accentColor: "#a87ce0",
+    description:
+      "The Peptide Shot Bar is a physician-led, on-site wellness experience that gives guests direct access to cutting-edge peptide therapy in a fun, approachable format. A licensed medical provider is on-site to administer complimentary sample shots, answer questions, and guide each guest toward the peptide that best fits their health and wellness goals.",
+    cta: "Complimentary for all attendees",
+    website: "https://conciergemdla.com",
+    logoScale: 2.8,
+  },
+  {
+    id: "iv-lounge",
+    name: "IV Lounge",
+    tagline: "Regenerative IV Therapy",
+    sponsor: "Regen Therapy",
+    sponsorLogo: "/sponsors/regen-therapy.png",
+    icon: "Droplets" as const,
+    accentColor: "#2a7a6e",
+    description:
+      "Recline in a dedicated lounge and receive a custom IV infusion formulated with vitamins, minerals, and amino acids selected for cellular recovery and sustained energy throughout the day.",
+    cta: "Available to all ticket holders",
+    website: "https://regentherapy.com",
+  },
+  {
+    id: "pemf-lounge",
+    name: "PEMF Lounge",
+    tagline: "Pulsed Electromagnetic Field Therapy",
+    sponsor: "Pulse PEMF",
+    sponsorLogo: "/sponsors/pulse-pemf.png",
+    icon: "Zap" as const,
+    accentColor: "#c06080",
+    description:
+      "Experience the science of pulsed electromagnetic fields in a hands-on therapy lounge. Targeted PEMF sessions promote cellular recovery, reduce inflammation, and enhance circulation in real-time.",
+    cta: "Open sessions throughout the day",
+    website: "https://pulsepemf.com/patrick-keenan/",
+    logoScale: 0.85,
+  },
+] as const;
+
 export const INVOLVE_CARDS = [
   {
     icon: "Mic",

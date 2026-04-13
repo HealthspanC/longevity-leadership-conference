@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { SPONSORS } from "@/lib/constants";
 import { X, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { FadeIn } from "./fade-in";
+import { ExperiencesModal } from "./experiences-modal";
 
 type Sponsor = (typeof SPONSORS)[number];
 
@@ -507,6 +508,7 @@ function SponsorModal({
 /* ── Main Section ── */
 export function Sponsors() {
   const [modalSponsor, setModalSponsor] = useState<Sponsor | null>(null);
+  const [showExperiences, setShowExperiences] = useState(false);
 
   return (
     <section
@@ -530,6 +532,23 @@ export function Sponsors() {
         <FadeIn delay={100}>
           <MobileSponsorCarousel onOpenModal={setModalSponsor} />
         </FadeIn>
+        {/* On-Site Experiences CTA */}
+        <FadeIn delay={150}>
+          <div className="flex flex-col items-center py-12 lg:py-14">
+            {/* Decorative separator */}
+            <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-purple/25 to-transparent mb-8" />
+            <span className="text-[0.65rem] font-bold tracking-[0.25em] uppercase text-text-muted mb-3">
+              On-Site Experiences
+            </span>
+            <button
+              onClick={() => setShowExperiences(true)}
+              className="bg-purple-deep text-white py-3 px-8 rounded-full font-bold text-[0.88rem] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(91,58,140,0.25)] cursor-pointer"
+            >
+              Explore Wellness Activations
+            </button>
+          </div>
+        </FadeIn>
+
         {/* Venue Partner */}
         <FadeIn delay={200}>
           <div className="max-w-[900px] mx-auto mb-14">
@@ -567,6 +586,10 @@ export function Sponsors() {
           sponsor={modalSponsor}
           onClose={() => setModalSponsor(null)}
         />
+      )}
+
+      {showExperiences && (
+        <ExperiencesModal onClose={() => setShowExperiences(false)} />
       )}
     </section>
   );

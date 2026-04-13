@@ -246,7 +246,7 @@ export const EXPERIENCES = [
     accentColor: "#a87ce0",
     description:
       "The Peptide Shot Bar is a physician-led, on-site wellness experience that gives guests direct access to cutting-edge peptide therapy in a fun, approachable format. A licensed medical provider is on-site to administer complimentary sample shots, answer questions, and guide each guest toward the peptide that best fits their health and wellness goals.",
-    cta: "Complimentary for all attendees",
+    cta: "Available to all attendees",
     website: "https://conciergemdla.com",
     logoScale: 2.8,
   },
@@ -260,7 +260,7 @@ export const EXPERIENCES = [
     accentColor: "#2a7a6e",
     description:
       "Recline in a dedicated lounge and receive a custom IV infusion formulated with vitamins, minerals, and amino acids selected for cellular recovery and sustained energy throughout the day.",
-    cta: "Available to all ticket holders",
+    cta: "Available to all attendees",
     website: "https://regentherapy.com",
   },
   {
@@ -273,7 +273,7 @@ export const EXPERIENCES = [
     accentColor: "#c06080",
     description:
       "Experience the science of pulsed electromagnetic fields in a hands-on therapy lounge. Targeted PEMF sessions promote cellular recovery, reduce inflammation, and enhance circulation in real-time.",
-    cta: "Open sessions throughout the day",
+    cta: "Available to all attendees",
     website: "https://pulsepemf.com/patrick-keenan/",
     logoScale: 0.85,
   },

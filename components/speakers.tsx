@@ -52,7 +52,7 @@ function SpeakerPhoto({
         src={speaker.image}
         alt={speaker.name}
         fill
-        className={cn("object-cover object-top", className)}
+        className={cn("object-cover", !('imagePosition' in speaker) && "object-top", className)}
         style={{
           ...('imagePosition' in speaker ? { objectPosition: (speaker as { imagePosition: string }).imagePosition } : {}),
           ...('imageScale' in speaker ? { transform: `scale(${(speaker as { imageScale: string }).imageScale})` } : {}),

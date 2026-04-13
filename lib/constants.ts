@@ -84,6 +84,7 @@ export const SPEAKERS = [
     role: "Co-Founder at Regen Therapy",
     tag: "Keynote" as const,
     image: "/speakers/sanjiv-lal.jpg",
+    imagePosition: "center 10%",
     bio: "Sanjiv Lal is a healthcare entrepreneur and strategic leader who has founded and scaled multiple laboratories, held leadership roles at major biotech firms. Sanjiv is a recognized voice in advancing regenerative medicine and a founder/partner at Motivant, a business-building family office.",
   },
   {
@@ -170,6 +171,7 @@ export const SPEAKERS = [
     role: "Founder of RegenTherapy™ and Co-Chair of RegenVentures",
     tag: "Panelist" as const,
     image: "/speakers/arvind-chakravarthy.jpeg",
+    imagePosition: "center 20%",
     bio: "Arvind Chakravarthy, MD, MBA is a physician-entrepreneur focused on redefining the future of healthcare through Medicine 4.0—a proactive, data-driven model that shifts medicine from disease management to cellular optimization, longevity, and performance.",
   },
 ] as const;

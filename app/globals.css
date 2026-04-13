@@ -121,6 +121,12 @@ body {
   100% { background-position: -200% 0; }
 }
 
+/* Experience card icon glow pulse */
+@keyframes experience-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
 /* Host section floating particles */
 @keyframes host-float {
   0%, 100% { transform: translateY(0) translateX(0); opacity: var(--start-opacity, 0.2); }

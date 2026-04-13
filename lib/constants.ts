@@ -201,10 +201,10 @@ export const SPONSORS = [
   },
   {
     name: "ConciergeMD",
-    tagline: "The Peptide Shot Bar",
+    tagline: "Concierge Medicine & Longevity Care",
     logo: "/sponsors/concierge-md.png",
     description:
-      "The Peptide Shot Bar is a physician-led, on-site wellness experience that gives guests direct access to cutting-edge peptide therapy in a fun, approachable format. A licensed medical provider is on-site to administer complimentary sample shots, answer questions, and guide each guest toward the peptide that best fits their health and wellness goals.",
+      "ConciergeMD is a concierge medical practice delivering personalized in-home care, telemedicine, and shipped-to-you treatments across Los Angeles, New York, and 25+ cities nationwide. With a focus on longevity and root-cause medicine, their board-certified physicians offer hormone therapies, peptide injections, NAD+ treatments, IV infusions, and functional care—all tailored to individual health goals.",
     website: "https://conciergemdla.com",
   },
   {

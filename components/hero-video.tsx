@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Player from "@vimeo/player";
 
 const VIMEO_ID = "1106534793";
+const VIMEO_HASH = "2b3e5c3d88";
 const START_TIME = 4.7;
 const END_TIME = 60;
 
@@ -45,7 +46,7 @@ export function HeroVideo() {
       {mounted && (
         <iframe
           ref={iframeRef}
-          src={`https://player.vimeo.com/video/${VIMEO_ID}?background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
+          src={`https://player.vimeo.com/video/${VIMEO_ID}?h=${VIMEO_HASH}&background=1&autoplay=1&muted=1&loop=1&dnt=1&quality=1080p#t=${START_TIME}s`}
           allow="autoplay; fullscreen"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-none pointer-events-none hero-video-iframe"
           title="Conference highlight reel"

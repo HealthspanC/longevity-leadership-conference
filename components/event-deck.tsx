@@ -167,7 +167,7 @@ export function EventDeck() {
               centered
               dark
             />
-            <div className="flex items-center justify-center -mt-6">
+            <div className="flex flex-wrap items-center justify-center gap-3 -mt-6">
               <a
                 href={INVOLVE_CARDS[1].href}
                 target="_blank"
@@ -176,6 +176,26 @@ export function EventDeck() {
                 className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-white hover:text-purple-deep hover:-translate-y-0.5"
               >
                 Become a Partner
+                <ChevronRight className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="https://forms.gle/iQPs2JuJ4dKEvwmg6"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track('Investor Pass Click', { location: 'partner-section' })}
+                className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-white hover:text-purple-deep hover:-translate-y-0.5"
+              >
+                Investor Pass
+                <ChevronRight className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="https://forms.gle/y9cediwgtzW649zC8"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track('Media Pass Click', { location: 'partner-section' })}
+                className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full font-semibold text-[0.85rem] transition-all hover:bg-white hover:text-purple-deep hover:-translate-y-0.5"
+              >
+                Media Pass
                 <ChevronRight className="w-3.5 h-3.5" />
               </a>
             </div>

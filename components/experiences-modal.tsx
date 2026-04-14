@@ -188,7 +188,7 @@ export function ExperiencesModal({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 max-sm:max-w-[380px] max-sm:mx-auto">
             {EXPERIENCES.map((exp) => (
               <ExperienceCard key={exp.id} experience={exp} />
             ))}

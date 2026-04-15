@@ -1,5 +1,12 @@
 "use client";
 
+/* ==========================================================================
+   VIMEO BACKUP — Previous implementation using @vimeo/player SDK.
+   Kept commented as a failsafe in case we need to revert from the local
+   MP4 approach. To restore: uncomment this block and delete the native
+   <video> implementation below.
+   ==========================================================================
+
 import { useEffect, useRef, useState } from "react";
 import Player from "@vimeo/player";
 
@@ -42,7 +49,6 @@ export function HeroVideo() {
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden bg-[#0a0612]">
-      {/* Vimeo iframe — sized to always cover the full hero regardless of aspect ratio */}
       {mounted && (
         <iframe
           ref={iframeRef}
@@ -52,6 +58,31 @@ export function HeroVideo() {
           title="Conference highlight reel"
         />
       )}
+
+      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,18,0.92)] via-[rgba(10,6,18,0.5)] to-[rgba(10,6,18,0.3)]" />
+      <div className="absolute inset-0 bg-[rgba(45,27,78,0.25)] mix-blend-multiply" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(10,6,18,0.5)_100%)]" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[rgba(10,6,18,0.9)] to-transparent" />
+    </div>
+  );
+}
+
+========================================================================== */
+
+export function HeroVideo() {
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#0a0612]">
+      {/* Local MP4 — native HTML5 video with reliable looping */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      >
+        <source src="/video/hero.mp4" type="video/mp4" />
+      </video>
 
       {/* Cinematic overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,6,18,0.92)] via-[rgba(10,6,18,0.5)] to-[rgba(10,6,18,0.3)]" />

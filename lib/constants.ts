@@ -279,6 +279,153 @@ export const EXPERIENCES = [
   },
 ] as const;
 
+export interface AgendaSession {
+  id: string;
+  time: string;
+  phase: "morning" | "midday" | "afternoon" | "finale";
+  format: "welcome" | "keynote" | "panel" | "networking" | "closing";
+  formatLabel: string;
+  title: string;
+  speakers?: ReadonlyArray<{ name: string; role?: string }>;
+  moderator?: { name: string; role?: string };
+  panelists?: ReadonlyArray<{ name: string; role?: string }>;
+  formatDetails?: ReadonlyArray<string>;
+}
+
+export const AGENDA: readonly AgendaSession[] = [
+  {
+    id: "opening",
+    time: "10:00 – 10:15 AM",
+    phase: "morning",
+    format: "welcome",
+    formatLabel: "Opening Welcome",
+    title: "The State of Longevity Leadership",
+    speakers: [
+      { name: "Adam Torres", role: "Mission Matters" },
+      { name: "Chirag Sagar", role: "Mission Matters" },
+      { name: "Elias Arjan", role: "Healthspan Collective" },
+    ],
+  },
+  {
+    id: "keynote-inflection",
+    time: "10:15 – 10:30 AM",
+    phase: "morning",
+    format: "keynote",
+    formatLabel: "Keynote",
+    title: "The Longevity Inflection Point",
+    speakers: [{ name: "Elias Arjan", role: "Healthspan Collective" }],
+  },
+  {
+    id: "keynote-cell-signaling",
+    time: "10:30 – 10:50 AM",
+    phase: "morning",
+    format: "keynote",
+    formatLabel: "Keynote",
+    title: "Cell Signaling: The Future of Regenerative Medicine",
+    speakers: [{ name: "Sanjiv Lal", role: "Co-Founder, Regen Therapy" }],
+  },
+  {
+    id: "panel-peptides",
+    time: "10:50 – 11:30 AM",
+    phase: "morning",
+    format: "panel",
+    formatLabel: "Panel",
+    title: "Peptides, Cell Factors & Hormonal Optimization",
+    moderator: { name: "Elias Arjan", role: "Healthspan Collective" },
+    panelists: [
+      { name: "Dr. Resham Uttamchandani", role: "ConciergeMD" },
+      { name: "Reshma Patel", role: "Ananda Integrative Medicine" },
+      { name: "Dr. Arvind Chakravarthy", role: "Regen Therapy" },
+    ],
+  },
+  {
+    id: "keynote-brain-clock",
+    time: "11:30 – 11:50 AM",
+    phase: "morning",
+    format: "keynote",
+    formatLabel: "Keynote",
+    title: "The World's First Brain Aging Clock",
+    speakers: [{ name: "Paola Telfer", role: "SENS.AI" }],
+  },
+  {
+    id: "lunch",
+    time: "11:50 AM – 1:00 PM",
+    phase: "midday",
+    format: "networking",
+    formatLabel: "Break",
+    title: "Networking Lunch + Activations",
+  },
+  {
+    id: "panel-aesthetics",
+    time: "1:00 – 1:40 PM",
+    phase: "afternoon",
+    format: "panel",
+    formatLabel: "Panel",
+    title: "Regenerative Aesthetics & Longevity Medicine",
+    moderator: { name: "Dr. Kayte Susse" },
+    panelists: [
+      { name: "Ashley Hines" },
+      { name: "Josephine Musco" },
+      { name: "Dr. Sara Soulati" },
+    ],
+  },
+  {
+    id: "panel-clinics",
+    time: "1:40 – 2:20 PM",
+    phase: "afternoon",
+    format: "panel",
+    formatLabel: "Panel",
+    title: "The Growth of Longevity & Wellness Clinics",
+    moderator: { name: "Adam Torres", role: "Mission Matters" },
+    panelists: [
+      { name: "Nick Capozzi", role: "Longevity Clinic" },
+      { name: "Jeremy Hoffmann", role: "Quantum Wellness Spa" },
+      { name: "Todd Vande Hei", role: "Stark Health" },
+    ],
+  },
+  {
+    id: "panel-capital",
+    time: "2:20 – 3:00 PM",
+    phase: "afternoon",
+    format: "panel",
+    formatLabel: "Panel",
+    title: "Capital, Risk & Governance in Longevity",
+    moderator: { name: "Adam Torres", role: "Mission Matters" },
+    panelists: [
+      { name: "Gayland Hethcoat" },
+      { name: "Investor", role: "TBD" },
+      { name: "Operator / Founder", role: "TBD" },
+    ],
+  },
+  {
+    id: "closing",
+    time: "3:00 – 3:30 PM",
+    phase: "finale",
+    format: "closing",
+    formatLabel: "Closing + Q&A",
+    title: "The Future of Longevity Leadership",
+    speakers: [
+      { name: "Elias Arjan", role: "Healthspan Collective" },
+      { name: "Adam Torres", role: "Mission Matters" },
+      { name: "Chirag Sagar", role: "Mission Matters" },
+    ],
+    formatDetails: [
+      "Closing insights on where the longevity industry is heading",
+      "Key takeaways from the day",
+      "Open Q&A with audience",
+      "Final call to action: partnerships, investment, and continued involvement",
+    ],
+  },
+  {
+    id: "networking",
+    time: "3:30 – 4:30 PM",
+    phase: "finale",
+    format: "networking",
+    formatLabel: "Open Networking",
+    title: "Investor & Partner Conversations",
+  },
+];
+
 export const INVOLVE_CARDS = [
   {
     icon: "Mic",

@@ -479,30 +479,31 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
           {/* ── Editorial hero block ───────────────────────────── */}
           <div className="text-center mb-12 sm:mb-14 max-w-[640px] mx-auto">
             {/* Draft pill — delicate, demoted above the hero */}
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 mb-8 rounded-full bg-[rgba(168,106,126,0.06)] ring-1 ring-[rgba(168,106,126,0.18)]">
-              <span className="w-[4px] h-[4px] rounded-full bg-[#a86a7e] animate-pulse" />
+            <div className="inline-flex items-center px-3 py-1 mb-8 rounded-full bg-[rgba(168,106,126,0.06)] ring-1 ring-[rgba(168,106,126,0.18)]">
               <span className="text-[0.56rem] font-bold tracking-[0.22em] uppercase text-[#9b5a70]">
                 Draft Conference Agenda — Subject to Change
               </span>
             </div>
 
-            {/* Ornamental date kicker — editorial save-the-date feel */}
+            {/* Ornamental date kicker — editorial save-the-date feel.
+                On mobile the flanking hairlines are hidden so the date
+                stays on a single line inside the narrow viewport. */}
             <div
-              className="inline-flex items-center gap-3 sm:gap-4 mb-5"
+              className="inline-flex items-center gap-3 sm:gap-4 mb-5 max-w-full"
               style={{
                 animation:
                   "agenda-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both",
               }}
             >
-              <div className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-purple-mid/45" />
-              <div className="flex items-center gap-2">
-                <span className="w-[3px] h-[3px] rounded-full bg-purple-mid/70" />
-                <span className="font-display italic text-[0.82rem] sm:text-[0.92rem] tracking-[0.22em] uppercase text-purple-mid">
+              <div className="hidden sm:block h-px w-16 bg-gradient-to-r from-transparent to-purple-mid/45" />
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="w-[3px] h-[3px] rounded-full bg-purple-mid/70 shrink-0" />
+                <span className="font-display italic text-[0.72rem] sm:text-[0.92rem] tracking-[0.18em] sm:tracking-[0.22em] uppercase text-purple-mid">
                   Thursday · April 30 · 2026
                 </span>
-                <span className="w-[3px] h-[3px] rounded-full bg-purple-mid/70" />
+                <span className="w-[3px] h-[3px] rounded-full bg-purple-mid/70 shrink-0" />
               </div>
-              <div className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-purple-mid/45" />
+              <div className="hidden sm:block h-px w-16 bg-gradient-to-l from-transparent to-purple-mid/45" />
             </div>
 
             {/* Hero title */}

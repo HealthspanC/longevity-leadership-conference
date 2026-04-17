@@ -10,10 +10,11 @@ import {
   Coffee,
   Award,
   MapPin,
-  Calendar,
+  Clock,
+  Download,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AGENDA, type AgendaSession } from "@/lib/constants";
+import { AGENDA, SITE, type AgendaSession } from "@/lib/constants";
 
 /* ── Format configuration ─────────────────────────────────────
    Each session format maps to an icon + accent family.
@@ -64,11 +65,30 @@ const ACCENT: Record<
 
 type AgendaPhase = AgendaSession["phase"];
 
-const PHASE_META: Record<AgendaPhase, { label: string; time: string }> = {
-  morning: { label: "Morning Sessions", time: "10:00 AM – 11:50 AM" },
-  midday: { label: "Midday Break", time: "11:50 AM – 1:00 PM" },
-  afternoon: { label: "Afternoon Sessions", time: "1:00 PM – 3:00 PM" },
-  finale: { label: "Closing & Networking", time: "3:00 PM – 4:30 PM" },
+const PHASE_META: Record<
+  AgendaPhase,
+  { label: string; subtitle: string; time: string }
+> = {
+  morning: {
+    label: "Morning",
+    subtitle: "The foundation is set",
+    time: "10:00 AM – 11:50 AM",
+  },
+  midday: {
+    label: "Midday",
+    subtitle: "Pause & connect",
+    time: "11:50 AM – 1:00 PM",
+  },
+  afternoon: {
+    label: "Afternoon",
+    subtitle: "Strategy & capital",
+    time: "1:00 PM – 3:00 PM",
+  },
+  finale: {
+    label: "Finale",
+    subtitle: "Forward motion",
+    time: "3:00 PM – 4:30 PM",
+  },
 };
 
 const PHASE_ORDER: AgendaPhase[] = [
@@ -84,14 +104,17 @@ function PhaseHeader({ phase }: { phase: AgendaPhase }) {
   const meta = PHASE_META[phase];
   return (
     <div className="text-center mb-6 sm:mb-7">
-      <div className="inline-flex items-center gap-3 mb-1.5">
+      <div className="inline-flex items-center gap-3 mb-2">
         <div className="h-px w-8 sm:w-12 bg-gradient-to-r from-transparent to-purple-mid/50" />
         <span className="text-[0.68rem] sm:text-[0.72rem] font-bold tracking-[0.24em] uppercase text-purple-mid whitespace-nowrap">
           {meta.label}
         </span>
         <div className="h-px w-8 sm:w-12 bg-gradient-to-l from-transparent to-purple-mid/50" />
       </div>
-      <div className="text-[0.68rem] sm:text-[0.7rem] text-text-muted tracking-wide">
+      <div className="font-display italic text-[1.02rem] sm:text-[1.12rem] text-text/80 leading-snug mb-1.5">
+        {meta.subtitle}
+      </div>
+      <div className="text-[0.66rem] sm:text-[0.68rem] text-text-muted tracking-[0.12em] uppercase">
         {meta.time}
       </div>
     </div>
@@ -100,13 +123,26 @@ function PhaseHeader({ phase }: { phase: AgendaPhase }) {
 
 /* ── Agenda row — stacked layout, time above card ───────── */
 
-function AgendaRow({ session }: { session: AgendaSession }) {
+function AgendaRow({
+  session,
+  index,
+}: {
+  session: AgendaSession;
+  index: number;
+}) {
   const config = FORMAT_CONFIG[session.format];
   const Icon = config.icon;
   const c = ACCENT[config.accent];
 
   return (
-    <li className="mb-4 sm:mb-5 last:mb-0 group">
+    <li
+      className="mb-4 sm:mb-5 last:mb-0 group"
+      style={{
+        animation: `agenda-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) ${
+          180 + index * 45
+        }ms both`,
+      }}
+    >
       {/* Time label — sits above the card, outside */}
       <div className="flex items-center gap-2 mb-2 pl-1">
         <div
@@ -242,6 +278,155 @@ function AgendaRow({ session }: { session: AgendaSession }) {
   );
 }
 
+/* ── ICS calendar export ─────────────────────────────────────
+   Parses each session's human time string ("10:00 – 10:15 AM",
+   "11:50 AM – 1:00 PM") into 24-hour local times and emits a
+   VCALENDAR with America/Los_Angeles TZID.
+   ─────────────────────────────────────────────────────────── */
+
+function parseTimeRange(
+  input: string
+): { start: string; end: string } | null {
+  const m = input
+    .trim()
+    .match(
+      /^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?\s*[–-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)$/i
+    );
+  if (!m) return null;
+  const [, sH, sM, sAp, eH, eM, eAp] = m;
+  const endMeridiem = eAp.toUpperCase();
+  const startMeridiem = (sAp || eAp).toUpperCase();
+  const to24 = (h: string, meridiem: string) => {
+    let hh = parseInt(h, 10);
+    if (meridiem === "PM" && hh !== 12) hh += 12;
+    if (meridiem === "AM" && hh === 12) hh = 0;
+    return hh.toString().padStart(2, "0");
+  };
+  return {
+    start: `${to24(sH, startMeridiem)}${sM}00`,
+    end: `${to24(eH, endMeridiem)}${eM}00`,
+  };
+}
+
+function escapeICSText(s: string): string {
+  return s
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\r/g, "")
+    .replace(/\n/g, "\\n");
+}
+
+function foldICSLine(line: string): string {
+  if (line.length <= 75) return line;
+  const chunks: string[] = [line.slice(0, 75)];
+  let rest = line.slice(75);
+  while (rest.length > 74) {
+    chunks.push(" " + rest.slice(0, 74));
+    rest = rest.slice(74);
+  }
+  if (rest.length > 0) chunks.push(" " + rest);
+  return chunks.join("\r\n");
+}
+
+function nowDTStamp(): string {
+  const d = new Date();
+  const p = (n: number) => n.toString().padStart(2, "0");
+  return `${d.getUTCFullYear()}${p(d.getUTCMonth() + 1)}${p(
+    d.getUTCDate()
+  )}T${p(d.getUTCHours())}${p(d.getUTCMinutes())}${p(d.getUTCSeconds())}Z`;
+}
+
+function buildDescription(session: AgendaSession): string {
+  const lines: string[] = [session.formatLabel];
+  if (session.speakers && !session.moderator) {
+    lines.push("", "Speakers:");
+    for (const s of session.speakers) {
+      lines.push(s.role ? `• ${s.name} — ${s.role}` : `• ${s.name}`);
+    }
+  }
+  if (session.moderator) {
+    const mod = session.moderator.role
+      ? `${session.moderator.name} — ${session.moderator.role}`
+      : session.moderator.name;
+    lines.push("", `Moderator: ${mod}`);
+    if (session.panelists) {
+      lines.push("", "Panelists:");
+      for (const p of session.panelists) {
+        lines.push(p.role ? `• ${p.name} — ${p.role}` : `• ${p.name}`);
+      }
+    }
+  }
+  if (session.formatDetails) {
+    lines.push("");
+    for (const d of session.formatDetails) lines.push(`• ${d}`);
+  }
+  return lines.join("\n");
+}
+
+function generateICS(sessions: readonly AgendaSession[]): string {
+  const stamp = nowDTStamp();
+  const lines: string[] = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Longevity Leadership Conference//Program 2026//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "X-WR-CALNAME:Longevity Leadership Conference 2026",
+    "X-WR-TIMEZONE:America/Los_Angeles",
+    "BEGIN:VTIMEZONE",
+    "TZID:America/Los_Angeles",
+    "BEGIN:DAYLIGHT",
+    "DTSTART:19700308T020000",
+    "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU",
+    "TZNAME:PDT",
+    "TZOFFSETFROM:-0800",
+    "TZOFFSETTO:-0700",
+    "END:DAYLIGHT",
+    "BEGIN:STANDARD",
+    "DTSTART:19701101T020000",
+    "RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU",
+    "TZNAME:PST",
+    "TZOFFSETFROM:-0700",
+    "TZOFFSETTO:-0800",
+    "END:STANDARD",
+    "END:VTIMEZONE",
+  ];
+
+  for (const session of sessions) {
+    const parsed = parseTimeRange(session.time);
+    if (!parsed) continue;
+    const summary = `${session.formatLabel} — ${session.title}`;
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:${session.id}@llc2026.healthspancollective.co`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;TZID=America/Los_Angeles:20260430T${parsed.start}`,
+      `DTEND;TZID=America/Los_Angeles:20260430T${parsed.end}`,
+      `SUMMARY:${escapeICSText(summary)}`,
+      `LOCATION:${escapeICSText("Verizon Innovation Lab, Los Angeles")}`,
+      `DESCRIPTION:${escapeICSText(buildDescription(session))}`,
+      "END:VEVENT"
+    );
+  }
+
+  lines.push("END:VCALENDAR");
+  return lines.map(foldICSLine).join("\r\n");
+}
+
+function downloadAgendaICS() {
+  const ics = generateICS(AGENDA);
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "longevity-leadership-conference-2026.ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export function AgendaModal({ onClose }: { onClose: () => void }) {
   const [visible, setVisible] = useState(false);
 
@@ -291,20 +476,67 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
 
         {/* Scrollable content */}
         <div className="overflow-y-auto max-h-[92vh] px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 md:px-14 md:pt-14 md:pb-12">
-          {/* Header */}
-          <div className="text-center mb-10 sm:mb-12 max-w-[640px] mx-auto">
-            {/* Draft notice — honest, editorial, warm */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-5 rounded-full bg-[rgba(168,106,126,0.08)] ring-1 ring-[rgba(168,106,126,0.22)]">
-              <span className="w-[5px] h-[5px] rounded-full bg-[#a86a7e] animate-pulse" />
-              <span className="text-[0.62rem] font-bold tracking-[0.18em] uppercase text-[#9b5a70]">
+          {/* ── Editorial hero block ───────────────────────────── */}
+          <div className="text-center mb-12 sm:mb-14 max-w-[640px] mx-auto">
+            {/* Draft pill — delicate, demoted above the hero */}
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 mb-8 rounded-full bg-[rgba(168,106,126,0.06)] ring-1 ring-[rgba(168,106,126,0.18)]">
+              <span className="w-[4px] h-[4px] rounded-full bg-[#a86a7e] animate-pulse" />
+              <span className="text-[0.56rem] font-bold tracking-[0.22em] uppercase text-[#9b5a70]">
                 Draft Conference Agenda — Subject to Change
               </span>
             </div>
-            <h2 className="font-display text-[clamp(1.55rem,4.2vw,2.35rem)] font-semibold text-text leading-[1.08] tracking-[-0.015em] mb-5">
+
+            {/* Ornamental date kicker — editorial save-the-date feel */}
+            <div
+              className="inline-flex items-center gap-3 sm:gap-4 mb-5"
+              style={{
+                animation:
+                  "agenda-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) 60ms both",
+              }}
+            >
+              <div className="h-px w-10 sm:w-16 bg-gradient-to-r from-transparent to-purple-mid/45" />
+              <div className="flex items-center gap-2">
+                <span className="w-[3px] h-[3px] rounded-full bg-purple-mid/70" />
+                <span className="font-display italic text-[0.82rem] sm:text-[0.92rem] tracking-[0.22em] uppercase text-purple-mid">
+                  Thursday · April 30 · 2026
+                </span>
+                <span className="w-[3px] h-[3px] rounded-full bg-purple-mid/70" />
+              </div>
+              <div className="h-px w-10 sm:w-16 bg-gradient-to-l from-transparent to-purple-mid/45" />
+            </div>
+
+            {/* Hero title */}
+            <h2
+              className="font-display text-[clamp(1.75rem,4.8vw,2.6rem)] font-semibold text-text leading-[1.05] tracking-[-0.018em] mb-5"
+              style={{
+                animation:
+                  "agenda-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both",
+              }}
+            >
               A Day of{" "}
               <span className="text-purple">Longevity Leadership</span>
             </h2>
-            <div className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[0.82rem] text-text-secondary">
+
+            {/* Grift italic tagline — narrative framing */}
+            <p
+              className="font-display italic text-[clamp(0.98rem,1.9vw,1.12rem)] text-text-secondary leading-[1.55] max-w-[500px] mx-auto mb-7"
+              style={{
+                animation:
+                  "agenda-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both",
+              }}
+            >
+              Eleven curated sessions — the people and conversations shaping
+              the next era of healthspan.
+            </p>
+
+            {/* Metadata — location + time (date lives in the kicker above) */}
+            <div
+              className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[0.82rem] text-text-secondary"
+              style={{
+                animation:
+                  "agenda-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both",
+              }}
+            >
               <span className="inline-flex items-center gap-1.5">
                 <MapPin
                   className="w-[13px] h-[13px] text-purple-mid shrink-0"
@@ -319,18 +551,24 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
                 ·
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Calendar
+                <Clock
                   className="w-[13px] h-[13px] text-purple-mid shrink-0"
                   strokeWidth={2}
                 />
-                <span>April 30, 2026</span>
+                <span>{SITE.time}</span>
               </span>
             </div>
           </div>
 
-          {/* Decorative separator */}
-          <div className="flex justify-center mb-10 sm:mb-12">
-            <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-purple-mid/30 to-transparent" />
+          {/* Ornamental separator — extended scene break before Morning */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-12 sm:mb-14">
+            <div className="h-px flex-1 max-w-[220px] bg-gradient-to-r from-transparent via-purple-mid/20 to-purple-mid/35" />
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="w-[4px] h-[4px] rounded-full bg-purple-mid/40" />
+              <span className="w-[5px] h-[5px] rounded-full bg-purple-mid/55" />
+              <span className="w-[4px] h-[4px] rounded-full bg-purple-mid/40" />
+            </div>
+            <div className="h-px flex-1 max-w-[220px] bg-gradient-to-l from-transparent via-purple-mid/20 to-purple-mid/35" />
           </div>
 
           {/* Agenda grouped by phase */}
@@ -343,7 +581,11 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
                   <PhaseHeader phase={phase} />
                   <ol className="list-none">
                     {sessions.map((session) => (
-                      <AgendaRow key={session.id} session={session} />
+                      <AgendaRow
+                        key={session.id}
+                        session={session}
+                        index={AGENDA.indexOf(session)}
+                      />
                     ))}
                   </ol>
                 </div>
@@ -351,8 +593,18 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
             })}
           </div>
 
-          {/* Footer disclaimer */}
-          <div className="mt-10 sm:mt-12 pt-6 border-t border-border-light/60 text-center">
+          {/* Footer — Add to Calendar + disclaimer */}
+          <div className="mt-10 sm:mt-12 pt-7 border-t border-border-light/60 text-center">
+            <button
+              onClick={downloadAgendaICS}
+              className="group inline-flex items-center gap-2 px-5 py-2.5 mb-4 rounded-full bg-white ring-1 ring-purple-mid/25 hover:ring-purple-mid/55 hover:bg-purple-wash/40 text-text hover:text-purple transition-all duration-250 text-[0.82rem] font-semibold cursor-pointer shadow-[0_1px_2px_rgba(45,27,78,0.04)] hover:shadow-[0_4px_14px_rgba(91,58,140,0.08)]"
+            >
+              <Download
+                className="w-[14px] h-[14px] transition-transform duration-250 group-hover:translate-y-[1px]"
+                strokeWidth={2}
+              />
+              <span>Add to Calendar</span>
+            </button>
             <p className="text-[0.72rem] text-text-muted italic">
               Agenda subject to refinement. Final program will be published
               closer to the event.

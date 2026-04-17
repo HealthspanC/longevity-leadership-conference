@@ -4,12 +4,12 @@ export const SITE = {
   description:
     "An exclusive gathering designed for investors, medical professionals, and trailblazers redefining the future of human longevity and healthspan.",
   date: "April 30, 2026",
-  time: "10:00 AM – 5:00 PM",
+  time: "9:00 AM – 4:30 PM",
   venue: "Verizon Innovation Lab, Playa Vista",
   location: "Playa Vista, CA",
   year: "2026",
   edition: "3rd Annual",
-  targetDate: "2026-04-30T10:00:00-07:00",
+  targetDate: "2026-04-30T09:00:00-07:00",
   host: "Healthspan Collective",
 } as const;
 
@@ -64,6 +64,7 @@ export const HOSTS = [
 export const NAV_ITEMS = [
   { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
+  { label: "Agenda", href: "#agenda-modal" },
   { label: "Hosts", href: "#hosts" },
   { label: "Speakers", href: "#speakers" },
   { label: "Gallery", href: "#gallery" },

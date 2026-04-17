@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
-import { AgendaModal } from "./agenda-modal";
 
 /* ── Bullet list data ───────────────────────────────────────── */
 
@@ -88,7 +87,6 @@ const WHAT_EXPECT = [
 export function Vision() {
   const sectionRef = useRef<HTMLElement>(null);
   const [stickyTop, setStickyTop] = useState(0);
-  const [showAgenda, setShowAgenda] = useState(false);
 
   useEffect(() => {
     function calc() {
@@ -169,20 +167,6 @@ export function Vision() {
                   capital is flowing, and where the most consequential
                   opportunities in longevity are taking shape.
                 </p>
-              </div>
-
-              {/* ── Agenda CTA ───────────────────────────────── */}
-              <div className="flex flex-col items-center mt-10 lg:mt-12">
-                <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-purple/25 to-transparent mb-8" />
-                <span className="text-[0.65rem] font-bold tracking-[0.25em] uppercase text-text-muted mb-3">
-                  Conference Program
-                </span>
-                <button
-                  onClick={() => setShowAgenda(true)}
-                  className="bg-purple-deep text-white py-3 px-8 rounded-full font-bold text-[0.88rem] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(91,58,140,0.25)] cursor-pointer"
-                >
-                  View Full Agenda
-                </button>
               </div>
             </div>
           </FadeIn>
@@ -309,8 +293,6 @@ export function Vision() {
 
         </div>
       </section>
-
-      {showAgenda && <AgendaModal onClose={() => setShowAgenda(false)} />}
     </>
   );
 }

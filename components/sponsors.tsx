@@ -5,9 +5,10 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SPONSORS } from "@/lib/constants";
-import { X, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ExternalLink, ChevronLeft, ChevronRight, ArrowRight, CalendarDays } from "lucide-react";
 import { FadeIn } from "./fade-in";
 import { ExperiencesModal } from "./experiences-modal";
+import { AgendaModal } from "./agenda-modal";
 
 type Sponsor = (typeof SPONSORS)[number];
 
@@ -509,6 +510,7 @@ function SponsorModal({
 export function Sponsors() {
   const [modalSponsor, setModalSponsor] = useState<Sponsor | null>(null);
   const [showExperiences, setShowExperiences] = useState(false);
+  const [showAgenda, setShowAgenda] = useState(false);
 
   return (
     <section
@@ -551,7 +553,7 @@ export function Sponsors() {
 
         {/* Venue Partner */}
         <FadeIn delay={200}>
-          <div className="max-w-[900px] mx-auto mb-14">
+          <div className="max-w-[900px] mx-auto mb-12 lg:mb-16">
             <div className="flex flex-col items-center gap-4">
               <span className="text-[0.65rem] font-bold tracking-[0.25em] uppercase text-text-muted">
                 Venue Partner
@@ -579,6 +581,83 @@ export function Sponsors() {
             </div>
           </div>
         </FadeIn>
+
+        {/* ── Agenda Banner — editorial, cream-aligned ──────────
+           Light card that harmonizes with the Sponsors section.
+           Mirrors the Vision component's card language: gradient
+           top hairline, white body, purple-wash icon well, and a
+           purple-deep pill CTA that matches "Explore Wellness
+           Activations" one block above.
+           ───────────────────────────────────────────────────── */}
+        <FadeIn delay={250}>
+          <div className="mb-14 lg:mb-16">
+            <div className="group relative overflow-hidden rounded-[20px] bg-bg-card ring-1 ring-border-light shadow-[0_2px_14px_rgba(45,27,78,0.04)] hover:shadow-[0_10px_38px_rgba(91,58,140,0.09)] hover:ring-purple-mid/20 transition-all duration-400">
+              {/* Gradient top hairline — mirrors Vision cards */}
+              <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-purple via-purple-light to-purple opacity-70 group-hover:opacity-100 transition-opacity duration-400" />
+
+              {/* Very subtle purple wash in corner */}
+              <div
+                className="pointer-events-none absolute -top-20 -right-16 w-[280px] h-[280px] rounded-full opacity-60"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(168,124,224,0.09), transparent 65%)",
+                }}
+              />
+
+              <div className="relative px-7 py-9 sm:px-10 sm:py-10 lg:px-14 lg:py-11">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10">
+                  {/* Left: icon + content */}
+                  <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-7 flex-1 text-center lg:text-left">
+                    {/* Calendar emblem — purple-wash well */}
+                    <div className="shrink-0 relative w-[58px] h-[58px] rounded-[14px] bg-purple-wash ring-1 ring-purple-light/30 flex items-center justify-center">
+                      <CalendarDays
+                        className="w-[24px] h-[24px] text-purple"
+                        strokeWidth={1.8}
+                      />
+                    </div>
+
+                    <div className="flex-1 max-w-[560px]">
+                      {/* Kicker */}
+                      <div className="inline-flex items-center gap-2.5 mb-3">
+                        <span className="w-5 h-px bg-purple/40" />
+                        <span className="text-[0.62rem] font-bold tracking-[0.28em] uppercase text-purple">
+                          Conference Program
+                        </span>
+                        <span className="w-5 h-px bg-purple/40 lg:hidden" />
+                      </div>
+
+                      {/* Headline */}
+                      <h3 className="font-display text-[clamp(1.4rem,2.7vw,1.85rem)] font-semibold text-text leading-[1.12] tracking-[-0.012em] mb-3">
+                        A Day of{" "}
+                        <span className="text-purple">
+                          Longevity Leadership
+                        </span>
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-[0.9rem] text-text-secondary leading-[1.65]">
+                        Eleven curated sessions — keynotes, panels, and
+                        networking moments — shaping the conversation on
+                        April 30, 2026.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right: CTA — matches "Explore Wellness Activations" */}
+                  <div className="shrink-0">
+                    <button
+                      onClick={() => setShowAgenda(true)}
+                      className="group/cta inline-flex items-center gap-2 bg-purple-deep text-white py-3.5 px-8 rounded-full font-bold text-[0.88rem] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_36px_rgba(91,58,140,0.28)] cursor-pointer"
+                    >
+                      View Full Agenda
+                      <ArrowRight className="w-[15px] h-[15px] transition-transform duration-300 group-hover/cta:translate-x-0.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
       </div>
 
       {modalSponsor && (
@@ -591,6 +670,8 @@ export function Sponsors() {
       {showExperiences && (
         <ExperiencesModal onClose={() => setShowExperiences(false)} />
       )}
+
+      {showAgenda && <AgendaModal onClose={() => setShowAgenda(false)} />}
     </section>
   );
 }

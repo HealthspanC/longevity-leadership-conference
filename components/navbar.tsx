@@ -8,11 +8,13 @@ import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
 import { Menu, X } from "lucide-react";
+import { AgendaModal } from "./agenda-modal";
 
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showAgenda, setShowAgenda] = useState(false);
   const isTicketsPage = pathname === "/tickets";
 
   useEffect(() => {
@@ -79,6 +81,10 @@ export function Navbar() {
               onClick={(e) => {
                 e.preventDefault();
                 setMobileOpen(false);
+                if (item.href === "#agenda-modal") {
+                  setTimeout(() => setShowAgenda(true), 350);
+                  return;
+                }
                 const id = item.href.replace("#", "");
                 const target = document.getElementById(id);
                 if (target) {
@@ -175,6 +181,10 @@ export function Navbar() {
                   href={item.href}
                   onClick={(e) => {
                     e.preventDefault();
+                    if (item.href === "#agenda-modal") {
+                      setShowAgenda(true);
+                      return;
+                    }
                     const id = item.href.replace("#", "");
                     const target = document.getElementById(id);
                     if (target) {
@@ -227,6 +237,8 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+
+      {showAgenda && <AgendaModal onClose={() => setShowAgenda(false)} />}
     </>
   );
 }

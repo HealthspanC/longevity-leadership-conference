@@ -6,9 +6,22 @@ import { SITE } from "@/lib/constants";
 import { MapPin, Calendar, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Get Tickets | Longevity Leadership Conference 2026",
+  title: "Tickets | Longevity Leadership Conference 2026 | April 30, LA",
   description:
-    "Reserve your seat at the 3rd Annual Longevity Leadership Conference. April 30, 2026 at the Verizon Innovation Lab, Playa Vista, CA.",
+    "Reserve your seat at the Longevity Leadership Conference 2026, hosted by Healthspan Collective and Mission Matters Media. April 30, 2026 at the Verizon Innovation Lab, Playa Vista, Los Angeles.",
+  alternates: { canonical: "/tickets" },
+  openGraph: {
+    title: "Tickets | Longevity Leadership Conference 2026",
+    description:
+      "Reserve your seat for the Longevity Leadership Conference, April 30, 2026 in Los Angeles.",
+    url: "https://longevityleadershipconference.com/tickets",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tickets | Longevity Leadership Conference 2026",
+    description: "Reserve your seat — April 30, 2026 in Los Angeles.",
+  },
 };
 
 export default function TicketsPage() {

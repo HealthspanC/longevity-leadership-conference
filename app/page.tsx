@@ -16,12 +16,55 @@ import { Footer } from "@/components/footer";
 import { PromoPopup } from "@/components/promo-popup";
 import { SITE, LINKS, SPEAKERS, HOSTS } from "@/lib/constants";
 
+function OrganizationJsonLd() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Healthspan Collective",
+    url: "https://healthspan.community",
+    logo: "https://longevityleadershipconference.com/brand/logo.png",
+    sameAs: [
+      "https://www.instagram.com/healthspan_collective/",
+      "https://www.linkedin.com/company/healthspanpro/",
+      "https://www.youtube.com/@healthspan_collective",
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+function WebSiteJsonLd() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Longevity Leadership Conference",
+    url: "https://longevityleadershipconference.com",
+    publisher: {
+      "@type": "Organization",
+      name: "Healthspan Collective",
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
 function EventJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BusinessEvent",
+    "@type": "Conference",
     name: `${SITE.edition} ${SITE.name}`,
     description: SITE.description,
+    url: "https://longevityleadershipconference.com",
     startDate: "2026-04-30T10:00:00-07:00",
     endDate: "2026-04-30T17:00:00-07:00",
     eventStatus: "https://schema.org/EventScheduled",
@@ -41,12 +84,21 @@ function EventJsonLd() {
       {
         "@type": "Organization",
         name: "Healthspan Collective",
-        url: LINKS.instagram,
+        url: "https://healthspan.community",
+        sameAs: [
+          "https://www.instagram.com/healthspan_collective/",
+          "https://www.linkedin.com/company/healthspanpro/",
+          "https://www.youtube.com/@healthspan_collective",
+        ],
       },
       {
         "@type": "Organization",
-        name: "Mission Matters",
-        url: LINKS.linkedin,
+        name: "Mission Matters Media",
+        url: "https://missionmatters.com",
+        sameAs: [
+          "https://www.linkedin.com/in/adamtorres8/",
+          "https://www.youtube.com/@MissionMattersBusiness",
+        ],
       },
     ],
     performer: [
@@ -80,6 +132,8 @@ function EventJsonLd() {
 export default function Home() {
   return (
     <>
+      <OrganizationJsonLd />
+      <WebSiteJsonLd />
       <EventJsonLd />
       <ScrollProgress />
       <Navbar />

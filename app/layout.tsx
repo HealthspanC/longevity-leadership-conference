@@ -18,9 +18,10 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://longevityleadershipconference.com"),
-  title: "3rd Annual Longevity Leadership Conference | April 30, 2026",
+  title:
+    "Longevity Leadership Conference 2026 | Healthspan Collective & Mission Matters Media | April 30, LA",
   description:
-    "A Premium Executive Forum for the Longevity Industry. Join investors, medical professionals, and trailblazers at the Verizon Innovation Lab, Playa Vista, CA.",
+    "The Longevity Leadership Conference 2026 — a premium executive forum for the longevity industry, hosted by Healthspan Collective and Mission Matters Media. April 30, 2026 at the Verizon Innovation Lab, Playa Vista, Los Angeles.",
   keywords: [
     "longevity",
     "healthspan",
@@ -40,10 +41,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: "/brand/favicon.png",
+    apple: "/brand/favicon.png",
+  },
   openGraph: {
-    title: "3rd Annual Longevity Leadership Conference",
+    title:
+      "Longevity Leadership Conference 2026 | Healthspan Collective & Mission Matters Media",
     description:
-      "A Premium Executive Forum for the Longevity Industry. April 30, 2026 at the Verizon Innovation Lab, Playa Vista, CA.",
+      "The Longevity Leadership Conference 2026 — hosted by Healthspan Collective and Mission Matters Media. April 30, 2026 at the Verizon Innovation Lab, Playa Vista, Los Angeles.",
     type: "website",
     locale: "en_US",
     url: "https://longevityleadershipconference.com",
@@ -59,9 +65,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "3rd Annual Longevity Leadership Conference",
+    title:
+      "Longevity Leadership Conference 2026 | Healthspan Collective & Mission Matters Media",
     description:
-      "A Premium Executive Forum for the Longevity Industry. April 30, 2026.",
+      "Hosted by Healthspan Collective and Mission Matters Media. April 30, 2026 in Los Angeles.",
     images: ["https://longevityleadershipconference.com/og-image2.jpg"],
   },
   robots: {

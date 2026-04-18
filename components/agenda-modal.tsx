@@ -446,17 +446,25 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
   return createPortal(
     <div
       className={cn(
-        "fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300",
+        // Mobile anchors the modal near the top (items-start) so the X
+        // button never hides under the browser's URL bar chrome. Extra
+        // top padding + safe-area-inset gives clearance from the status
+        // bar / notch on iOS. Desktop keeps centered placement.
+        "fixed inset-0 z-[9999] flex items-start sm:items-center justify-center px-4 pb-4 sm:p-6 transition-opacity duration-300",
         visible ? "opacity-100" : "opacity-0"
       )}
+      style={{ paddingTop: "max(1.25rem, env(safe-area-inset-top))" }}
       onClick={onClose}
     >
       <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
 
-      {/* Modal shell — warm cream gradient background */}
+      {/* Modal shell — warm cream gradient background.
+          `max-h-[92dvh]` uses dynamic viewport height so the modal
+          respects mobile browsers' visible viewport (excluding the
+          URL bar) instead of the larger layout viewport. */}
       <div
         className={cn(
-          "relative w-full max-w-[720px] max-h-[92vh] rounded-[22px] overflow-hidden transition-all duration-300",
+          "relative w-full max-w-[720px] max-h-[92dvh] rounded-[22px] overflow-hidden transition-all duration-300",
           "bg-gradient-to-b from-[#fbfaf7] to-[#f6f2ea]",
           "shadow-[0_30px_90px_rgba(45,27,78,0.3),0_0_0_1px_rgba(45,27,78,0.06)]",
           visible
@@ -465,17 +473,20 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
+        {/* Close button — glass pill, floats above scrollable content.
+            Mobile uses a larger 44px touch target (iOS/Android minimum)
+            and a tighter corner offset so it never collides with the
+            centered draft pill below. */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/[0.04] flex items-center justify-center text-text-muted hover:text-text hover:bg-black/[0.08] transition-all duration-200 cursor-pointer"
+          className="absolute top-3 right-3 sm:top-5 sm:right-5 md:top-6 md:right-6 z-10 w-11 h-11 sm:w-9 sm:h-9 rounded-full bg-white/80 backdrop-blur-md ring-1 ring-black/[0.06] shadow-[0_2px_10px_rgba(16,10,30,0.08)] flex items-center justify-center text-text-muted hover:text-text hover:bg-white hover:shadow-[0_3px_14px_rgba(16,10,30,0.12)] active:scale-95 transition-all duration-200 cursor-pointer"
           aria-label="Close"
         >
           <X className="w-[18px] h-[18px] stroke-[1.5]" />
         </button>
 
         {/* Scrollable content */}
-        <div className="overflow-y-auto max-h-[92vh] px-5 pt-10 pb-8 sm:px-10 sm:pt-12 sm:pb-10 md:px-14 md:pt-14 md:pb-12">
+        <div className="overflow-y-auto max-h-[92dvh] px-5 pt-16 pb-8 sm:px-10 sm:pt-12 sm:pb-10 md:px-14 md:pt-14 md:pb-12">
           {/* ── Editorial hero block ───────────────────────────── */}
           <div className="text-center mb-12 sm:mb-14 max-w-[640px] mx-auto">
             {/* Draft pill — delicate, demoted above the hero */}

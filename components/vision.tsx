@@ -104,13 +104,11 @@ export function Vision() {
   }, []);
 
   return (
-    <>
-      <div id="about" className="relative z-[1]" />
-      <section
-        ref={sectionRef}
-        className="relative z-[1] pt-20 lg:pt-24 pb-28 lg:pb-32 overflow-hidden bg-bg"
-        style={{ position: "sticky", top: stickyTop }}
-      >
+    <section
+      ref={sectionRef}
+      className="relative z-[1] pt-20 lg:pt-24 pb-28 lg:pb-32 overflow-hidden bg-bg"
+      style={{ position: "sticky", top: stickyTop }}
+    >
         {/* DNA background image */}
         <div className="absolute inset-0 pointer-events-none">
           <Image
@@ -144,7 +142,7 @@ export function Vision() {
           <FadeIn>
             <div className="max-w-[820px] mx-auto text-center mb-20 lg:mb-24">
               <SectionHeader
-                label="About the Conference"
+                label="The Conference"
                 title="For Industry Insiders"
                 accentWord="Insiders"
                 centered
@@ -291,8 +289,7 @@ export function Vision() {
             </div>
           </FadeIn>
 
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

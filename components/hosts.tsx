@@ -132,8 +132,8 @@ function HostCards() {
 
   const handleCardClick = useCallback(
     (host: Host) => {
-      // md+ (768px+): open modal; mobile: tap to expand inline
-      if (window.innerWidth >= 768) {
+      // sm+ (640px+): open modal; < sm (mobile 1-up): tap to expand inline
+      if (window.innerWidth >= 640) {
         setExpanded(null);
         setModalHost(host);
       } else {
@@ -145,7 +145,7 @@ function HostCards() {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-4 md:gap-5 mb-16">
         {HOSTS.map((host, i) => {
           const isOpen = expanded === host.name;
           return (
@@ -158,7 +158,7 @@ function HostCards() {
                 )}
                 onClick={() => handleCardClick(host)}
               >
-                <div className="relative w-full aspect-[3/4] md:aspect-[9/14] bg-bg">
+                <div className="relative w-full aspect-[3/4] lg:aspect-[9/14] bg-bg">
                   <Image
                     src={host.image}
                     alt={host.name}
@@ -174,7 +174,7 @@ function HostCards() {
                           ? host.imagePosition
                           : "center 20%",
                     }}
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, 33vw"
                   />
 
                   {/* Subtle purple tint overlay */}
@@ -262,69 +262,23 @@ export function Hosts() {
   return (
     <section
       id="hosts"
-      className="relative z-[3] py-24 lg:py-28 bg-purple-deep overflow-hidden"
+      className="relative z-[3] pt-36 pb-24 lg:pt-40 lg:pb-28 overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(135deg, #2d1b4e 0%, #3c2066 55%, #4a2d6e 100%)",
+      }}
     >
-      {/* Animated gradient overlays — oversized to hide edges during animation */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute -inset-[15%] opacity-100"
-          style={{
-            background: "radial-gradient(ellipse 80% 60% at 20% 40%, rgba(192,96,128,0.18), transparent), radial-gradient(ellipse 70% 50% at 80% 60%, rgba(42,122,110,0.12), transparent), radial-gradient(ellipse 60% 60% at 50% 20%, rgba(91,58,140,0.22), transparent)",
-            animation: "hosts-gradient-1 12s ease-in-out infinite alternate",
-          }}
-        />
-        <div
-          className="absolute -inset-[15%] opacity-100"
-          style={{
-            background: "radial-gradient(ellipse 60% 50% at 70% 30%, rgba(168,124,224,0.12), transparent), radial-gradient(ellipse 70% 60% at 30% 70%, rgba(192,96,128,0.1), transparent)",
-            animation: "hosts-gradient-2 16s ease-in-out infinite alternate",
-          }}
-        />
-      </div>
-      <style jsx>{`
-        @keyframes hosts-gradient-1 {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(3%, -2%) scale(1.05); }
-          100% { transform: translate(-2%, 3%) scale(1.02); }
-        }
-        @keyframes hosts-gradient-2 {
-          0% { transform: translate(0, 0) scale(1.02); }
-          50% { transform: translate(-4%, 2%) scale(1); }
-          100% { transform: translate(2%, -3%) scale(1.06); }
-        }
-      `}</style>
+      {/* Ambient glows */}
+      <div className="absolute top-[12%] left-[5%] w-[500px] h-[500px] rounded-full bg-purple-mid/12 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-[8%] right-[10%] w-[420px] h-[420px] rounded-full bg-rose/5 blur-[130px] pointer-events-none" />
+
+      {/* Subtle diagonal pattern — matches the rest of the dark-panel language */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.05'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.5'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
         }}
       />
-
-      {/* Floating ambient particles */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[
-          { size: 3, x: "12%", y: "18%", dur: "18s", delay: "0s", opacity: 0.25 },
-          { size: 2, x: "78%", y: "25%", dur: "22s", delay: "3s", opacity: 0.2 },
-          { size: 4, x: "45%", y: "65%", dur: "25s", delay: "7s", opacity: 0.15 },
-          { size: 2, x: "88%", y: "72%", dur: "20s", delay: "5s", opacity: 0.2 },
-          { size: 3, x: "25%", y: "82%", dur: "24s", delay: "10s", opacity: 0.18 },
-          { size: 2, x: "62%", y: "12%", dur: "19s", delay: "2s", opacity: 0.22 },
-        ].map((p, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-purple-light animate-[host-float_var(--dur)_ease-in-out_var(--delay)_infinite]"
-            style={{
-              width: p.size,
-              height: p.size,
-              left: p.x,
-              top: p.y,
-              opacity: p.opacity,
-              ["--dur" as string]: p.dur,
-              ["--delay" as string]: p.delay,
-            }}
-          />
-        ))}
-      </div>
 
       <div className="relative z-10 max-w-[1140px] mx-auto px-6">
         <FadeIn>

@@ -8,14 +8,15 @@ import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
 import { Menu, X } from "lucide-react";
-import { AgendaModal } from "./agenda-modal";
 
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [showAgenda, setShowAgenda] = useState(false);
   const isTicketsPage = pathname === "/tickets";
+  const isAboutPage = pathname === "/about";
+  // Use dark text/logo whenever we're scrolled OR sitting over a light hero on /about.
+  const darkMode = scrolled || isAboutPage;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -79,12 +80,14 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               onClick={(e) => {
-                e.preventDefault();
-                setMobileOpen(false);
-                if (item.href === "#agenda-modal") {
-                  setTimeout(() => setShowAgenda(true), 350);
+                // Let cross-page routes (e.g. "/about") navigate normally —
+                // close the menu but let the browser handle the link.
+                if (item.href.startsWith("/")) {
+                  setMobileOpen(false);
                   return;
                 }
+                e.preventDefault();
+                setMobileOpen(false);
                 const id = item.href.replace("#", "");
                 const target = document.getElementById(id);
                 if (target) {
@@ -154,7 +157,7 @@ export function Navbar() {
               sizes="(max-width: 768px) 280px, 468px"
               className={cn(
                 "h-[52px] md:h-[65px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
-                scrolled ? "opacity-100" : "opacity-0"
+                darkMode ? "opacity-100" : "opacity-0"
               )}
             />
             {/* White logo — visible over video hero */}
@@ -168,7 +171,7 @@ export function Navbar() {
               sizes="(max-width: 768px) 280px, 468px"
               className={cn(
                 "h-[62px] md:h-[70px] w-auto absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-350",
-                scrolled ? "opacity-0" : "opacity-100"
+                darkMode ? "opacity-0" : "opacity-100"
               )}
             />
           </Link>
@@ -180,11 +183,9 @@ export function Navbar() {
                 <a
                   href={item.href}
                   onClick={(e) => {
+                    // Let cross-page routes (e.g. "/about") navigate normally.
+                    if (item.href.startsWith("/")) return;
                     e.preventDefault();
-                    if (item.href === "#agenda-modal") {
-                      setShowAgenda(true);
-                      return;
-                    }
                     const id = item.href.replace("#", "");
                     const target = document.getElementById(id);
                     if (target) {
@@ -196,7 +197,7 @@ export function Navbar() {
                   }}
                   className={cn(
                     "group relative text-[0.8rem] xl:text-sm font-medium transition-colors whitespace-nowrap py-1",
-                    scrolled
+                    darkMode
                       ? "text-text-secondary hover:text-purple"
                       : "text-white/80 hover:text-white"
                   )}
@@ -205,7 +206,7 @@ export function Navbar() {
                   <span
                     className={cn(
                       "absolute left-0 -bottom-0.5 h-[1.5px] w-0 group-hover:w-full transition-all duration-300 ease-out rounded-full",
-                      scrolled ? "bg-purple" : "bg-white"
+                      darkMode ? "bg-purple" : "bg-white"
                     )}
                   />
                 </a>
@@ -233,12 +234,11 @@ export function Navbar() {
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >
-            <Menu className={cn("w-6 h-6 transition-colors duration-350", scrolled ? "text-text" : "text-white")} />
+            <Menu className={cn("w-6 h-6 transition-colors duration-350", darkMode ? "text-text" : "text-white")} />
           </button>
         </div>
       </nav>
 
-      {showAgenda && <AgendaModal onClose={() => setShowAgenda(false)} />}
     </>
   );
 }

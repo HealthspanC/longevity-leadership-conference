@@ -75,7 +75,7 @@ export function Hero() {
                 <ChevronRight className="w-4 h-4" />
               </a>
               <a
-                href="#about"
+                href="/about"
                 className="inline-flex items-center gap-2.5 border-[1.5px] border-white/30 text-white py-[15px] px-8 rounded-full font-semibold text-[0.95rem] transition-all hover:border-white/60 hover:text-white hover:-translate-y-0.5"
               >
                 Learn More

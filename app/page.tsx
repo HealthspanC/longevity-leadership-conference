@@ -4,7 +4,6 @@ import { Hero } from "@/components/hero";
 import { Stats } from "@/components/stats";
 import { Vision } from "@/components/vision";
 import { Sponsors } from "@/components/sponsors";
-import { Hosts } from "@/components/hosts";
 import { Speakers } from "@/components/speakers";
 import { MissionBanner } from "@/components/mission-banner";
 import { SpeakBanner } from "@/components/speak-banner";
@@ -142,7 +141,6 @@ export default function Home() {
         <Stats />
         <Vision />
         <Sponsors />
-        <Hosts />
         <Speakers />
         <TopicsCloud />
         <SpeakBanner />

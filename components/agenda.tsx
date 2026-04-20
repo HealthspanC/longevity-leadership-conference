@@ -136,7 +136,8 @@ function AgendaRow({
 
   return (
     <li
-      className="mb-4 sm:mb-5 last:mb-0 group"
+      id={`session-${session.id}`}
+      className="mb-4 sm:mb-5 last:mb-0 group scroll-mt-6"
       style={{
         animation: `agenda-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) ${
           180 + index * 45
@@ -284,7 +285,7 @@ function AgendaRow({
    VCALENDAR with America/Los_Angeles TZID.
    ─────────────────────────────────────────────────────────── */
 
-function parseTimeRange(
+export function parseTimeRange(
   input: string
 ): { start: string; end: string } | null {
   const m = input
@@ -427,7 +428,13 @@ function downloadAgendaICS() {
   URL.revokeObjectURL(url);
 }
 
-export function AgendaModal({ onClose }: { onClose: () => void }) {
+export function AgendaModal({
+  onClose,
+  focusId,
+}: {
+  onClose: () => void;
+  focusId?: string;
+}) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -442,6 +449,31 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
       document.body.style.overflow = "";
     };
   }, [onClose]);
+
+  // Deep-link: if a focusId is provided, scroll that session into view once
+  // the modal is visible and rendered. Uses the modal's internal scroll
+  // container (data-agenda-scroll) so the document scroll isn't affected.
+  useEffect(() => {
+    if (!focusId || !visible) return;
+    const scroller = document.querySelector<HTMLDivElement>(
+      "[data-agenda-scroll]"
+    );
+    const target = document.getElementById(`session-${focusId}`);
+    if (!scroller || !target) return;
+
+    // Wait one frame past the entrance transition kickoff so the modal
+    // actually has its final height — then scroll inside the container.
+    const raf = requestAnimationFrame(() => {
+      // Compute target offset relative to the scroller's top, with a small
+      // breathing-room margin above.
+      const scrollerRect = scroller.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const offset =
+        scroller.scrollTop + (targetRect.top - scrollerRect.top) - 24;
+      scroller.scrollTo({ top: offset, behavior: "smooth" });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [focusId, visible]);
 
   return createPortal(
     <div
@@ -486,7 +518,10 @@ export function AgendaModal({ onClose }: { onClose: () => void }) {
         </button>
 
         {/* Scrollable content */}
-        <div className="overflow-y-auto max-h-[92dvh] px-5 pt-16 pb-8 sm:px-10 sm:pt-12 sm:pb-10 md:px-14 md:pt-14 md:pb-12">
+        <div
+          data-agenda-scroll
+          className="overflow-y-auto max-h-[92dvh] px-5 pt-16 pb-8 sm:px-10 sm:pt-12 sm:pb-10 md:px-14 md:pt-14 md:pb-12"
+        >
           {/* ── Editorial hero block ───────────────────────────── */}
           <div className="text-center mb-12 sm:mb-14 max-w-[640px] mx-auto">
             {/* Draft pill — delicate, demoted above the hero */}

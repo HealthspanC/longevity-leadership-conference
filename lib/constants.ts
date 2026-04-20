@@ -62,14 +62,12 @@ export const HOSTS = [
 ] as const;
 
 export const NAV_ITEMS = [
-  { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
-  { label: "Agenda", href: "#agenda-modal" },
-  { label: "Hosts", href: "#hosts" },
   { label: "Speakers", href: "#speakers" },
   { label: "Gallery", href: "#gallery" },
   { label: "Venue", href: "#venue" },
   { label: "Subscribe", href: "#subscribe" },
+  { label: "About", href: "/about" },
 ] as const;
 
 export const STATS = [

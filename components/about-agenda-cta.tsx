@@ -24,9 +24,11 @@ import { cn } from "@/lib/utils";
    center "View Full Agenda" button and any empty dial area
    open the modal at the top.
 
-   Preserves the /about#agenda deep link from the sponsors
-   banner — on mount, if the hash is "#agenda" the modal auto
-   opens.
+   The /about#agenda hash (used by the homepage Sponsors CTA)
+   works purely as a scroll anchor now — arriving at /about
+   with that hash scrolls to the agenda section but does NOT
+   auto-open the modal, since the inline banner + Time Rail /
+   DayClock already shows the full agenda.
    ─────────────────────────────────────────────────────────── */
 
 /* ── Accent color system (mirrors components/agenda.tsx) ──── */
@@ -589,15 +591,12 @@ export function AboutAgendaCTA() {
     focusId?: string;
   }>({ open: false });
 
-  // Preserve /about#agenda deep link (sponsors banner still uses this)
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.location.hash === "#agenda"
-    ) {
-      setModalState({ open: true });
-    }
-  }, []);
+  // Note: the /about#agenda deep link (from the homepage Sponsors CTA and
+  // elsewhere) no longer auto-opens the modal. The /about page now has a
+  // full inline agenda visualization — banner + Time Rail on mobile and
+  // tablet, banner + DayClock on desktop — so the modal popping open on
+  // arrival would obscure that inline view. The hash still works as a
+  // scroll anchor to this section.
 
   const openAt = useCallback((focusId?: string) => {
     setModalState({ open: true, focusId });

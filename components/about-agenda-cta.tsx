@@ -268,7 +268,7 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
   return (
     <div
       ref={wrapRef}
-      className="relative aspect-square w-full max-w-[820px] mx-auto select-none"
+      className="relative aspect-square w-full max-w-[560px] lg:max-w-[720px] xl:max-w-[820px] mx-auto select-none"
       role="region"
       aria-label="Conference day overview — click any session marker to view details"
       onClick={(e) => {
@@ -593,9 +593,9 @@ export function AboutAgendaCTA() {
 
   // Note: the /about#agenda deep link (from the homepage Sponsors CTA and
   // elsewhere) no longer auto-opens the modal. The /about page now has a
-  // full inline agenda visualization — banner + Time Rail on mobile and
-  // tablet, banner + DayClock on desktop — so the modal popping open on
-  // arrival would obscure that inline view. The hash still works as a
+  // full inline agenda visualization — banner + Time Rail on mobile,
+  // banner + DayClock on tablet and desktop — so the modal popping open
+  // on arrival would obscure that inline view. The hash still works as a
   // scroll anchor to this section.
 
   const openAt = useCallback((focusId?: string) => {
@@ -608,17 +608,19 @@ export function AboutAgendaCTA() {
         id="agenda"
         className="relative z-[2] py-24 lg:py-32 bg-bg overflow-hidden"
       >
-        {/* Mobile + tablet: AgendaMobile sits at full section width so its
+        {/* Mobile (<768px): AgendaMobile sits at full section width so its
             HeroCard banner can render edge-to-edge; internal wrappers
             handle the narrower Time Rail column. */}
-        <div className="lg:hidden">
+        <div className="md:hidden">
           <AgendaMobile onOpenAt={openAt} />
         </div>
 
-        {/* Desktop: same edge-to-edge banner above the clock dial. The
-            banner renders at section width; the dial stays in the
-            1080px editorial column below. */}
-        <div className="hidden lg:block">
+        {/* Tablet + desktop (≥768px): same edge-to-edge banner above the
+            clock dial. The banner renders at section width; the dial sits
+            in the 1080px editorial column below, tiering from a compact
+            560px at tablet up to 820px at xl so narrower tablet windows
+            don't render an oversized dial. */}
+        <div className="hidden md:block">
           <FadeIn>
             <HeroCard />
           </FadeIn>

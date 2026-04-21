@@ -230,7 +230,7 @@ export const EXPERIENCES = [
     icon: "Beaker" as const,
     accentColor: "#a87ce0",
     description:
-      "The Peptide Shot Bar is a physician-led, on-site wellness experience that gives guests direct access to cutting-edge peptide therapy in a fun, approachable format. A licensed medical provider is on-site to administer complimentary sample shots, answer questions, and guide each guest toward the peptide that best fits their health and wellness goals.",
+      "ConciergeMD is bringing their Peptide Shot Bar, a physician-led activation where board-certified providers guide each guest through a brief consultation and administer a subcutaneous peptide injection tailored to their goals.",
     cta: "Available to all attendees",
     website: "https://conciergemdla.com",
     logoScale: 2.8,
@@ -244,7 +244,7 @@ export const EXPERIENCES = [
     icon: "Droplets" as const,
     accentColor: "#2a7a6e",
     description:
-      "Recline in a dedicated lounge and receive a custom IV infusion formulated with vitamins, minerals, and amino acids selected for cellular recovery and sustained energy throughout the day.",
+      "Regen Therapy will run an IV lounge administering its Regen Quantum Cell Factor. It is an advanced cell signaling technology designed to optimize cellular communication and mitochondrial efficiency, delivered intravenously for fast, systemic effect.",
     cta: "Available to all attendees",
     website: "https://regentherapy.com",
   },
@@ -257,7 +257,7 @@ export const EXPERIENCES = [
     icon: "Zap" as const,
     accentColor: "#c06080",
     description:
-      "Experience the science of pulsed electromagnetic fields in a hands-on therapy lounge. Targeted PEMF sessions promote cellular recovery, reduce inflammation, and enhance circulation in real-time.",
+      "Pulse PEMF is setting up a recovery lounge at the Longevity Leadership Conference. Trusted by health professionals and athletes worldwide, Pulse PEMF is one of the most clinically validated non-invasive recovery tools available.",
     cta: "Available to all attendees",
     website: "https://pulsepemf.com/patrick-keenan/",
     logoScale: 0.85,

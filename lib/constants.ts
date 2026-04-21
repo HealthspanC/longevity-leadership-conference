@@ -62,14 +62,12 @@ export const HOSTS = [
 ] as const;
 
 export const NAV_ITEMS = [
-  { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
-  { label: "Agenda", href: "#agenda-modal" },
-  { label: "Hosts", href: "#hosts" },
   { label: "Speakers", href: "#speakers" },
   { label: "Gallery", href: "#gallery" },
   { label: "Venue", href: "#venue" },
   { label: "Subscribe", href: "#subscribe" },
+  { label: "About", href: "/about" },
 ] as const;
 
 export const STATS = [
@@ -119,25 +117,11 @@ export const SPEAKERS = [
     bio: "Double board-certified physician in Family and Obesity Medicine with specialized training in metabolic health, functional medicine, and longevity. She earned her medical degree from the American University of the Caribbean and completed her Family Medicine residency at Eisenhower Medical Center.",
   },
   {
-    name: "Todd Vande Hei",
-    role: "Integrative Health & Root-Cause Healing",
-    tag: "Panelist" as const,
-    image: "/speakers/todd-vande-hei.png",
-    bio: "Todd Vande Hei is the founder of a Southern California-based healthcare company redefining what it means to practice medicine. At the heart of his mission is a shift away from reactive, pharmaceutical-dependent care and toward a proactive model grounded in root-cause healing. His clinics integrate advanced diagnostics like DEXA scans and comprehensive lab work with primarily non-pharmaceutical interventions—including strength training, nutrition, lifestyle optimization, and stress management.\n\nWhen he's not leading his team or dissecting lab results, you'll find Todd out hunting, kitesurfing, or \"geeking out\" on the science of peak performance—always in pursuit of deeper truths about the body, the mind, and what it means to live well.",
-  },
-  {
     name: "Josephine Musco",
     role: "Biotech & Wellness Innovation",
     tag: "Panelist" as const,
     image: "/speakers/josephine-musco.png",
     bio: "Josephine Musco is an inventor, CEO, and patent holder operating at the forefront of biotechnology, wellness innovation, and brand architecture. She is the founder of Olyxir, as well as House of Malakai and Château Bellevue, where she has transformed proprietary intellectual property into high growth, globally positioned companies.\n\nHer work focuses on translating advanced science, formulation, and systems thinking into scalable consumer and performance driven solutions. As an internationally sought after speaker, Musco presents on longevity, innovation, and the future of human optimization at conferences around the world. She is recognized for bridging scientific rigor with visionary leadership to build enduring, category defining enterprises.",
-  },
-  {
-    name: "Dr. Sara Soulati",
-    role: "Founder of Intelligence Circulation™",
-    tag: "Panelist" as const,
-    image: "/speakers/dr-sara-soulati.jpg",
-    bio: "Sara Soulati is a global pioneer of circulation-based therapy and the founder of Intelligence Circulation™.\n\nSince launching the world's first outpatient circulation clinic in 1996, she has built and scaled the largest network of circulation centers, delivering 300,000+ clinical sessions to over 24,000 patients. She later evolved this work into The Second Heart Experience™, redefining cardiovascular care and performance optimization—working with elite athletes across the U.S. Olympic Sprint Team, NFL, NBA, and world-champion boxers.\n\nAs founder of Soulaire, Soulati is advancing a new era of human well-being by transforming circulation from a last-resort intervention into a foundation for vitality, longevity, and peak performance.",
   },
   {
     name: "Jeremy Hoffmann",
@@ -367,7 +351,6 @@ export const AGENDA: readonly AgendaSession[] = [
     panelists: [
       { name: "Ashley Hines" },
       { name: "Josephine Musco" },
-      { name: "Dr. Sara Soulati" },
     ],
   },
   {
@@ -381,7 +364,6 @@ export const AGENDA: readonly AgendaSession[] = [
     panelists: [
       { name: "Nick Capozzi", role: "Longevity Clinic" },
       { name: "Jeremy Hoffmann", role: "Quantum Wellness Spa" },
-      { name: "Todd Vande Hei", role: "Stark Health" },
     ],
   },
   {

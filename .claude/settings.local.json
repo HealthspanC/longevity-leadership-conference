@@ -48,7 +48,32 @@
       "Bash(ffmpeg -i /Users/davidshapiro/Desktop/LLC/public/video/hero.mp4 -an -c:v libx264 -preset slow -crf 28 -vf \"scale=1920:1080\" -movflags +faststart -pix_fmt yuv420p /Users/davidshapiro/Desktop/LLC/public/video/hero-compressed.mp4)",
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{size_download}\" https://longevity-leadership-conference.vercel.app/video/hero.mp4)",
       "Bash(git cherry-pick:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "WebFetch(domain:conciergemdla.com)",
+      "Bash([ -f .env.local ])",
+      "Bash(curl -s -X POST http://localhost:3000/api/subscribe -H \"Content-Type: application/json\" -d '{\"email\":\"apitest-verify@testcheck.dev\",\"firstName\":\"API\",\"lastName\":\"Test\"}')",
+      "mcp__783b6746-620c-4b56-80a1-d5f683f9ee52__get_project",
+      "Bash(xxd)",
+      "Bash(disown)",
+      "Bash(echo \"dev server launched, pid $!\")",
+      "mcp__783b6746-620c-4b56-80a1-d5f683f9ee52__list_teams",
+      "mcp__783b6746-620c-4b56-80a1-d5f683f9ee52__list_projects",
+      "mcp__783b6746-620c-4b56-80a1-d5f683f9ee52__list_deployments",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami:*)",
+      "Bash(vercel teams:*)",
+      "Bash(lsof -ti:3000)",
+      "Bash(pkill -f \"next-server\")",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(nohup npx *)",
+      "Read(//private/tmp/**)",
+      "Bash(git checkout *)",
+      "Bash(git fetch *)",
+      "Bash(kill 69425)",
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(kill 2424 83006)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)"
     ]
   }
 }

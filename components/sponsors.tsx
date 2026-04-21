@@ -7,8 +7,6 @@ import { cn } from "@/lib/utils";
 import { SPONSORS } from "@/lib/constants";
 import { X, ExternalLink, ChevronLeft, ChevronRight, ArrowRight, CalendarDays } from "lucide-react";
 import { FadeIn } from "./fade-in";
-import { ExperiencesModal } from "./experiences-modal";
-import { AgendaModal } from "./agenda-modal";
 
 type Sponsor = (typeof SPONSORS)[number];
 
@@ -509,13 +507,11 @@ function SponsorModal({
 /* ── Main Section ── */
 export function Sponsors() {
   const [modalSponsor, setModalSponsor] = useState<Sponsor | null>(null);
-  const [showExperiences, setShowExperiences] = useState(false);
-  const [showAgenda, setShowAgenda] = useState(false);
 
   return (
     <section
       id="sponsors"
-      className="relative z-[3] pt-28 lg:pt-32 pb-2 lg:pb-3 bg-bg"
+      className="relative z-[3] pt-28 lg:pt-32 pb-0 bg-bg"
     >
       {/* Subtle top edge shadow for slide-up effect */}
       <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/[0.03] to-transparent pointer-events-none" />
@@ -534,23 +530,6 @@ export function Sponsors() {
         <FadeIn delay={100}>
           <MobileSponsorCarousel onOpenModal={setModalSponsor} />
         </FadeIn>
-        {/* On-Site Experiences CTA */}
-        <FadeIn delay={150}>
-          <div className="flex flex-col items-center py-12 lg:py-14">
-            {/* Decorative separator */}
-            <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-purple/25 to-transparent mb-8" />
-            <span className="text-[0.65rem] font-bold tracking-[0.25em] uppercase text-text-muted mb-3">
-              On-Site Experiences
-            </span>
-            <button
-              onClick={() => setShowExperiences(true)}
-              className="bg-purple-deep text-white py-3 px-8 rounded-full font-bold text-[0.88rem] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(91,58,140,0.25)] cursor-pointer"
-            >
-              Explore Wellness Activations
-            </button>
-          </div>
-        </FadeIn>
-
         {/* Venue Partner */}
         <FadeIn delay={200}>
           <div className="max-w-[900px] mx-auto mb-12 lg:mb-16">
@@ -582,83 +561,91 @@ export function Sponsors() {
           </div>
         </FadeIn>
 
-        {/* ── Agenda Banner — editorial, cream-aligned ──────────
-           Light card that harmonizes with the Sponsors section.
-           Mirrors the Vision component's card language: gradient
-           top hairline, white body, purple-wash icon well, and a
-           purple-deep pill CTA that matches "Explore Wellness
-           Activations" one block above.
-           ───────────────────────────────────────────────────── */}
-        <FadeIn delay={250}>
-          <div className="mb-14 lg:mb-16">
-            <div className="group relative overflow-hidden rounded-[20px] bg-bg-card ring-1 ring-border-light shadow-[0_2px_14px_rgba(45,27,78,0.04)] hover:shadow-[0_10px_38px_rgba(91,58,140,0.09)] hover:ring-purple-mid/20 transition-all duration-400">
-              {/* Gradient top hairline — mirrors Vision cards */}
-              <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-purple via-purple-light to-purple opacity-70 group-hover:opacity-100 transition-opacity duration-400" />
+      </div>
 
-              {/* Very subtle purple wash in corner */}
-              <div
-                className="pointer-events-none absolute -top-20 -right-16 w-[280px] h-[280px] rounded-full opacity-60"
-                style={{
-                  background:
-                    "radial-gradient(circle, rgba(168,124,224,0.09), transparent 65%)",
-                }}
-              />
+      {/* ── Agenda Banner — full-bleed lux purple divider ──────
+         Full viewport-width lux purple gradient banner that
+         caps the Sponsors section and acts as a visual divider
+         between the sponsor content above and the sections
+         below. Inner content is re-constrained to the same
+         1140px gutter as the rest of the page.
+         ───────────────────────────────────────────────────── */}
+      <FadeIn delay={250}>
+        <div
+          className="relative overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(135deg, #2d1b4e 0%, #3c2066 55%, #4a2d6e 100%)",
+          }}
+        >
+          {/* Ambient glows */}
+          <div className="absolute top-[10%] left-[6%] w-[520px] h-[520px] rounded-full bg-purple-mid/12 blur-[150px] pointer-events-none" />
+          <div className="absolute bottom-[8%] right-[8%] w-[420px] h-[420px] rounded-full bg-rose/5 blur-[130px] pointer-events-none" />
 
-              <div className="relative px-7 py-9 sm:px-10 sm:py-10 lg:px-14 lg:py-11">
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10">
-                  {/* Left: icon + content */}
-                  <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-7 flex-1 text-center lg:text-left">
-                    {/* Calendar emblem — purple-wash well */}
-                    <div className="shrink-0 relative w-[58px] h-[58px] rounded-[14px] bg-purple-wash ring-1 ring-purple-light/30 flex items-center justify-center">
-                      <CalendarDays
-                        className="w-[24px] h-[24px] text-purple"
-                        strokeWidth={1.8}
-                      />
-                    </div>
+          {/* Subtle diagonal pattern */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.04]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23ffffff' stroke-width='0.3' fill='none' opacity='0.5'%3E%3Cline x1='0' y1='60' x2='60' y2='0'/%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
 
-                    <div className="flex-1 max-w-[560px]">
-                      {/* Kicker */}
-                      <div className="inline-flex items-center gap-2.5 mb-3">
-                        <span className="w-5 h-px bg-purple/40" />
-                        <span className="text-[0.62rem] font-bold tracking-[0.28em] uppercase text-purple">
-                          Conference Program
-                        </span>
-                        <span className="w-5 h-px bg-purple/40 lg:hidden" />
-                      </div>
+          {/* Top hairline — subtle glow across the width */}
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-light/55 to-transparent" />
 
-                      {/* Headline */}
-                      <h3 className="font-display text-[clamp(1.4rem,2.7vw,1.85rem)] font-semibold text-text leading-[1.12] tracking-[-0.012em] mb-3">
-                        A Day of{" "}
-                        <span className="text-purple">
-                          Longevity Leadership
-                        </span>
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-[0.9rem] text-text-secondary leading-[1.65]">
-                        Eleven curated sessions — keynotes, panels, and
-                        networking moments — shaping the conversation on
-                        April 30, 2026.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Right: CTA — matches "Explore Wellness Activations" */}
-                  <div className="shrink-0">
-                    <button
-                      onClick={() => setShowAgenda(true)}
-                      className="group/cta inline-flex items-center gap-2 bg-purple-deep text-white py-3.5 px-8 rounded-full font-bold text-[0.88rem] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_36px_rgba(91,58,140,0.28)] cursor-pointer"
-                    >
-                      View Full Agenda
-                      <ArrowRight className="w-[15px] h-[15px] transition-transform duration-300 group-hover/cta:translate-x-0.5" />
-                    </button>
-                  </div>
+          <div className="relative max-w-[1140px] mx-auto px-6 py-14 lg:py-16">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10">
+              {/* Left: icon + content */}
+              <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-7 flex-1 text-center lg:text-left">
+                {/* Calendar emblem — glass well on dark */}
+                <div className="shrink-0 relative w-[58px] h-[58px] rounded-[14px] bg-white/[0.08] ring-1 ring-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <CalendarDays
+                    className="w-[24px] h-[24px] text-purple-light"
+                    strokeWidth={1.8}
+                  />
                 </div>
+
+                <div className="flex-1 max-w-[560px]">
+                  {/* Kicker */}
+                  <div className="inline-flex items-center gap-2.5 mb-3">
+                    <span className="w-5 h-px bg-purple-light/50" />
+                    <span className="text-[0.62rem] font-bold tracking-[0.28em] uppercase text-purple-light">
+                      Conference Program
+                    </span>
+                    <span className="w-5 h-px bg-purple-light/50 lg:hidden" />
+                  </div>
+
+                  {/* Headline */}
+                  <h3 className="font-display text-[clamp(1.4rem,2.7vw,1.85rem)] font-semibold text-white leading-[1.12] tracking-[-0.012em] mb-3">
+                    A Day of{" "}
+                    <span className="text-purple-light">
+                      Longevity Leadership
+                    </span>
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-[0.9rem] text-white/65 leading-[1.65]">
+                    Eleven curated sessions — keynotes, panels, and
+                    networking moments — shaping the conversation on
+                    April 30, 2026.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right: CTA — white pill reads on dark */}
+              <div className="shrink-0">
+                <a
+                  href="/about#agenda"
+                  className="group/cta inline-flex items-center gap-2 bg-white text-purple-deep py-3.5 px-8 rounded-full font-bold text-[0.88rem] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_38px_rgba(168,124,224,0.35)] shadow-[0_4px_18px_rgba(0,0,0,0.2)] cursor-pointer"
+                >
+                  View Full Agenda
+                  <ArrowRight className="w-[15px] h-[15px] transition-transform duration-300 group-hover/cta:translate-x-0.5" />
+                </a>
               </div>
             </div>
           </div>
-        </FadeIn>
-      </div>
+        </div>
+      </FadeIn>
 
       {modalSponsor && (
         <SponsorModal
@@ -666,12 +653,6 @@ export function Sponsors() {
           onClose={() => setModalSponsor(null)}
         />
       )}
-
-      {showExperiences && (
-        <ExperiencesModal onClose={() => setShowExperiences(false)} />
-      )}
-
-      {showAgenda && <AgendaModal onClose={() => setShowAgenda(false)} />}
     </section>
   );
 }

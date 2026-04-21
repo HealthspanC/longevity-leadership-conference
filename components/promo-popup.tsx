@@ -9,7 +9,7 @@ import { track } from "@vercel/analytics";
 
 const STORAGE_KEY = "llc_promo_dismissed";
 const DELAY_MS = 30_000; // 30 seconds
-const COUPON_CODE = "LLCSUBSCRIBE10";
+const COUPON_CODE = "LLCSUBR15";
 
 export function PromoPopup() {
   const [show, setShow] = useState(false);
@@ -207,7 +207,7 @@ export function PromoPopup() {
 
               {/* Fine print */}
               <p className="text-[0.78rem] text-text-muted mb-4 sm:mb-5">
-                Apply code at checkout for 10% off any ticket.
+                Apply code at checkout for 15% off any ticket.
               </p>
 
               {/* CTA */}
@@ -253,7 +253,7 @@ export function PromoPopup() {
 
               {/* Heading */}
               <h3 className="relative z-[1] text-[1.3rem] sm:text-[1.5rem] font-bold text-white leading-tight tracking-tight">
-                Unlock 10% Off Tickets
+                Unlock 15% Off Tickets
               </h3>
             </div>
 

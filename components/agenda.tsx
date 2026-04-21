@@ -12,6 +12,7 @@ import {
   MapPin,
   Clock,
   Download,
+  FileDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AGENDA, SITE, type AgendaSession } from "@/lib/constants";
@@ -428,6 +429,550 @@ function downloadAgendaICS() {
   URL.revokeObjectURL(url);
 }
 
+/* ── PDF download (via native print dialog) ────────────────
+   Opens the browser's print dialog, which defaults to "Save
+   as PDF" destination on all modern browsers. The dedicated
+   <PrintableAgenda /> sheet (rendered alongside the modal)
+   is the only thing visible on print — globals.css hides
+   every other body child under the @media print rule.
+   Benefits over a client-side PDF library:
+     • Native font rendering (Inter + Playfair Display +
+       Grift all render as vectors with selectable text)
+     • No bundle-size hit
+     • Always in sync with the live AGENDA constant
+   ────────────────────────────────────────────────────── */
+function downloadAgendaPDF() {
+  if (typeof window === "undefined") return;
+  window.print();
+}
+
+/* ── PrintableAgenda — editorial program sheet ────────────
+   Rendered as a sibling portal to the modal. Hidden on
+   screen via `display: none` (see .agenda-print-root in
+   globals.css). On print, it's the only body child shown,
+   laid out to US Letter with editorial typography that
+   mirrors the modal's design language: serif italics for
+   the phase subtitle, small-caps purple kickers, format-
+   color accent dots, hairline rules with gradient fades.
+   The layout is pt-based so print sizing is predictable
+   across browsers, and `break-inside: avoid-page` on each
+   session/phase block prevents awkward mid-item splits.
+   ────────────────────────────────────────────────────── */
+function PrintableAgenda() {
+  return (
+    <div
+      className="agenda-print-root"
+      style={{
+        fontFamily: "var(--font-sans), Inter, system-ui, sans-serif",
+        color: "#1a1a2e",
+        background: "#ffffff",
+        // Letter content width = 8.5in - 1.2in margins = 7.3in
+        maxWidth: "7.3in",
+        margin: "0 auto",
+        padding: 0,
+      }}
+    >
+      {/* ── Masthead ─────────────────────────────────────── */}
+      <header style={{ textAlign: "center", marginBottom: "28pt" }}>
+        {/* Top row — draft pill + site wordmark anchor */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "32pt",
+            fontSize: "7pt",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+          }}
+        >
+          <span style={{ color: "#9b5a70" }}>
+            Draft · Subject to Change
+          </span>
+          <span style={{ color: "#8888a0" }}>
+            longevityleadershipconference.com
+          </span>
+        </div>
+
+        {/* Ornamental date kicker */}
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10pt",
+            marginBottom: "14pt",
+          }}
+        >
+          <span
+            style={{
+              display: "inline-block",
+              width: "48pt",
+              height: "0.5pt",
+              background:
+                "linear-gradient(to right, transparent, rgba(123,82,181,0.45))",
+            }}
+          />
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6pt",
+              fontFamily:
+                "var(--font-serif), 'Playfair Display', Georgia, serif",
+              fontStyle: "italic",
+              fontSize: "10pt",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "#5b3a8c",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                width: "3pt",
+                height: "3pt",
+                borderRadius: "50%",
+                background: "rgba(123,82,181,0.7)",
+              }}
+            />
+            Thursday · April 30 · 2026
+            <span
+              style={{
+                display: "inline-block",
+                width: "3pt",
+                height: "3pt",
+                borderRadius: "50%",
+                background: "rgba(123,82,181,0.7)",
+              }}
+            />
+          </span>
+          <span
+            style={{
+              display: "inline-block",
+              width: "48pt",
+              height: "0.5pt",
+              background:
+                "linear-gradient(to left, transparent, rgba(123,82,181,0.45))",
+            }}
+          />
+        </div>
+
+        {/* Hero title */}
+        <h1
+          style={{
+            fontFamily:
+              "var(--font-serif), 'Playfair Display', Georgia, serif",
+            fontWeight: 600,
+            fontSize: "30pt",
+            lineHeight: 1.1,
+            letterSpacing: "-0.018em",
+            color: "#1a1a2e",
+            margin: "0 0 10pt 0",
+          }}
+        >
+          A Day of <span style={{ color: "#5b3a8c" }}>Longevity Leadership</span>
+        </h1>
+
+        {/* Italic tagline */}
+        <p
+          style={{
+            fontFamily:
+              "var(--font-serif), 'Playfair Display', Georgia, serif",
+            fontStyle: "italic",
+            fontSize: "11.5pt",
+            lineHeight: 1.5,
+            color: "#555566",
+            maxWidth: "4.6in",
+            margin: "0 auto 16pt",
+          }}
+        >
+          Eleven curated sessions — the people and conversations shaping the
+          next era of healthspan.
+        </p>
+
+        {/* Location + stats row */}
+        <div
+          style={{
+            fontSize: "8.5pt",
+            color: "#555566",
+            letterSpacing: "0.04em",
+          }}
+        >
+          Verizon Innovation Lab · Playa Vista · Los Angeles
+          <span style={{ color: "#c9bcdb", margin: "0 8pt" }}>·</span>
+          <span
+            style={{
+              fontWeight: 700,
+              fontSize: "7.5pt",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#7b52b5",
+            }}
+          >
+            11 Sessions · 4 Phases · 6½ Hours
+          </span>
+        </div>
+
+        {/* Ornamental scene break */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8pt",
+            marginTop: "22pt",
+          }}
+        >
+          <span
+            style={{
+              flex: "0 1 140pt",
+              height: "0.5pt",
+              background:
+                "linear-gradient(to right, transparent, rgba(123,82,181,0.28))",
+            }}
+          />
+          <span
+            style={{
+              display: "inline-flex",
+              gap: "4pt",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                width: "3pt",
+                height: "3pt",
+                borderRadius: "50%",
+                background: "rgba(123,82,181,0.4)",
+              }}
+            />
+            <span
+              style={{
+                display: "inline-block",
+                width: "4pt",
+                height: "4pt",
+                borderRadius: "50%",
+                background: "rgba(123,82,181,0.55)",
+              }}
+            />
+            <span
+              style={{
+                display: "inline-block",
+                width: "3pt",
+                height: "3pt",
+                borderRadius: "50%",
+                background: "rgba(123,82,181,0.4)",
+              }}
+            />
+          </span>
+          <span
+            style={{
+              flex: "0 1 140pt",
+              height: "0.5pt",
+              background:
+                "linear-gradient(to left, transparent, rgba(123,82,181,0.28))",
+            }}
+          />
+        </div>
+      </header>
+
+      {/* ── Phases ─────────────────────────────────────── */}
+      {PHASE_ORDER.map((phase) => {
+        const sessions = AGENDA.filter((s) => s.phase === phase);
+        if (sessions.length === 0) return null;
+        const meta = PHASE_META[phase];
+        return (
+          <section
+            key={phase}
+            style={{
+              marginBottom: "26pt",
+              // Prefer keeping a phase together; acceptable to break if too tall
+              pageBreakInside: "avoid",
+              breakInside: "avoid-page",
+            }}
+          >
+            {/* Phase header */}
+            <div
+              style={{
+                textAlign: "center",
+                marginBottom: "18pt",
+              }}
+            >
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10pt",
+                  marginBottom: "6pt",
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "40pt",
+                    height: "0.5pt",
+                    background:
+                      "linear-gradient(to right, transparent, rgba(123,82,181,0.5))",
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: "9pt",
+                    fontWeight: 700,
+                    letterSpacing: "0.26em",
+                    textTransform: "uppercase",
+                    color: "#7b52b5",
+                  }}
+                >
+                  {meta.label}
+                </span>
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "40pt",
+                    height: "0.5pt",
+                    background:
+                      "linear-gradient(to left, transparent, rgba(123,82,181,0.5))",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  fontFamily:
+                    "var(--font-serif), 'Playfair Display', Georgia, serif",
+                  fontStyle: "italic",
+                  fontSize: "13pt",
+                  lineHeight: 1.35,
+                  color: "#1a1a2e",
+                  marginBottom: "4pt",
+                }}
+              >
+                {meta.subtitle}
+              </div>
+              <div
+                style={{
+                  fontSize: "7.5pt",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "#8888a0",
+                }}
+              >
+                {meta.time}
+              </div>
+            </div>
+
+            {/* Sessions */}
+            <div>
+              {sessions.map((session, si) => {
+                const config = FORMAT_CONFIG[session.format];
+                const c = ACCENT[config.accent];
+                return (
+                  <article
+                    key={session.id}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "14pt 1fr",
+                      columnGap: "12pt",
+                      padding: "10pt 0",
+                      borderTop:
+                        si === 0
+                          ? "0.5pt solid rgba(228,224,218,0.8)"
+                          : "0.25pt solid rgba(228,224,218,0.55)",
+                      pageBreakInside: "avoid",
+                      breakInside: "avoid-page",
+                    }}
+                  >
+                    {/* Format-color accent dot + left bar column */}
+                    <div
+                      style={{
+                        position: "relative",
+                        paddingTop: "3pt",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: "8pt",
+                          height: "8pt",
+                          borderRadius: "50%",
+                          background: c.dot,
+                        }}
+                      />
+                    </div>
+
+                    {/* Content column */}
+                    <div>
+                      {/* Kicker row — time · format label */}
+                      <div
+                        style={{
+                          fontSize: "7.5pt",
+                          fontWeight: 700,
+                          letterSpacing: "0.18em",
+                          textTransform: "uppercase",
+                          color: c.label,
+                          marginBottom: "4pt",
+                        }}
+                      >
+                        {session.time}
+                        <span
+                          style={{
+                            opacity: 0.5,
+                            margin: "0 6pt",
+                          }}
+                        >
+                          ·
+                        </span>
+                        {session.formatLabel}
+                      </div>
+
+                      {/* Title */}
+                      <h3
+                        style={{
+                          fontFamily:
+                            "var(--font-serif), 'Playfair Display', Georgia, serif",
+                          fontWeight: 600,
+                          fontSize: "12.5pt",
+                          lineHeight: 1.25,
+                          letterSpacing: "-0.005em",
+                          color: "#1a1a2e",
+                          margin: "0 0 4pt 0",
+                        }}
+                      >
+                        {session.title}
+                      </h3>
+
+                      {/* Speakers (non-panel) */}
+                      {session.speakers && !session.moderator && (
+                        <div
+                          style={{
+                            fontSize: "9pt",
+                            lineHeight: 1.5,
+                            color: "#555566",
+                          }}
+                        >
+                          {session.speakers
+                            .map((s) =>
+                              s.role ? `${s.name} — ${s.role}` : s.name
+                            )
+                            .join(" · ")}
+                        </div>
+                      )}
+
+                      {/* Moderator + panelists (panel sessions) */}
+                      {session.moderator && (
+                        <div
+                          style={{
+                            fontSize: "9pt",
+                            lineHeight: 1.55,
+                            color: "#555566",
+                          }}
+                        >
+                          <div>
+                            <span
+                              style={{
+                                fontWeight: 600,
+                                color: "#1a1a2e",
+                              }}
+                            >
+                              Moderator:
+                            </span>{" "}
+                            {session.moderator.role
+                              ? `${session.moderator.name} — ${session.moderator.role}`
+                              : session.moderator.name}
+                          </div>
+                          {session.panelists && (
+                            <div style={{ marginTop: "2pt" }}>
+                              <span
+                                style={{
+                                  fontWeight: 600,
+                                  color: "#1a1a2e",
+                                }}
+                              >
+                                Panelists:
+                              </span>{" "}
+                              {session.panelists
+                                .map((p) =>
+                                  p.role ? `${p.name} — ${p.role}` : p.name
+                                )
+                                .join(" · ")}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Format details (bullets) */}
+                      {session.formatDetails && (
+                        <ul
+                          style={{
+                            fontSize: "8.5pt",
+                            lineHeight: 1.5,
+                            color: "#555566",
+                            margin: "5pt 0 0 0",
+                            paddingLeft: "12pt",
+                            listStyle: "disc",
+                          }}
+                        >
+                          {session.formatDetails.map((d, i) => (
+                            <li key={i}>{d}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+              {/* Closing rule under last session in phase */}
+              <div
+                style={{
+                  borderTop: "0.5pt solid rgba(228,224,218,0.8)",
+                }}
+              />
+            </div>
+          </section>
+        );
+      })}
+
+      {/* ── Footer ─────────────────────────────────────── */}
+      <footer
+        style={{
+          marginTop: "20pt",
+          paddingTop: "14pt",
+          borderTop: "0.5pt solid rgba(228,224,218,0.8)",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            fontFamily:
+              "var(--font-serif), 'Playfair Display', Georgia, serif",
+            fontStyle: "italic",
+            fontSize: "8.5pt",
+            color: "#8888a0",
+            marginBottom: "4pt",
+          }}
+        >
+          Agenda subject to refinement. Final program will be published
+          closer to the event.
+        </div>
+        <div
+          style={{
+            fontSize: "7pt",
+            fontWeight: 700,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "#5b3a8c",
+          }}
+        >
+          longevityleadershipconference.com
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 export function AgendaModal({
   onClose,
   focusId,
@@ -475,7 +1020,9 @@ export function AgendaModal({
     return () => cancelAnimationFrame(raf);
   }, [focusId, visible]);
 
-  return createPortal(
+  return (
+    <>
+      {createPortal(
     <div
       className={cn(
         // Mobile anchors the modal near the top (items-start) so the X
@@ -640,18 +1187,33 @@ export function AgendaModal({
             })}
           </div>
 
-          {/* Footer — Add to Calendar + disclaimer */}
+          {/* Footer — Add to Calendar + Download PDF + disclaimer.
+              The two download actions stack vertically as a matched
+              pair; both share the same glass-pill chrome so they read
+              as siblings rather than primary/secondary CTAs. */}
           <div className="mt-10 sm:mt-12 pt-7 border-t border-border-light/60 text-center">
-            <button
-              onClick={downloadAgendaICS}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 mb-4 rounded-full bg-white ring-1 ring-purple-mid/25 hover:ring-purple-mid/55 hover:bg-purple-wash/40 text-text hover:text-purple transition-all duration-250 text-[0.82rem] font-semibold cursor-pointer shadow-[0_1px_2px_rgba(45,27,78,0.04)] hover:shadow-[0_4px_14px_rgba(91,58,140,0.08)]"
-            >
-              <Download
-                className="w-[14px] h-[14px] transition-transform duration-250 group-hover:translate-y-[1px]"
-                strokeWidth={2}
-              />
-              <span>Add to Calendar</span>
-            </button>
+            <div className="inline-flex flex-col items-center gap-2.5 mb-4">
+              <button
+                onClick={downloadAgendaICS}
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white ring-1 ring-purple-mid/25 hover:ring-purple-mid/55 hover:bg-purple-wash/40 text-text hover:text-purple transition-all duration-250 text-[0.82rem] font-semibold cursor-pointer shadow-[0_1px_2px_rgba(45,27,78,0.04)] hover:shadow-[0_4px_14px_rgba(91,58,140,0.08)]"
+              >
+                <Download
+                  className="w-[14px] h-[14px] transition-transform duration-250 group-hover:translate-y-[1px]"
+                  strokeWidth={2}
+                />
+                <span>Add to Calendar</span>
+              </button>
+              <button
+                onClick={downloadAgendaPDF}
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white ring-1 ring-purple-mid/25 hover:ring-purple-mid/55 hover:bg-purple-wash/40 text-text hover:text-purple transition-all duration-250 text-[0.82rem] font-semibold cursor-pointer shadow-[0_1px_2px_rgba(45,27,78,0.04)] hover:shadow-[0_4px_14px_rgba(91,58,140,0.08)]"
+              >
+                <FileDown
+                  className="w-[14px] h-[14px] transition-transform duration-250 group-hover:translate-y-[1px]"
+                  strokeWidth={2}
+                />
+                <span>Download PDF</span>
+              </button>
+            </div>
             <p className="text-[0.72rem] text-text-muted italic">
               Agenda subject to refinement. Final program will be published
               closer to the event.
@@ -660,6 +1222,12 @@ export function AgendaModal({
         </div>
       </div>
     </div>,
-    document.body
+        document.body
+      )}
+      {/* Sibling portal — editorial print sheet. Hidden on screen via
+          .agenda-print-root (display:none). On window.print() it
+          becomes the only visible body child. */}
+      {createPortal(<PrintableAgenda />, document.body)}
+    </>
   );
 }

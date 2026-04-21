@@ -192,3 +192,39 @@ body {
   }
 }
 
+/* ── Agenda PDF print styles ───────────────────────────────
+   The "Download PDF" button in the agenda modal calls
+   window.print(). On screen, the dedicated print sheet is
+   hidden via `display: none`. When printing, we hide every
+   other direct child of <body> and reveal only the print
+   sheet, which is styled as an editorial program in Letter
+   format. Modern browsers' "Save as PDF" destination produces
+   a vector PDF with selectable text, honoring our font
+   families and accent colors.
+   ─────────────────────────────────────────────────────── */
+.agenda-print-root {
+  display: none;
+}
+
+@media print {
+  body > *:not(.agenda-print-root) {
+    display: none !important;
+  }
+  .agenda-print-root {
+    display: block !important;
+  }
+  /* Preserve accent colors, hairlines, and backgrounds — Chrome
+     and Safari respect this; Firefox respects when the user's
+     print dialog "Print backgrounds" is on (default behavior
+     for "Save as PDF" destination). */
+  .agenda-print-root,
+  .agenda-print-root * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  @page {
+    size: letter;
+    margin: 0.55in 0.6in;
+  }
+}
+

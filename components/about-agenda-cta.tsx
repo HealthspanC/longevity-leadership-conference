@@ -3,6 +3,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -51,6 +52,19 @@ const ACCENT_COLORS: Record<
   purple: { dot: "#7b52b5", label: "#6b47a0" },
   slate: { dot: "#9992a6", label: "#7d7890" },
 };
+
+// Session IDs whose tooltips always nudge outward from the dial's
+// center heading, regardless of how the bubble was triggered. These
+// dots sit near the horizontal midline of the arc, so a bubble
+// centered on the dot would otherwise overlap "A Day of Longevity
+// Leadership". Listed sessions lean outward on both auto-shown
+// affordance-hint display AND direct user hover.
+const OUTWARD_SHIFT_IDS = new Set<string>([
+  "opening",       // 10:00 – 10:15 AM (leans left — also the default hint)
+  "panel-capital", // 2:20 – 3:00 PM
+  "closing",       // 3:00 – 3:30 PM
+  "networking",    // 3:30 – 4:30 PM
+]);
 
 const PHASE_LABEL: Record<AgendaSession["phase"], string> = {
   morning: "Morning",
@@ -153,6 +167,11 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  // True only when `hovered` was set by the default affordance-hint
+  // effect below, not by a real user interaction. Drives the
+  // quadrant-aware outward shift in SessionTooltip so the hint bubble
+  // leans away from the dial's center text; user hovers stay centered.
+  const [hoverIsDefault, setHoverIsDefault] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [coarsePointer, setCoarsePointer] = useState(false);
 
@@ -203,6 +222,28 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
     document.addEventListener("pointerdown", onDown);
     return () => document.removeEventListener("pointerdown", onDown);
   }, [coarsePointer, hovered]);
+
+  // Affordance hint — once the dots have finished their staggered
+  // entrance (≈1.5s after inView), show the first session's tooltip
+  // by default so users realize the dots are hoverable. The hint
+  // clears naturally the instant the user hovers any dot (onMouseLeave
+  // resets `hovered` to null). Fine pointers only: on touch, a dot
+  // that starts in the "hovered" state would skip the first-tap-
+  // reveals-tooltip step and open the modal on the very first tap.
+  useEffect(() => {
+    if (!inView || coarsePointer) return;
+    const firstId = AGENDA[0]?.id;
+    if (!firstId) return;
+    const delay = reducedMotion ? 0 : 1500;
+    const timer = setTimeout(() => {
+      setHovered((curr) => {
+        if (curr != null) return curr; // user already engaged — respect that
+        setHoverIsDefault(true);
+        return firstId;
+      });
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [inView, coarsePointer, reducedMotion]);
 
   // Session markers on the arc
   const markers = useMemo<SessionMarker[]>(
@@ -257,7 +298,10 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
     (id: string) => {
       if (coarsePointer) {
         if (hovered === id) onOpenAt(id);
-        else setHovered(id);
+        else {
+          setHovered(id);
+          setHoverIsDefault(false);
+        }
       } else {
         onOpenAt(id);
       }
@@ -414,16 +458,6 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
           );
         })}
 
-        {/* 12 o'clock ornamental diamond — dial anchor */}
-        <rect
-          x={CENTER - 4}
-          y={CENTER - DIAL_RIM_RADIUS + 4}
-          width={8}
-          height={8}
-          transform={`rotate(45 ${CENTER} ${CENTER - DIAL_RIM_RADIUS + 8})`}
-          fill="#7b52b5"
-          opacity={0.85}
-        />
       </svg>
 
       {/* Phase labels — clickable small-caps radiating outward */}
@@ -471,12 +505,18 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
               handleDotClick(session.id);
             }}
             onMouseEnter={() => {
-              if (!coarsePointer) setHovered(session.id);
+              if (!coarsePointer) {
+                setHovered(session.id);
+                setHoverIsDefault(false);
+              }
             }}
             onMouseLeave={() => {
               if (!coarsePointer) setHovered(null);
             }}
-            onFocus={() => setHovered(session.id)}
+            onFocus={() => {
+              setHovered(session.id);
+              setHoverIsDefault(false);
+            }}
             onBlur={() => setHovered(null)}
             className="absolute w-7 h-7 rounded-full flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-mid focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf9f7]"
             style={{
@@ -503,7 +543,11 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
 
       {/* Tooltip — glass chip with time + title */}
       {hovered && (
-        <SessionTooltip markers={markers} hoveredId={hovered} />
+        <SessionTooltip
+          markers={markers}
+          hoveredId={hovered}
+          isDefaultHint={hoverIsDefault}
+        />
       )}
 
       {/* Center content stack — date, hero, meta, CTA */}
@@ -545,10 +589,48 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
 function SessionTooltip({
   markers,
   hoveredId,
+  isDefaultHint,
 }: {
   markers: SessionMarker[];
   hoveredId: string;
+  isDefaultHint: boolean;
 }) {
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<number | null>(null);
+
+  // Reset the measured width when the hovered session changes so the
+  // next layout pass re-measures against the bubble's max-width cap.
+  useLayoutEffect(() => {
+    setWidth(null);
+  }, [hoveredId]);
+
+  // Shrink the bubble to the width of its widest actually-rendered line.
+  // Standard CSS sizes an absolutely-positioned "shrink-to-fit" box to
+  // max-content capped at max-width — which leaves trailing whitespace
+  // whenever a title wraps to 2+ lines. Range.getClientRects() returns
+  // one rect per visual line; we pick the widest and collapse the bubble
+  // to it + horizontal padding. Runs before paint, so the user never
+  // sees the intermediate max-width layout.
+  useLayoutEffect(() => {
+    if (width !== null) return;
+    const el = bubbleRef.current;
+    if (!el) return;
+    const lines = el.querySelectorAll<HTMLElement>("[data-measure]");
+    let longest = 0;
+    for (const line of lines) {
+      const range = document.createRange();
+      range.selectNodeContents(line);
+      for (const rect of range.getClientRects()) {
+        if (rect.width > longest) longest = rect.width;
+      }
+    }
+    if (longest > 0) {
+      // px-4 → 32px total horizontal padding. +1px guards against
+      // subpixel rounding that could re-wrap the longest line.
+      setWidth(Math.ceil(longest) + 32 + 1);
+    }
+  }, [width]);
+
   const m = markers.find((mk) => mk.session.id === hoveredId);
   if (!m) return null;
 
@@ -556,27 +638,45 @@ function SessionTooltip({
   const leftPct = (m.x / DIAL_SIZE) * 100;
   const topPct = (m.y / DIAL_SIZE) * 100;
 
-  // Keep the tooltip inside the dial footprint when the dot is near the
-  // left or right edge. A 18-82% band keeps the 220px chip from clipping.
+  // Keep the dot anchor inside the dial footprint when it's near the
+  // left or right edge. The bubble itself may extend slightly past the
+  // dial rim into the surrounding whitespace — the dial wrapper has no
+  // overflow clip — which is acceptable visually.
   const clampedLeft = Math.max(18, Math.min(82, leftPct));
+
+  // Quadrant-aware outward shift. Applied when either (a) this is the
+  // auto-shown affordance hint or (b) the hovered session is one of
+  // the known-problematic ones (listed in OUTWARD_SHIFT_IDS) whose
+  // centered bubble would cross "A Day of Longevity Leadership". All
+  // other user hovers keep the default `-50%` centering so the bubble
+  // sits under the cursor.
+  const horizOffset = (m.x - CENTER) / ARC_RADIUS; // −1 (9 o'clock) → +1 (3 o'clock)
+  const shiftOutward = isDefaultHint || OUTWARD_SHIFT_IDS.has(hoveredId);
+  const translateXPct = shiftOutward ? -50 + 30 * horizOffset : -50;
 
   return (
     <div
-      className="absolute pointer-events-none z-10 w-[220px] max-w-[62vw] rounded-xl bg-white/95 backdrop-blur-md ring-1 ring-purple-mid/20 px-4 py-3 shadow-[0_10px_28px_rgba(45,27,78,0.14)] transition-all duration-200"
+      ref={bubbleRef}
+      className="absolute pointer-events-none z-10 w-auto max-w-[min(220px,62vw)] rounded-xl bg-white/95 backdrop-blur-md ring-1 ring-purple-mid/20 px-4 py-3 shadow-[0_10px_28px_rgba(45,27,78,0.14)] transition-all duration-200"
       style={{
         left: `${clampedLeft}%`,
         top: `calc(${topPct}% + ${isBelow ? "22px" : "-22px"})`,
-        transform: `translate(-50%, ${isBelow ? "0" : "-100%"})`,
+        transform: `translate(${translateXPct}%, ${isBelow ? "0" : "-100%"})`,
+        width: width !== null ? `${width}px` : undefined,
       }}
       role="tooltip"
     >
       <div
+        data-measure
         className="text-[0.58rem] font-bold tracking-[0.18em] uppercase mb-1"
         style={{ color: ACCENT_COLORS[m.accent].label }}
       >
         {m.session.time}
       </div>
-      <div className="font-display text-[0.88rem] font-semibold text-text leading-[1.25]">
+      <div
+        data-measure
+        className="font-display text-[0.88rem] font-semibold text-text leading-[1.25]"
+      >
         {m.session.title}
       </div>
     </div>

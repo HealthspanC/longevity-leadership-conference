@@ -64,7 +64,7 @@ export default function TicketsPage() {
               </div>
               <div className="inline-flex items-center gap-2 bg-white/[0.08] backdrop-blur-sm border border-white/[0.1] rounded-full px-4 py-2 text-[0.8rem] text-white/70">
                 <MapPin className="w-3.5 h-3.5 text-purple-light" />
-                {SITE.venue}
+                Verizon Innovation Lab · 13031 W Jefferson Blvd, Los Angeles, CA 90094
               </div>
             </div>
           </div>

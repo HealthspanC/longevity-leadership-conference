@@ -119,7 +119,7 @@ function VenueSegment() {
               </p>
               <div className="flex items-center gap-2 text-white/50 text-sm">
                 <MapPin className="w-3.5 h-3.5" />
-                <span>Los Angeles, California</span>
+                <span>13031 W Jefferson Blvd, Los Angeles, CA 90094</span>
               </div>
             </div>
           </FadeIn>

@@ -406,7 +406,7 @@ function generateICS(sessions: readonly AgendaSession[]): string {
       `DTSTART;TZID=America/Los_Angeles:20260430T${parsed.start}`,
       `DTEND;TZID=America/Los_Angeles:20260430T${parsed.end}`,
       `SUMMARY:${escapeICSText(summary)}`,
-      `LOCATION:${escapeICSText("Verizon Innovation Lab, Los Angeles")}`,
+      `LOCATION:${escapeICSText("Verizon Innovation Lab, 13031 W Jefferson Blvd, Los Angeles, CA 90094")}`,
       `DESCRIPTION:${escapeICSText(buildDescription(session))}`,
       "END:VEVENT"
     );
@@ -593,7 +593,7 @@ function PrintableAgenda() {
           next era of healthspan.
         </p>
 
-        {/* Location + stats row */}
+        {/* Location row */}
         <div
           style={{
             fontSize: "8.5pt",
@@ -601,19 +601,7 @@ function PrintableAgenda() {
             letterSpacing: "0.04em",
           }}
         >
-          Verizon Innovation Lab · Playa Vista · Los Angeles
-          <span style={{ color: "#c9bcdb", margin: "0 8pt" }}>·</span>
-          <span
-            style={{
-              fontWeight: 700,
-              fontSize: "7.5pt",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "#7b52b5",
-            }}
-          >
-            11 Sessions · 4 Phases · 6½ Hours
-          </span>
+          Verizon Innovation Lab · 13031 W Jefferson Blvd, Los Angeles, CA 90094
         </div>
 
         {/* Ornamental scene break */}
@@ -1136,7 +1124,10 @@ export function AgendaModal({
                   className="w-[13px] h-[13px] text-purple-mid shrink-0"
                   strokeWidth={2}
                 />
-                <span>Verizon Innovation Lab, Los Angeles</span>
+                <span>
+                  Verizon Innovation Lab · 13031 W Jefferson Blvd, Los
+                  Angeles, CA 90094
+                </span>
               </span>
               <span
                 className="hidden sm:inline text-text-muted/50"

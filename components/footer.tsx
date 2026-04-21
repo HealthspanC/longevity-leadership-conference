@@ -28,7 +28,8 @@ export function Footer() {
             />
             <p className="text-[0.85rem] text-white/45 leading-relaxed max-w-[300px]">
               A Premium Forum for the Longevity Industry. Hosted by
-              the Healthspan Collective and Mission Matters in Playa Vista, CA.
+              the Healthspan Collective and Mission Matters at Verizon
+              Innovation Lab in Playa Vista, CA.
             </p>
           </div>
 

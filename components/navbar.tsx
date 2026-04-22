@@ -13,6 +13,10 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  // `activeSection` tracks which in-page section (by element id) is currently
+  // in view, driving the persistent underline on hash-anchor nav items. Only
+  // meaningful on the home page (where all hash targets live); null elsewhere.
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const isTicketsPage = pathname === "/tickets";
   const isAboutPage = pathname === "/about";
   // Use dark text/logo whenever we're scrolled OR sitting over a light hero on /about.
@@ -23,6 +27,65 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  /* ── Scroll spy ─────────────────────────────────────────────
+     Tracks which hash-anchor section (`#sponsors`, `#speakers`, etc.) the
+     user is currently viewing, so the corresponding nav item can hold its
+     underline active. Uses scroll position rather than IntersectionObserver
+     for predictable cross-direction behavior: a section is "active" once its
+     top edge has passed just under the navbar (150px comfort offset), and
+     stays active until the next section's top crosses the same line. Above
+     all sections (hero in view), `activeSection` is null — no underline.
+
+     Only runs on the home page; on other routes we clear state so the
+     route-match rule (`pathname === item.href`) takes over cleanly. */
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection(null);
+      return;
+    }
+    const sectionIds = NAV_ITEMS.filter((item) =>
+      item.href.startsWith("#")
+    ).map((item) => item.href.slice(1));
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY + 150; // ≈ navbar height + comfort margin
+      let active: string | null = null;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.offsetTop <= scrollY) {
+          active = id; // keep updating; last one wins in document order
+        } else {
+          break; // sectionIds are in document order — no need to keep checking
+        }
+      }
+
+      // Near-bottom override: the last section (Subscribe) plus the footer
+      // together may not be tall enough to push Subscribe's top past the
+      // 150px trigger line — max scrollY is `documentHeight - viewportHeight`,
+      // which can land with Subscribe's top still at ~300–500px. In that case
+      // the user is visibly reading Subscribe but the main loop above would
+      // leave the previous section (Venue) marked active. Treat the bottom
+      // 150px of the document as "in the last section" regardless of
+      // offsetTop math.
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      if (
+        maxScroll > 0 &&
+        maxScroll - window.scrollY < 150 &&
+        sectionIds.length > 0
+      ) {
+        active = sectionIds[sectionIds.length - 1];
+      }
+
+      setActiveSection(active);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // prime initial state on mount / route change
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [pathname]);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -178,40 +241,68 @@ export function Navbar() {
 
           {/* Desktop nav */}
           <ul className="hidden lg:flex items-center gap-5 xl:gap-7 list-none">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={(e) => {
-                    // Let cross-page routes (e.g. "/about") navigate normally.
-                    if (item.href.startsWith("/")) return;
-                    e.preventDefault();
-                    const id = item.href.replace("#", "");
-                    const target = document.getElementById(id);
-                    if (target) {
-                      const y = target.getBoundingClientRect().top + window.scrollY - 100;
-                      window.scrollTo({ top: y, behavior: "smooth" });
-                    } else {
-                      window.location.href = "/" + item.href;
+            {NAV_ITEMS.map((item) => {
+              // An item is "active" in two ways:
+              //   - Route match: `pathname === item.href` (e.g. /about is active on /about)
+              //   - Scroll spy: hash items are active when their target section
+              //     is currently in view (only meaningful on the home page)
+              // When active, the underline holds at full width and the text
+              // color matches the hover color permanently, so the user has a
+              // continuous indicator of where they are on the site.
+              const isActive = item.href.startsWith("/")
+                ? pathname === item.href
+                : pathname === "/" && activeSection === item.href.slice(1);
+              return (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    onClick={(e) => {
+                      // Let cross-page routes (e.g. "/about") navigate normally.
+                      if (item.href.startsWith("/")) return;
+                      e.preventDefault();
+                      const id = item.href.replace("#", "");
+                      const target = document.getElementById(id);
+                      if (target) {
+                        const y = target.getBoundingClientRect().top + window.scrollY - 100;
+                        window.scrollTo({ top: y, behavior: "smooth" });
+                      } else {
+                        window.location.href = "/" + item.href;
+                      }
+                    }}
+                    // "page" for a full route match, "location" for an in-page
+                    // section — both are valid aria-current values and give
+                    // screen readers a correct read of "where am I" depending
+                    // on whether the item is a route or an anchor.
+                    aria-current={
+                      isActive
+                        ? item.href.startsWith("/")
+                          ? "page"
+                          : "location"
+                        : undefined
                     }
-                  }}
-                  className={cn(
-                    "group relative text-[0.8rem] xl:text-sm font-medium transition-colors whitespace-nowrap py-1",
-                    darkMode
-                      ? "text-text-secondary hover:text-purple"
-                      : "text-white/80 hover:text-white"
-                  )}
-                >
-                  {item.label}
-                  <span
                     className={cn(
-                      "absolute left-0 -bottom-0.5 h-[1.5px] w-0 group-hover:w-full transition-all duration-300 ease-out rounded-full",
-                      darkMode ? "bg-purple" : "bg-white"
+                      "group relative text-[0.8rem] xl:text-sm font-medium transition-colors whitespace-nowrap py-1",
+                      darkMode
+                        ? isActive
+                          ? "text-purple"
+                          : "text-text-secondary hover:text-purple"
+                        : isActive
+                          ? "text-white"
+                          : "text-white/80 hover:text-white"
                     )}
-                  />
-                </a>
-              </li>
-            ))}
+                  >
+                    {item.label}
+                    <span
+                      className={cn(
+                        "absolute left-0 -bottom-0.5 h-[1.5px] transition-all duration-300 ease-out rounded-full",
+                        darkMode ? "bg-purple" : "bg-white",
+                        isActive ? "w-full" : "w-0 group-hover:w-full"
+                      )}
+                    />
+                  </a>
+                </li>
+              );
+            })}
             <li>
               <a
                 href={LINKS.tickets}

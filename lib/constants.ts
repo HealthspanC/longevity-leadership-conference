@@ -258,9 +258,10 @@ export const EXPERIENCES = [
     sponsorLogo: "/sponsors/pulse-pemf.png",
     heroImage: "/experiences/pemf-lounge.jpg",
     // Source is landscape; the desktop/mobile crop panels are near-square or
-    // portrait, so center-crop loses the left side of the scene. Biasing the
-    // focal point toward the left keeps the lounge subject in frame.
-    objectPosition: "25% center",
+    // portrait, so center-crop clips the edges of the scene. In the updated
+    // photo the subject's face sits in the right half of the frame, so bias
+    // the focal point right to keep the face in view at every crop ratio.
+    objectPosition: "75% center",
     icon: "Zap" as const,
     accentColor: "#c06080",
     description:

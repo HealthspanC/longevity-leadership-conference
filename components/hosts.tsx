@@ -195,8 +195,22 @@ function HostCards() {
 
                   {/* Name + Title + Bio */}
                   <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-7 z-[2]">
-                    <div className="inline-flex mb-2">
-                      <span className="text-[0.65rem] font-semibold tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-3.5 py-1">
+                    {/* Host title pill.
+                       Parent is a plain block (`mb-2`) rather than the earlier
+                       `inline-flex` wrapper so the pill's `max-w-full` actually
+                       clamps against the card's content area. At `sm:` the grid
+                       flips to 3-up which drops each card's content area to
+                       ~138px at a 640px viewport — the original sizing
+                       (`text-[0.65rem]` + uppercase + `tracking-[0.15em]` +
+                       `px-3.5`) needed ~250–300px for titles like "Founder/CEO
+                       — Healthspan Collective" and overflowed. Progressive
+                       scaling here keeps the editorial character at `lg:+`
+                       (where there's ~360px of card room) and tightens it at
+                       each smaller tier. `leading-[1.4]` + `text-center` turn a
+                       wrapped 2-line pill into a readable stadium shape rather
+                       than a lopsided blob. */}
+                    <div className="mb-2">
+                      <span className="inline-block max-w-full text-[0.54rem] sm:text-[0.56rem] md:text-[0.6rem] lg:text-[0.65rem] font-semibold tracking-[0.08em] md:tracking-[0.12em] lg:tracking-[0.15em] uppercase text-purple-light bg-white/[0.08] backdrop-blur-md border border-white/[0.1] rounded-full px-2.5 md:px-3 lg:px-3.5 py-0.5 lg:py-1 leading-[1.4] text-center">
                         {host.title}
                       </span>
                     </div>

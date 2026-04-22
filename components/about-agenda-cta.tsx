@@ -9,7 +9,8 @@ import {
   useState,
 } from "react";
 import { ArrowRight } from "lucide-react";
-import { AgendaModal, parseTimeRange } from "./agenda";
+import { createPortal } from "react-dom";
+import { AgendaModal, parseTimeRange, PrintableAgenda } from "./agenda";
 import { AgendaMobile, HeroCard } from "./agenda-mobile";
 import { FadeIn } from "./fade-in";
 import { AGENDA, type AgendaSession } from "@/lib/constants";
@@ -691,6 +692,16 @@ export function AboutAgendaCTA() {
     focusId?: string;
   }>({ open: false });
 
+  // Mount flag for the PrintableAgenda portal (SSR-safe gate — document.body
+  // is only available after hydration). The print sheet was previously
+  // portalled from inside AgendaModal, which meant mobile users couldn't
+  // use Download PDF from the section-level footer without opening the modal
+  // first. It now lives here, always mounted, always hidden on screen via
+  // .agenda-print-root { display: none } (see app/globals.css). On print,
+  // this one element becomes the only visible body child.
+  const [printReady, setPrintReady] = useState(false);
+  useEffect(() => setPrintReady(true), []);
+
   // Note: the /about#agenda deep link (from the homepage Sponsors CTA and
   // elsewhere) no longer auto-opens the modal. The /about page now has a
   // full inline agenda visualization — banner + Time Rail on mobile,
@@ -735,6 +746,11 @@ export function AboutAgendaCTA() {
           focusId={modalState.focusId}
         />
       )}
+      {/* Section-level print sheet portal — always mounted (once hydrated) so
+          both the AgendaModal's Download PDF button AND the AgendaMobile's
+          footer Download PDF button can fire window.print() and have
+          something to render. See globals.css @media print block. */}
+      {printReady && createPortal(<PrintableAgenda />, document.body)}
     </>
   );
 }

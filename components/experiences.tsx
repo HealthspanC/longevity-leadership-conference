@@ -150,14 +150,26 @@ function ExperienceCard({
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row flex-1 lg:min-h-[464px] overflow-hidden rounded-b-[28px]">
-        {/* Media — 5:4 stacked mobile, 46% of card on desktop */}
-        <div className="relative lg:w-[46%] aspect-[5/4] lg:aspect-auto lg:min-h-[464px] bg-purple-wash shrink-0 overflow-hidden">
+      {/* Layout flip at `sm:` (640px) — side-by-side on all but the
+         narrowest phones. Originally this was `lg:` (1024px), which
+         stranded the entire 640–1023px range in the mobile stacked
+         tier with a viewport-wide card (`sm:w-[calc(100vw-4rem)]`)
+         topped by a 5:4 image panel — at 700px viewport the image
+         alone was ~509px tall, burying the title below the fold. At
+         `sm:` (640px) the card is 576px wide, splitting into a 265px
+         image and 311px body — tight but readable at the mobile title
+         size (1.55rem), and it scales smoothly up to the fixed 720px
+         card at 1024px. Below 640px the stacked layout stays as
+         designed; the card width drops to `calc(100vw-3rem)` and
+         side-by-side would leave the body column under ~290px. */}
+      <div className="flex flex-col sm:flex-row flex-1 sm:min-h-[464px] overflow-hidden rounded-b-[28px]">
+        {/* Media — 5:4 stacked on narrow mobile, 46% of card at sm: and up */}
+        <div className="relative sm:w-[46%] aspect-[5/4] sm:aspect-auto sm:min-h-[464px] bg-purple-wash shrink-0 overflow-hidden">
           <Image
             src={experience.heroImage}
             alt={`${experience.sponsor} — ${experience.name}`}
             fill
-            sizes="(min-width: 1024px) 450px, calc(100vw - 48px)"
+            sizes="(min-width: 1024px) 450px, (min-width: 640px) calc((100vw - 4rem) * 0.46), calc(100vw - 48px)"
             priority={index === 0}
             draggable={false}
             className="object-cover pointer-events-none select-none"

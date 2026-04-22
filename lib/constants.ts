@@ -262,7 +262,7 @@ export const EXPERIENCES = [
     tagline: "Pulsed Electromagnetic Field Therapy",
     sponsor: "Pulse PEMF",
     sponsorLogo: "/sponsors/pulse-pemf.png",
-    heroImage: "/experiences/pemf-lounge.jpg",
+    heroImage: "/experiences/pemf-lounge.jpeg",
     // Source is landscape; the desktop/mobile crop panels are near-square or
     // portrait, so center-crop clips the edges of the scene. In the updated
     // photo the subject's face sits in the right half of the frame, so bias

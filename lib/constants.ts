@@ -227,6 +227,7 @@ export const EXPERIENCES = [
     tagline: "Physician-Led Peptide Therapy",
     sponsor: "ConciergeMD",
     sponsorLogo: "/sponsors/concierge-md.png",
+    heroImage: "/experiences/peptide-shot-bar.jpg",
     icon: "Beaker" as const,
     accentColor: "#a87ce0",
     description:
@@ -241,6 +242,7 @@ export const EXPERIENCES = [
     tagline: "Regenerative IV Therapy",
     sponsor: "Regen Therapy",
     sponsorLogo: "/sponsors/regen-therapy.png",
+    heroImage: "/experiences/iv-lounge.jpg",
     icon: "Droplets" as const,
     accentColor: "#2a7a6e",
     description:
@@ -254,6 +256,11 @@ export const EXPERIENCES = [
     tagline: "Pulsed Electromagnetic Field Therapy",
     sponsor: "Pulse PEMF",
     sponsorLogo: "/sponsors/pulse-pemf.png",
+    heroImage: "/experiences/pemf-lounge.jpg",
+    // Source is landscape; the desktop/mobile crop panels are near-square or
+    // portrait, so center-crop loses the left side of the scene. Biasing the
+    // focal point toward the left keeps the lounge subject in frame.
+    objectPosition: "25% center",
     icon: "Zap" as const,
     accentColor: "#c06080",
     description:

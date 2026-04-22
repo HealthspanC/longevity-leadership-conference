@@ -416,7 +416,7 @@ function generateICS(sessions: readonly AgendaSession[]): string {
   return lines.map(foldICSLine).join("\r\n");
 }
 
-function downloadAgendaICS() {
+export function downloadAgendaICS() {
   const ics = generateICS(AGENDA);
   const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -441,7 +441,7 @@ function downloadAgendaICS() {
      • No bundle-size hit
      • Always in sync with the live AGENDA constant
    ────────────────────────────────────────────────────── */
-function downloadAgendaPDF() {
+export function downloadAgendaPDF() {
   if (typeof window === "undefined") return;
   window.print();
 }
@@ -458,7 +458,7 @@ function downloadAgendaPDF() {
    across browsers, and `break-inside: avoid-page` on each
    session/phase block prevents awkward mid-item splits.
    ────────────────────────────────────────────────────── */
-function PrintableAgenda() {
+export function PrintableAgenda() {
   return (
     <div
       className="agenda-print-root"
@@ -1215,10 +1215,11 @@ export function AgendaModal({
     </div>,
         document.body
       )}
-      {/* Sibling portal — editorial print sheet. Hidden on screen via
-          .agenda-print-root (display:none). On window.print() it
-          becomes the only visible body child. */}
-      {createPortal(<PrintableAgenda />, document.body)}
+      {/* Note: PrintableAgenda is no longer portalled from inside the modal.
+          It now lives at the section level (components/about-agenda-cta.tsx)
+          so the Download PDF button in the mobile agenda footer can fire
+          window.print() without needing the modal to be open first. Keeping
+          only one mounted copy also prevents double-rendering on print. */}
     </>
   );
 }

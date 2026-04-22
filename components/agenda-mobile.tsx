@@ -1,8 +1,17 @@
 "use client";
 
-import { Sparkles, Mic, Users, Coffee, Award } from "lucide-react";
+import {
+  Sparkles,
+  Mic,
+  Users,
+  Coffee,
+  Award,
+  Download,
+  FileDown,
+} from "lucide-react";
 import { AGENDA, type AgendaSession } from "@/lib/constants";
 import { FadeIn } from "./fade-in";
+import { downloadAgendaICS, downloadAgendaPDF } from "./agenda";
 
 /* ── Mobile Time Rail — vertical timeline view of the conference day.
    A purpose-built mobile alternative to the desktop DayClock dial:
@@ -319,6 +328,46 @@ export function AgendaMobile({
               </FadeIn>
             );
           })}
+
+          {/* Section footer — Add to Calendar + Download PDF + disclaimer.
+              Mirrors the desktop modal's footer block (components/agenda.tsx
+              ~line 1185) so the two surfaces feel like siblings: hairline
+              separator, stacked glass-pill buttons, italic disclaimer.
+              Previously these actions were only reachable on mobile by
+              tapping a session to open the modal — now they surface at the
+              bottom of the section itself. */}
+          <FadeIn delay={PHASE_ORDER.length * 80}>
+            <div className="mt-12 pt-8 border-t border-border-light/60 text-center">
+              <div className="inline-flex flex-col items-center gap-2.5 mb-4">
+                <button
+                  type="button"
+                  onClick={downloadAgendaICS}
+                  className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white ring-1 ring-purple-mid/25 hover:ring-purple-mid/55 hover:bg-purple-wash/40 text-text hover:text-purple transition-all duration-250 text-[0.82rem] font-semibold cursor-pointer shadow-[0_1px_2px_rgba(45,27,78,0.04)] hover:shadow-[0_4px_14px_rgba(91,58,140,0.08)]"
+                >
+                  <Download
+                    className="w-[14px] h-[14px] transition-transform duration-250 group-hover:translate-y-[1px]"
+                    strokeWidth={2}
+                  />
+                  <span>Add to Calendar</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={downloadAgendaPDF}
+                  className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white ring-1 ring-purple-mid/25 hover:ring-purple-mid/55 hover:bg-purple-wash/40 text-text hover:text-purple transition-all duration-250 text-[0.82rem] font-semibold cursor-pointer shadow-[0_1px_2px_rgba(45,27,78,0.04)] hover:shadow-[0_4px_14px_rgba(91,58,140,0.08)]"
+                >
+                  <FileDown
+                    className="w-[14px] h-[14px] transition-transform duration-250 group-hover:translate-y-[1px]"
+                    strokeWidth={2}
+                  />
+                  <span>Download PDF</span>
+                </button>
+              </div>
+              <p className="text-[0.72rem] text-text-muted italic leading-[1.55]">
+                Agenda subject to refinement. Final program will be published
+                closer to the event.
+              </p>
+            </div>
+          </FadeIn>
         </div>
       </div>
     </>

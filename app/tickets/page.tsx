@@ -16,11 +16,24 @@ export const metadata: Metadata = {
       "Reserve your seat for the Longevity Leadership Conference, April 30, 2026 in Los Angeles.",
     url: "https://longevityleadershipconference.com/tickets",
     type: "website",
+    // Explicit image — matches the home page / about page OG card so social
+    // shares of /tickets render the same conference branding. See notes in
+    // app/about/page.tsx on why sub-field inheritance isn't reliable once a
+    // page redefines `openGraph`.
+    images: [
+      {
+        url: "https://longevityleadershipconference.com/og-image2.jpg",
+        width: 1000,
+        height: 1000,
+        alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Tickets | Longevity Leadership Conference 2026",
     description: "Reserve your seat — April 30, 2026 in Los Angeles.",
+    images: ["https://longevityleadershipconference.com/og-image2.jpg"],
   },
 };
 

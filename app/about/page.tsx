@@ -18,12 +18,25 @@ export const metadata: Metadata = {
       "Hosts, on-site wellness experiences, and the full-day agenda for April 30, 2026 in Los Angeles.",
     url: "https://longevityleadershipconference.com/about",
     type: "website",
+    // Explicit image — Next merges top-level metadata keys, but once a page
+    // redefines `openGraph`, sub-fields from the parent layout don't reliably
+    // carry through. Repeating the home page's OG asset here keeps social
+    // shares of /about rendering the same conference branding card.
+    images: [
+      {
+        url: "https://longevityleadershipconference.com/og-image2.jpg",
+        width: 1000,
+        height: 1000,
+        alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "About | Longevity Leadership Conference 2026",
     description:
       "Hosts, on-site wellness experiences, and the full-day agenda — April 30, 2026 in Los Angeles.",
+    images: ["https://longevityleadershipconference.com/og-image2.jpg"],
   },
 };
 

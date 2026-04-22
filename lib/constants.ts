@@ -242,7 +242,13 @@ export const EXPERIENCES = [
     tagline: "Regenerative IV Therapy",
     sponsor: "Regen Therapy",
     sponsorLogo: "/sponsors/regen-therapy.png",
-    heroImage: "/experiences/iv-lounge.jpg",
+    heroImage: "/experiences/iv-lounge.png",
+    // Source (1401×1232) is near-square and pre-framed, so object-cover
+    // crops only ~12% off each side in the 55%-wide panel. The subjects
+    // of interest sit just right of the image's horizontal center, so a
+    // gentle 60% bias anchors the crop slightly right — keeps the faces
+    // in frame without feeling off-center.
+    objectPosition: "60% center",
     icon: "Droplets" as const,
     accentColor: "#2a7a6e",
     description:
@@ -265,7 +271,7 @@ export const EXPERIENCES = [
     icon: "Zap" as const,
     accentColor: "#c06080",
     description:
-      "Pulse PEMF is setting up a recovery lounge at the Longevity Leadership Conference. Trusted by health professionals and athletes worldwide, Pulse PEMF is one of the most clinically validated non-invasive recovery tools available.",
+      "Enjoy a complimentary 10-minute PEMF session with the top PEMF system in the industry! Trusted by health professionals and athletes worldwide, it is one of the most clinically validated non-invasive recovery tools available.",
     cta: "Available to all attendees",
     website: "https://pulsepemf.com/patrick-keenan/",
     logoScale: 0.85,

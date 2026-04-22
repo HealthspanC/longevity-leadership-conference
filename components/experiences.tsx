@@ -444,9 +444,18 @@ export function Experiences() {
             "radial-gradient(circle at 40% 40%, rgba(168,124,224,0.16) 0%, rgba(168,124,224,0.06) 55%, transparent 75%)",
         }}
       />
+      {/* Mirror of the top-right glow. Originally `-bottom-32` (128px below
+          the section); the section's `overflow-hidden` clipped the circle
+          where its radial gradient still rendered at ~0.08–0.10 opacity,
+          producing a visible horizontal "cut" line at the seam with the
+          AgendaCTA section below. `bottom-0` plants the element's bottom
+          flush with the section's bottom so there's nothing to clip
+          vertically — the glow now fades out naturally before the edge.
+          The `-left-32` offset stays: its clip runs along the page gutter
+          and is visually inert, exactly matching the top glow's right-clip. */}
       <div
         aria-hidden
-        className="absolute -bottom-32 -left-32 w-[440px] h-[440px] rounded-full pointer-events-none blur-[2px]"
+        className="absolute bottom-0 -left-32 w-[440px] h-[440px] rounded-full pointer-events-none blur-[2px]"
         style={{
           background:
             "radial-gradient(circle at 30% 30%, rgba(198,178,235,0.22) 0%, rgba(198,178,235,0.06) 55%, transparent 80%)",

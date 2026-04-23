@@ -9,26 +9,36 @@ import { cn } from "@/lib/utils";
 import { NAV_ITEMS, LINKS } from "@/lib/constants";
 import { Menu, X } from "lucide-react";
 
-export function Navbar() {
+export function Navbar({
+  variant = "home",
+}: {
+  variant?: "home" | "about";
+} = {}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   // `activeSection` tracks which in-page section (by element id) is currently
-  // in view, driving the persistent underline on hash-anchor nav items. Only
-  // meaningful on the home page (where all hash targets live); null elsewhere.
+  // in view. Drives the persistent nav-item underline (only the home-page
+  // NAV_ITEMS ids cause an underline match) AND the URL-sync effect further
+  // below (which runs on both `/` and `/about`). Null above all tracked
+  // sections (hero / About intro) or on unrelated routes.
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const isTicketsPage = pathname === "/tickets";
-  // Any route that renders the `AboutPageBody` starts over a cream editorial
-  // hero, not the video hero — so the navbar needs dark text/logo from the
-  // first paint, not just after scroll. That includes `/about` itself plus
-  // the hosts and experiences route families (list pages and slug routes
-  // both render `AboutPageBody` per the v2 deep-link refactor).
-  const isAboutLikePage =
-    pathname === "/about" ||
-    pathname.startsWith("/hosts") ||
-    pathname.startsWith("/experiences");
-  // Use dark text/logo whenever we're scrolled OR sitting over a light hero.
-  const darkMode = scrolled || isAboutLikePage;
+  // `variant` is set by the body component that knows its own context.
+  // Home-body routes (`/`, `/speakers/<slug>`) render the video hero — navbar
+  // starts white-on-dark and switches to dark-on-cream on scroll. About-body
+  // routes (`/about`, `/hosts`, `/hosts/<slug>`, `/experiences`,
+  // `/experiences/<slug>`) render the cream editorial hero — navbar starts
+  // dark-on-cream from first paint.
+  //
+  // Previously this was inferred from `usePathname()` pattern matching, but
+  // Turbopack's SSR compile cache produced inconsistent results on dynamic
+  // and list routes under `/hosts*` and `/experiences/<slug>` — an
+  // `isAboutLikePage` expression resolved to false even though the same
+  // `pathname.startsWith(...)` predicate resolved to true for the sibling
+  // `isActive` underline computation on the same render. An explicit prop
+  // sidesteps that entirely.
+  const darkMode = scrolled || variant === "about";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -38,23 +48,49 @@ export function Navbar() {
 
   /* ── Scroll spy ─────────────────────────────────────────────
      Tracks which hash-anchor section (`#sponsors`, `#speakers`, etc.) the
-     user is currently viewing, so the corresponding nav item can hold its
-     underline active. Uses scroll position rather than IntersectionObserver
-     for predictable cross-direction behavior: a section is "active" once its
-     top edge has passed just under the navbar (150px comfort offset), and
-     stays active until the next section's top crosses the same line. Above
-     all sections (hero in view), `activeSection` is null — no underline.
+     user is currently viewing. Drives two separate consumers:
+       1. The navbar underline — which nav item gets the persistent
+          underline (only meaningful on `/`, since NAV_ITEMS hash targets
+          all live on the home page).
+       2. The URL-sync effect below — `replaceState`s the hash into the
+          address bar so the URL tracks scroll position on `/` and
+          `/about` alike, for copy/shareability.
 
-     Only runs on the home page; on other routes we clear state so the
-     route-match rule (`pathname === item.href`) takes over cleanly. */
+     Uses scroll position rather than IntersectionObserver for predictable
+     cross-direction behavior: a section is "active" once its top edge has
+     passed just under the navbar (150px comfort offset), and stays active
+     until the next section's top crosses the same line. Above all tracked
+     sections (hero / About intro in view), `activeSection` is null.
+
+     Runs on `/` and `/about`; on other routes we clear state so the
+     route-match rule (`pathname === item.href`) takes over cleanly and
+     no scroll listener is left attached. */
   useEffect(() => {
-    if (pathname !== "/") {
+    if (pathname !== "/" && pathname !== "/about") {
       setActiveSection(null);
       return;
     }
-    const sectionIds = NAV_ITEMS.filter((item) =>
-      item.href.startsWith("#")
-    ).map((item) => item.href.slice(1));
+    // Section ids in document order. Chosen deliberately rather than
+    // derived from NAV_ITEMS:
+    //   - Home leads with `#conference` — the Vision section ("The
+    //     Conference / For Industry Insiders"), which opens with the
+    //     "if you are serious about building in the longevity space…"
+    //     quote. Not a nav item. Deliberately NOT on the hero `<section>`
+    //     — we want the clean `/` URL while the hero video is in view,
+    //     and `/#conference` to kick in only once the user scrolls to
+    //     the actual conference pitch.
+    //   - Home also includes `#partner` (the "Partner with Us" banner in
+    //     `event-deck.tsx`). Same rationale — real section with an id,
+    //     not in NAV_ITEMS. No underline side effect for either, since
+    //     the underline logic only matches `NAV_ITEMS.href`.
+    //   - About tracks its three content sections: Hosts, Experiences
+    //     (via the `#iwa` canonical wrapper, matching existing deep-link
+    //     conventions), and the Agenda CTA. The cream intro at the top
+    //     has no id, so it stays as `/about` with no hash.
+    const sectionIds =
+      pathname === "/"
+        ? ["conference", "sponsors", "speakers", "gallery", "partner", "venue", "subscribe"]
+        : ["hosts", "iwa", "agenda"];
 
     const handleScroll = () => {
       const scrollY = window.scrollY + 150; // ≈ navbar height + comfort margin
@@ -94,6 +130,35 @@ export function Navbar() {
     handleScroll(); // prime initial state on mount / route change
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
+
+  /* ── URL sync ───────────────────────────────────────────────
+     Mirror the scroll spy's `activeSection` into the URL bar so the
+     address is copy/shareable for whatever the user is currently
+     reading. `replaceState` (not `pushState`) because passive scrolling
+     must not pollute browser history — otherwise Back would take as
+     many clicks as sections scrolled through, which breaks "Back leaves
+     the site."
+
+     Two guards:
+       1. Outer Next guard (`pathname === "/" || pathname === "/about"`)
+          — skips route changes away from the scroll-sync's domain.
+       2. Inner live-DOM guard (`window.location.pathname === pathname`)
+          — catches modal pushStates that bypass Next's router. When a
+          user clicks a speaker card on `/`, `speakers.tsx` calls
+          `history.pushState("/speakers/<slug>")` directly, which
+          doesn't trigger a Next re-render. `usePathname()` still
+          reports "/" but `window.location.pathname` is the truth.
+          Without this guard we'd clobber the modal's URL. */
+  useEffect(() => {
+    if (pathname !== "/" && pathname !== "/about") return;
+    if (window.location.pathname !== pathname) return;
+    const nextHash = activeSection ? `#${activeSection}` : "";
+    const nextURL = pathname + nextHash;
+    const currentURL = window.location.pathname + window.location.hash;
+    if (nextURL !== currentURL) {
+      window.history.replaceState(null, "", nextURL);
+    }
+  }, [activeSection, pathname]);
 
   useEffect(() => {
     if (mobileOpen) {

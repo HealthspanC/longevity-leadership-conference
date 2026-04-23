@@ -105,6 +105,7 @@ export function Vision() {
 
   return (
     <section
+      id="conference"
       ref={sectionRef}
       className="relative z-[1] pt-20 lg:pt-24 pb-28 lg:pb-32 overflow-hidden bg-bg"
       style={{ position: "sticky", top: stickyTop }}

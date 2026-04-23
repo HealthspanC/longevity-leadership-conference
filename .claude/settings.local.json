@@ -108,7 +108,15 @@
       "Bash(curl -s \"http://localhost:3000/\")",
       "Bash(grep -oE 'Partner[^<]{0,30}')",
       "Bash(curl -s \"http://localhost:3000/sitemap.xml\")",
-      "Bash(curl -s \"http://localhost:3000/about\")"
+      "Bash(curl -s \"http://localhost:3000/about\")",
+      "Bash(sort -u echo \"--- Stale #hero references? \\(should be none except comments\\) ---\" grep -rn 'id=\"hero\"\\\\|#hero\\\\|\"hero\"' /Users/davidshapiro/Desktop/LLC/components /Users/davidshapiro/Desktop/LLC/app /Users/davidshapiro/Desktop/LLC/lib)",
+      "Bash(bash -c 'echo \"=== Should all be text-text-secondary \\(dark mode\\) ===\" *)",
+      "Bash(bash -c 'for path in /hosts /hosts/adam /experiences/iv-lounge; do *)",
+      "Bash(touch /Users/davidshapiro/Desktop/LLC/app/hosts/page.tsx /Users/davidshapiro/Desktop/LLC/app/hosts/\\\\[slug\\\\]/page.tsx /Users/davidshapiro/Desktop/LLC/app/experiences/page.tsx /Users/davidshapiro/Desktop/LLC/app/experiences/\\\\[slug\\\\]/page.tsx)",
+      "Bash(kill 23087)",
+      "Bash(bash -c 'echo \"=== About-body routes \\(should all be text-text-secondary = dark\\) ===\" *)",
+      "Bash(bash -c 'echo \"=== Logo opacity on /hosts/adam \\(purple should be opacity-100, white opacity-0\\) ===\" *)",
+      "Bash(bash -c 'echo \"=== Logo opacity classes on /hosts/adam ===\" *)"
     ]
   }
 }

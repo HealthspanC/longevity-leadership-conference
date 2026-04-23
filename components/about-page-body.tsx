@@ -73,7 +73,7 @@ export function AboutPageBody({
 
   return (
     <>
-      <Navbar />
+      <Navbar variant="about" />
       <main className="min-h-screen">
         {/* Intro hero — cream editorial */}
         <section className="relative pt-40 pb-16 lg:pt-48 lg:pb-20 overflow-hidden bg-gradient-to-b from-[#faf9f7] to-[#f4efe8]">

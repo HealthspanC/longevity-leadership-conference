@@ -357,7 +357,7 @@ export const AGENDA: readonly AgendaSession[] = [
     phase: "morning",
     format: "keynote",
     formatLabel: "Keynote",
-    title: "Longevity's Blind Spot: Functional brain age is here",
+    title: "Longevity's Blind Spot: Functional Brain Age Is Here",
     speakers: [{ name: "Paola Telfer", role: "SENS.AI" }],
   },
   {

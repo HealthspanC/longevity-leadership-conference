@@ -357,7 +357,7 @@ export const AGENDA: readonly AgendaSession[] = [
     phase: "morning",
     format: "keynote",
     formatLabel: "Keynote",
-    title: "The World's First Brain Aging Clock",
+    title: "Longevity's Blind Spot: Functional brain age is here",
     speakers: [{ name: "Paola Telfer", role: "SENS.AI" }],
   },
   {

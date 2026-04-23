@@ -71,7 +71,7 @@ export default async function Image({
   // works both on localhost (dev) and on the production domain without
   // a config switch.
   const hdrs = await headers();
-  const host = hdrs.get("host") ?? "longevityleadershipconference.com";
+  const host = hdrs.get("host") ?? "www.longevityleadershipconference.com";
   const protocol = host.startsWith("localhost") ? "http" : "https";
   const imageUrl = `${protocol}://${host}${speaker.image}`;
 

@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     title: "On-Site Experiences | Longevity Leadership Conference 2026",
     description:
       "Three immersive wellness activations — Peptide Shot Bar, IV Lounge, and PEMF Lounge — presented by ConciergeMD, Regen Therapy, and Pulse PEMF.",
-    url: "https://longevityleadershipconference.com/experiences",
+    url: "https://www.longevityleadershipconference.com/experiences",
     type: "website",
     images: [
       {
-        url: "https://longevityleadershipconference.com/og-image2.jpg",
+        url: "https://www.longevityleadershipconference.com/og-image2.jpg",
         width: 1000,
         height: 1000,
         alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: "On-Site Experiences | Longevity Leadership Conference 2026",
     description:
       "Three immersive wellness activations at the Longevity Leadership Conference — April 30, 2026.",
-    images: ["https://longevityleadershipconference.com/og-image2.jpg"],
+    images: ["https://www.longevityleadershipconference.com/og-image2.jpg"],
   },
 };
 

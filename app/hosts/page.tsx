@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     title: "Your Hosts | Longevity Leadership Conference 2026",
     description:
       "Meet the hosts of the Longevity Leadership Conference 2026 — presented by Healthspan Collective in partnership with Mission Matters Media.",
-    url: "https://longevityleadershipconference.com/hosts",
+    url: "https://www.longevityleadershipconference.com/hosts",
     type: "website",
     images: [
       {
-        url: "https://longevityleadershipconference.com/og-image2.jpg",
+        url: "https://www.longevityleadershipconference.com/og-image2.jpg",
         width: 1000,
         height: 1000,
         alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: "Your Hosts | Longevity Leadership Conference 2026",
     description:
       "Meet the hosts of the Longevity Leadership Conference — April 30, 2026 in Los Angeles.",
-    images: ["https://longevityleadershipconference.com/og-image2.jpg"],
+    images: ["https://www.longevityleadershipconference.com/og-image2.jpg"],
   },
 };
 

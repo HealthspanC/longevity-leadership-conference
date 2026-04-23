@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://longevityleadershipconference.com"),
+  metadataBase: new URL("https://www.longevityleadershipconference.com"),
   title:
     "Longevity Leadership Conference 2026 | Healthspan Collective & Mission Matters Media | April 30, LA",
   description:
@@ -52,11 +52,11 @@ export const metadata: Metadata = {
       "The Longevity Leadership Conference 2026 — hosted by Healthspan Collective and Mission Matters Media. April 30, 2026 at the Verizon Innovation Lab, Playa Vista, Los Angeles.",
     type: "website",
     locale: "en_US",
-    url: "https://longevityleadershipconference.com",
+    url: "https://www.longevityleadershipconference.com",
     siteName: "Longevity Leadership Conference",
     images: [
       {
-        url: "https://longevityleadershipconference.com/og-image2.jpg",
+        url: "https://www.longevityleadershipconference.com/og-image2.jpg",
         width: 1000,
         height: 1000,
         alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
       "Longevity Leadership Conference 2026 | Healthspan Collective & Mission Matters Media",
     description:
       "Hosted by Healthspan Collective and Mission Matters Media. April 30, 2026 in Los Angeles.",
-    images: ["https://longevityleadershipconference.com/og-image2.jpg"],
+    images: ["https://www.longevityleadershipconference.com/og-image2.jpg"],
   },
   robots: {
     index: true,

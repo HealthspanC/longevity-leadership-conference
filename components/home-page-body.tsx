@@ -46,7 +46,7 @@ function OrganizationJsonLd() {
     "@type": "Organization",
     name: "Healthspan Collective",
     url: "https://healthspan.community",
-    logo: "https://longevityleadershipconference.com/brand/logo.png",
+    logo: "https://www.longevityleadershipconference.com/brand/logo.png",
     sameAs: [
       "https://www.instagram.com/healthspan_collective/",
       "https://www.linkedin.com/company/healthspanpro/",
@@ -67,7 +67,7 @@ function WebSiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Longevity Leadership Conference",
-    url: "https://longevityleadershipconference.com",
+    url: "https://www.longevityleadershipconference.com",
     publisher: {
       "@type": "Organization",
       name: "Healthspan Collective",
@@ -88,7 +88,7 @@ function EventJsonLd() {
     "@type": "Conference",
     name: `${SITE.edition} ${SITE.name}`,
     description: SITE.description,
-    url: "https://longevityleadershipconference.com",
+    url: "https://www.longevityleadershipconference.com",
     startDate: "2026-04-30T10:00:00-07:00",
     endDate: "2026-04-30T17:00:00-07:00",
     eventStatus: "https://schema.org/EventScheduled",
@@ -103,7 +103,7 @@ function EventJsonLd() {
         addressCountry: "US",
       },
     },
-    image: "https://longevityleadershipconference.com/og-image.png",
+    image: "https://www.longevityleadershipconference.com/og-image.png",
     organizer: [
       {
         "@type": "Organization",

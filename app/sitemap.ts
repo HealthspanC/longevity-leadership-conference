@@ -16,7 +16,7 @@ import { SPEAKERS, HOSTS, EXPERIENCES } from "@/lib/constants";
  * because their OG metadata is the whole point of these routes.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://longevityleadershipconference.com";
+  const base = "https://www.longevityleadershipconference.com";
   const now = new Date();
 
   // Top-level canonical pages.

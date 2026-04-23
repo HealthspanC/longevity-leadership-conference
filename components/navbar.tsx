@@ -153,15 +153,15 @@ export function Navbar({
     if (pathname !== "/" && pathname !== "/about") return;
     if (window.location.pathname !== pathname) return;
 
-    // Preserve sub-anchors. If the current hash points to an element that
-    // lives *inside* one of the tracked sections (e.g. `#peptide-shot-bar`
-    // is an experience card inside the `#iwa` wrapper), leave the URL
-    // alone — the scroll spy's section-level resolution would otherwise
-    // downgrade a shareable card link to `#iwa` the moment the user lands,
-    // or wipe it entirely during the mount race before `activeSection`
-    // resolves. Top-level section ids (which appear in `sectionIds`
-    // themselves) fall through to the normal sync so cross-section scroll
-    // still updates the URL.
+    // Preserve sub-anchors while the user is still inside the containing
+    // section. If the current hash points to an element that lives *inside*
+    // one of the tracked sections (e.g. `#peptide-shot-bar` is an experience
+    // card inside the `#iwa` wrapper), and the scroll spy currently has that
+    // containing section active, leave the URL alone — otherwise the spy
+    // would downgrade a shareable card link to `#iwa` the moment the user
+    // lands. Once the user scrolls *out* of the containing section (e.g.
+    // from Experiences into Agenda), fall through so the URL catches up to
+    // the new section rather than stranding a stale card hash in the bar.
     const sectionIds =
       pathname === "/"
         ? ["conference", "sponsors", "speakers", "gallery", "partner", "venue", "subscribe"]
@@ -173,7 +173,11 @@ export function Navbar({
         for (const id of sectionIds) {
           const sectionEl = document.getElementById(id);
           if (sectionEl && sectionEl.contains(hashEl)) {
-            return;
+            // Only preserve while the user is still reading this section,
+            // or during the mount race before scroll-spy has resolved
+            // (activeSection null) — otherwise update to the current section.
+            if (activeSection === id || activeSection === null) return;
+            break;
           }
         }
       }

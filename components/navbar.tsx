@@ -152,6 +152,47 @@ export function Navbar({
   useEffect(() => {
     if (pathname !== "/" && pathname !== "/about") return;
     if (window.location.pathname !== pathname) return;
+
+    // Preserve sub-anchors. If the current hash points to an element that
+    // lives *inside* one of the tracked sections (e.g. `#peptide-shot-bar`
+    // is an experience card inside the `#iwa` wrapper), leave the URL
+    // alone — the scroll spy's section-level resolution would otherwise
+    // downgrade a shareable card link to `#iwa` the moment the user lands,
+    // or wipe it entirely during the mount race before `activeSection`
+    // resolves. Top-level section ids (which appear in `sectionIds`
+    // themselves) fall through to the normal sync so cross-section scroll
+    // still updates the URL.
+    const sectionIds =
+      pathname === "/"
+        ? ["conference", "sponsors", "speakers", "gallery", "partner", "venue", "subscribe"]
+        : ["hosts", "iwa", "agenda"];
+    const currentHashId = window.location.hash.slice(1);
+    if (currentHashId && !sectionIds.includes(currentHashId)) {
+      const hashEl = document.getElementById(currentHashId);
+      if (hashEl) {
+        for (const id of sectionIds) {
+          const sectionEl = document.getElementById(id);
+          if (sectionEl && sectionEl.contains(hashEl)) {
+            return;
+          }
+        }
+      }
+    }
+
+    // Preserve a top-level section hash when `activeSection` is still null.
+    // Null here means one of two things: (a) the user just landed on e.g.
+    // `/about#hosts` and scroll-spy hasn't resolved yet — in which case
+    // clearing the hash would clobber the URL the user actually arrived
+    // with; or (b) they've scrolled back above the first tracked section —
+    // in which case keeping the last-seen hash is a harmless cosmetic
+    // holdover. The scroll-spy's own `handleScroll` prime call on mount
+    // races against the browser's native anchor scroll, so leaving the
+    // hash alone until scroll-spy has a real section answer is the safer
+    // default.
+    if (!activeSection && sectionIds.includes(currentHashId)) {
+      return;
+    }
+
     const nextHash = activeSection ? `#${activeSection}` : "";
     const nextURL = pathname + nextHash;
     const currentURL = window.location.pathname + window.location.hash;

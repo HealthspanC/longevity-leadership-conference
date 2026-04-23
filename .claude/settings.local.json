@@ -116,7 +116,8 @@
       "Bash(kill 23087)",
       "Bash(bash -c 'echo \"=== About-body routes \\(should all be text-text-secondary = dark\\) ===\" *)",
       "Bash(bash -c 'echo \"=== Logo opacity on /hosts/adam \\(purple should be opacity-100, white opacity-0\\) ===\" *)",
-      "Bash(bash -c 'echo \"=== Logo opacity classes on /hosts/adam ===\" *)"
+      "Bash(bash -c 'echo \"=== Logo opacity classes on /hosts/adam ===\" *)",
+      "Bash(npx pnpm *)"
     ]
   }
 }

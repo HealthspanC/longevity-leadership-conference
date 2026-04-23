@@ -48,6 +48,7 @@ function ExperienceCard({
 
   return (
     <article
+      id={experience.id}
       data-card-index={index}
       role="group"
       aria-roledescription="slide"
@@ -442,13 +443,33 @@ export function Experiences({ initialSlug }: { initialSlug?: string } = {}) {
      and for real users landing from a shared link, a smooth scroll on
      mount looks like a layout glitch rather than intentional focus. */
   useEffect(() => {
-    if (!initialSlug) return;
-    const idx = EXPERIENCES.findIndex((e) => e.id === initialSlug);
+    // Resolve the target slug from either the prop (deep-link route
+    // `/experiences/<slug>`) or the URL hash (`/about#<slug>`). The hash
+    // path lets individual experience cards participate in the same
+    // `/about#<anchor>` navigation model already used for Hosts + IWA —
+    // shareable `/experiences/<slug>` URLs still exist alongside for
+    // their unique OG cards.
+    const hashSlug =
+      typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+    const slug = initialSlug || hashSlug;
+    if (!slug) return;
+    const idx = EXPERIENCES.findIndex((e) => e.id === slug);
     if (idx === -1) return;
-    // Page-level scroll to the section first.
+    // Always do the page-level scroll to the section rather than relying
+    // on the browser's native anchor scrolling. Native scroll races with
+    // Next.js hydration — when the `<article id="…">` isn't yet in the DOM
+    // at the moment the browser tries to resolve the hash, it silently
+    // does nothing. Doing it here guarantees the section lands in view.
+    //
+    // `behavior: "instant"` is deliberate (not `"auto"`): the global
+    // `html { scroll-behavior: smooth }` in globals.css turns `"auto"`
+    // into a smooth scroll, which gets interrupted by the carousel's
+    // own `scrollTo` call in the rAF below — the page's smooth scroll
+    // aborts mid-flight and `window.scrollY` stays at 0. Forcing instant
+    // here sidesteps the CSS rule entirely.
     document
       .getElementById("experiences")
-      ?.scrollIntoView({ block: "start", behavior: "auto" });
+      ?.scrollIntoView({ block: "start", behavior: "instant" });
     // Then the carousel's horizontal scroll, after layout commits so
     // `offsetLeft` reads correctly.
     requestAnimationFrame(() => {
@@ -459,25 +480,25 @@ export function Experiences({ initialSlug }: { initialSlug?: string } = {}) {
   }, [initialSlug, scrollToIndex]);
 
   /* ── URL-sync the active card ──────────────────────────────
-     When the component is mounted under `/experiences` (or a slug child),
-     mirror the currently-active card in the URL via `replaceState`. Uses
-     `replaceState` (not `pushState`) so casually scrolling through the
-     carousel doesn't flood browser history. Result: the URL always points
-     at a card the user can share, without any explicit "share" action.
+     Mirror the active card in the URL via `replaceState` so a user who
+     swipes the carousel ends up with a URL they can share without any
+     explicit "share" action. Two routes have a URL shape for this:
 
-     Two guardrails:
-     - Only active on `/experiences[/*]` — on `/about`, which is the
-       canonical content home for the experiences section, we leave the
-       URL alone so carousel interactions don't overwrite `/about` with
-       `/experiences/<slug>`.
-     - Only fires after the user has demonstrably interacted with the
-       carousel (drag, arrow click, dot click, keyboard nav). Prevents
-       the list hub URL `/experiences` from instantly rewriting to
-       `/experiences/peptide-shot-bar` on mount just because idx 0 is
-       active by default. */
+     - `/experiences[/*]` → writes `/experiences/<slug>` (the canonical
+       deep-link route; per-slug OG preview lives here).
+     - `/about` → writes `/about#<slug>` (the same hash-anchor navigation
+       model used for Hosts/IWA; keeps experience cards addressable
+       without pushing users off /about as they browse).
+
+     `replaceState` (not `pushState`) so casual carousel scrolling
+     doesn't flood browser history. Only fires after the user has
+     demonstrably interacted (drag, arrow click, dot click, keyboard) so
+     the URL doesn't rewrite on mount just because idx 0 is active. */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!pathname.startsWith("/experiences")) return;
+    const onExperiences = pathname.startsWith("/experiences");
+    const onAbout = pathname === "/about";
+    if (!onExperiences && !onAbout) return;
     // If we arrived with an initialSlug, let the initial-scroll effect
     // complete before any sync — prevents a race where the default
     // activeIndex=0 sync fires before the scroll-to-idx has landed.
@@ -487,9 +508,18 @@ export function Experiences({ initialSlug }: { initialSlug?: string } = {}) {
 
     const exp = EXPERIENCES[activeIndex];
     if (!exp) return;
-    const target = `/experiences/${exp.id}`;
-    if (window.location.pathname !== target) {
-      window.history.replaceState(window.history.state, "", target);
+
+    if (onExperiences) {
+      const target = `/experiences/${exp.id}`;
+      if (window.location.pathname !== target) {
+        window.history.replaceState(window.history.state, "", target);
+      }
+    } else {
+      const target = `/about#${exp.id}`;
+      const current = `${window.location.pathname}${window.location.hash}`;
+      if (current !== target) {
+        window.history.replaceState(window.history.state, "", target);
+      }
     }
   }, [activeIndex, pathname, initialSlug]);
 

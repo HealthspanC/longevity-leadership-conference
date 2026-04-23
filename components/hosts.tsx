@@ -211,9 +211,22 @@ function HostCards({ initialSlug }: { initialSlug?: string }) {
     if (!initialSlug) return;
     const host = HOSTS.find((h) => h.slug === initialSlug);
     if (!host) return;
-    document
-      .getElementById("hosts")
-      ?.scrollIntoView({ block: "start", behavior: "auto" });
+
+    // Mobile (<640px): scroll to the specific card so the inline-
+    // expanded bio overlay lands in view. On the 1-col stack the 2nd
+    // and 3rd cards sit 600–1200px below the section header, so
+    // section-level scrolling leaves the "arrived host" offscreen.
+    // Tablet/desktop (≥640px): modal covers the page and communicates
+    // the selection — section header is the right anchor for the
+    // page-behind. Breakpoint matches `openHost`'s 640px branch.
+    requestAnimationFrame(() => {
+      const target =
+        typeof window !== "undefined" && window.innerWidth < 640
+          ? document.querySelector(`[data-host-slug="${host.slug}"]`)
+          : document.getElementById("hosts");
+      target?.scrollIntoView({ block: "start", behavior: "auto" });
+    });
+
     openHost(host);
   }, [initialSlug, openHost]);
 
@@ -244,6 +257,7 @@ function HostCards({ initialSlug }: { initialSlug?: string }) {
           return (
             <FadeIn key={host.name} delay={i * 120}>
               <div
+                data-host-slug={host.slug}
                 className={cn(
                   "group relative rounded-[16px] overflow-hidden cursor-pointer transition-shadow duration-500",
                   "hover:shadow-[0_0_30px_rgba(168,124,224,0.2)]",

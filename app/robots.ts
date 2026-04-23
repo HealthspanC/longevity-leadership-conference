@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: "/api/",
       },
     ],
-    sitemap: "https://longevityleadershipconference.com/sitemap.xml",
+    sitemap: "https://www.longevityleadershipconference.com/sitemap.xml",
   };
 }

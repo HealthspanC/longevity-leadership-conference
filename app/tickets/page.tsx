@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "Tickets | Longevity Leadership Conference 2026",
     description:
       "Reserve your seat for the Longevity Leadership Conference, April 30, 2026 in Los Angeles.",
-    url: "https://longevityleadershipconference.com/tickets",
+    url: "https://www.longevityleadershipconference.com/tickets",
     type: "website",
     // Explicit image — matches the home page / about page OG card so social
     // shares of /tickets render the same conference branding. See notes in
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     // page redefines `openGraph`.
     images: [
       {
-        url: "https://longevityleadershipconference.com/og-image2.jpg",
+        url: "https://www.longevityleadershipconference.com/og-image2.jpg",
         width: 1000,
         height: 1000,
         alt: "3rd Annual Longevity Leadership Conference - April 30, 2026",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tickets | Longevity Leadership Conference 2026",
     description: "Reserve your seat — April 30, 2026 in Los Angeles.",
-    images: ["https://longevityleadershipconference.com/og-image2.jpg"],
+    images: ["https://www.longevityleadershipconference.com/og-image2.jpg"],
   },
 };
 

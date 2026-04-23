@@ -122,24 +122,28 @@ export function renderOGCard({
           color: "#ffffff",
         }}
       >
-        {/* Kicker — tiny caps label above the title, matches the site's
-            section-header pattern. */}
+        {/* Kicker — caps label above the title, matches the site's
+            section-header pattern. Sized generously because social
+            scrapers render the 1200×630 canvas down to ~500px wide in
+            feeds/chat previews — uppercase + wide tracking means the
+            glyphs render smaller than their nominal size suggests, so
+            we push this to 34px to stay legible after downscaling. */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "14px",
+            gap: "18px",
             color: "#c6b2eb", // purple-light
-            fontSize: "18px",
+            fontSize: "34px",
             fontWeight: 700,
-            letterSpacing: "0.18em",
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
           }}
         >
           <div
             style={{
-              width: "28px",
-              height: "2px",
+              width: "48px",
+              height: "4px",
               background: "#c6b2eb",
               display: "flex",
             }}
@@ -183,31 +187,33 @@ export function renderOGCard({
         </div>
 
         {/* Footer strip — keeps the event date/location surfaced so the
-            card is self-describing even if cropped. */}
+            card is self-describing even if cropped. Sized so both lines
+            stay legible after chat apps / social scrapers downscale the
+            1200px canvas to ~500px preview width. */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "8px",
-            paddingTop: "24px",
+            gap: "12px",
+            paddingTop: "28px",
             borderTop: "1px solid rgba(255,255,255,0.15)",
           }}
         >
           <div
             style={{
-              fontSize: "18px",
+              fontSize: "34px",
               fontWeight: 600,
-              color: "rgba(255,255,255,0.92)",
-              letterSpacing: "0.02em",
+              color: "rgba(255,255,255,0.94)",
+              letterSpacing: "0.01em",
             }}
           >
             {footer}
           </div>
           <div
             style={{
-              fontSize: "15px",
-              color: "rgba(255,255,255,0.55)",
-              letterSpacing: "0.04em",
+              fontSize: "28px",
+              color: "rgba(255,255,255,0.62)",
+              letterSpacing: "0.03em",
             }}
           >
             Verizon Innovation Lab · Playa Vista

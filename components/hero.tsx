@@ -17,7 +17,6 @@ const details = [
 export function Hero() {
   return (
     <section
-      id="hero"
       className="relative z-2 min-h-screen flex items-center pt-60 md:pt-56 lg:pt-52 pb-10 md:pb-24 overflow-hidden"
     >
       {/* Video background */}

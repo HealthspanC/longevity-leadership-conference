@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   Beaker,
   Droplets,
@@ -47,6 +48,7 @@ function ExperienceCard({
 
   return (
     <article
+      id={experience.id}
       data-card-index={index}
       role="group"
       aria-roledescription="slide"
@@ -309,8 +311,9 @@ function ExperienceCard({
    sync by a passive scroll listener that measures which card
    center is closest to the scroll viewport center.
    ────────────────────────────────────────────────────────── */
-export function Experiences() {
+export function Experiences({ initialSlug }: { initialSlug?: string } = {}) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   // Drag-to-scroll state — mirrors the proven pattern in components/speakers.tsx
   const isDragging = useRef(false);
@@ -319,6 +322,17 @@ export function Experiences() {
   const didDrag = useRef(false);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  // Tracks whether the initial-slug scroll has fired. Without this flag the
+  // very first `handleScroll` run (which happens on mount before any user
+  // interaction) would overwrite the URL with `/experiences/<slug-of-first-card>`,
+  // undoing the server-rendered slug the user arrived with.
+  const didInitialScrollRef = useRef(false);
+  // Tracks whether the user has actually interacted with the carousel. Used
+  // to gate URL-sync so landing on `/experiences` (the list hub) doesn't
+  // immediately rewrite to `/experiences/peptide-shot-bar` — we only push
+  // per-card slugs into the URL after the user has demonstrated intent by
+  // touching/dragging/clicking.
+  const hasUserInteractedRef = useRef(false);
 
   /* Keep active index in sync with scroll position. Use the center-match
      approach (not raw `Math.round(scrollLeft / slotWidth)`) so we don't
@@ -355,6 +369,10 @@ export function Experiences() {
     if (!el) return;
     isDragging.current = true;
     didDrag.current = false;
+    // Any direct pointer-down on the track is user intent — flip the
+    // interaction flag so URL-sync starts applying from the next
+    // activeIndex change.
+    hasUserInteractedRef.current = true;
     startX.current = e.clientX;
     scrollStart.current = el.scrollLeft;
     // Disable snap during drag so free-form dragging doesn't fight
@@ -382,7 +400,7 @@ export function Experiences() {
   }, []);
 
   /* ── Scroll to a specific card (centers it in view) ── */
-  const scrollToIndex = useCallback((idx: number) => {
+  const scrollToIndex = useCallback((idx: number, behavior: ScrollBehavior = "smooth") => {
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>(
@@ -391,16 +409,119 @@ export function Experiences() {
     if (!card) return;
     const left =
       card.offsetLeft - (el.clientWidth - card.clientWidth) / 2;
-    el.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+    el.scrollTo({ left: Math.max(0, left), behavior });
   }, []);
 
   const goPrev = useCallback(() => {
+    hasUserInteractedRef.current = true;
     scrollToIndex(Math.max(0, activeIndex - 1));
   }, [activeIndex, scrollToIndex]);
 
   const goNext = useCallback(() => {
+    hasUserInteractedRef.current = true;
     scrollToIndex(Math.min(EXPERIENCES.length - 1, activeIndex + 1));
   }, [activeIndex, scrollToIndex]);
+
+  /* ── Auto-scroll on initialSlug ─────────────────────────────
+     When the page was server-rendered for a specific experience slug
+     (e.g. user landed directly at `/experiences/iv-lounge`), we do two
+     things on mount:
+       1. Scroll the *page* so the Experiences section is in view —
+          otherwise the carousel-horizontal scroll below has no visible
+          effect because the section is off-screen.
+       2. Scroll the carousel itself so the matching card is centered.
+
+     Page-level scroll uses a DOM query rather than a React ref: the
+     `<section id="experiences">` id is already the stable anchor contract
+     for `/about#iwa` → `#experiences` URL navigation, so reusing it for
+     programmatic scroll avoids threading a ref through the tree. Runs
+     *before* the `requestAnimationFrame` so the page-scroll lands first,
+     then the carousel's horizontal scroll centers the card.
+
+     The `"auto"` behavior (jump, not smooth) is deliberate for both
+     scrolls: scrapers never get here (they only see the static HTML),
+     and for real users landing from a shared link, a smooth scroll on
+     mount looks like a layout glitch rather than intentional focus. */
+  useEffect(() => {
+    // Resolve the target slug from either the prop (deep-link route
+    // `/experiences/<slug>`) or the URL hash (`/about#<slug>`). The hash
+    // path lets individual experience cards participate in the same
+    // `/about#<anchor>` navigation model already used for Hosts + IWA —
+    // shareable `/experiences/<slug>` URLs still exist alongside for
+    // their unique OG cards.
+    const hashSlug =
+      typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+    const slug = initialSlug || hashSlug;
+    if (!slug) return;
+    const idx = EXPERIENCES.findIndex((e) => e.id === slug);
+    if (idx === -1) return;
+    // Always do the page-level scroll to the section rather than relying
+    // on the browser's native anchor scrolling. Native scroll races with
+    // Next.js hydration — when the `<article id="…">` isn't yet in the DOM
+    // at the moment the browser tries to resolve the hash, it silently
+    // does nothing. Doing it here guarantees the section lands in view.
+    //
+    // `behavior: "instant"` is deliberate (not `"auto"`): the global
+    // `html { scroll-behavior: smooth }` in globals.css turns `"auto"`
+    // into a smooth scroll, which gets interrupted by the carousel's
+    // own `scrollTo` call in the rAF below — the page's smooth scroll
+    // aborts mid-flight and `window.scrollY` stays at 0. Forcing instant
+    // here sidesteps the CSS rule entirely.
+    document
+      .getElementById("experiences")
+      ?.scrollIntoView({ block: "start", behavior: "instant" });
+    // Then the carousel's horizontal scroll, after layout commits so
+    // `offsetLeft` reads correctly.
+    requestAnimationFrame(() => {
+      scrollToIndex(idx, "auto");
+      setActiveIndex(idx);
+      didInitialScrollRef.current = true;
+    });
+  }, [initialSlug, scrollToIndex]);
+
+  /* ── URL-sync the active card ──────────────────────────────
+     Mirror the active card in the URL via `replaceState` so a user who
+     swipes the carousel ends up with a URL they can share without any
+     explicit "share" action. Two routes have a URL shape for this:
+
+     - `/experiences[/*]` → writes `/experiences/<slug>` (the canonical
+       deep-link route; per-slug OG preview lives here).
+     - `/about` → writes `/about#<slug>` (the same hash-anchor navigation
+       model used for Hosts/IWA; keeps experience cards addressable
+       without pushing users off /about as they browse).
+
+     `replaceState` (not `pushState`) so casual carousel scrolling
+     doesn't flood browser history. Only fires after the user has
+     demonstrably interacted (drag, arrow click, dot click, keyboard) so
+     the URL doesn't rewrite on mount just because idx 0 is active. */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onExperiences = pathname.startsWith("/experiences");
+    const onAbout = pathname === "/about";
+    if (!onExperiences && !onAbout) return;
+    // If we arrived with an initialSlug, let the initial-scroll effect
+    // complete before any sync — prevents a race where the default
+    // activeIndex=0 sync fires before the scroll-to-idx has landed.
+    if (initialSlug && !didInitialScrollRef.current) return;
+    // Gate: only sync URL after user has interacted.
+    if (!hasUserInteractedRef.current) return;
+
+    const exp = EXPERIENCES[activeIndex];
+    if (!exp) return;
+
+    if (onExperiences) {
+      const target = `/experiences/${exp.id}`;
+      if (window.location.pathname !== target) {
+        window.history.replaceState(window.history.state, "", target);
+      }
+    } else {
+      const target = `/about#${exp.id}`;
+      const current = `${window.location.pathname}${window.location.hash}`;
+      if (current !== target) {
+        window.history.replaceState(window.history.state, "", target);
+      }
+    }
+  }, [activeIndex, pathname, initialSlug]);
 
   /* ── Keyboard navigation on the carousel region ──
      Matches the ARIA carousel authoring practice: Arrow keys step, Home/End
@@ -418,9 +539,11 @@ export function Experiences() {
         goNext();
       } else if (e.key === "Home") {
         e.preventDefault();
+        hasUserInteractedRef.current = true;
         scrollToIndex(0);
       } else if (e.key === "End") {
         e.preventDefault();
+        hasUserInteractedRef.current = true;
         scrollToIndex(EXPERIENCES.length - 1);
       }
     },
@@ -552,6 +675,12 @@ export function Experiences() {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
               onKeyDown={handleKeyDown}
+              // Mobile swipe uses native horizontal overflow-scroll, which
+              // doesn't fire our mouse handlers. Flag interaction on touch
+              // so URL-sync starts applying once they start swiping cards.
+              onTouchStart={() => {
+                hasUserInteractedRef.current = true;
+              }}
             >
               {EXPERIENCES.map((exp, i) => (
                 <ExperienceCard
@@ -570,7 +699,10 @@ export function Experiences() {
                 <button
                   key={i}
                   type="button"
-                  onClick={() => scrollToIndex(i)}
+                  onClick={() => {
+                    hasUserInteractedRef.current = true;
+                    scrollToIndex(i);
+                  }}
                   aria-label={`Go to experience ${i + 1}`}
                   aria-current={i === activeIndex ? "true" : undefined}
                   className={cn(

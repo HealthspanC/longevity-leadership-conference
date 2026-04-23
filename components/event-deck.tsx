@@ -148,7 +148,13 @@ export function EventDeck() {
     <>
       {/* ── Partner with Us — purple banner ── */}
       <section
-        className="relative z-[3] pt-16 lg:pt-20 pb-12 lg:pb-14 bg-purple-deep overflow-hidden"
+        id="partner"
+        // `scroll-mt-[120px]` is belt-and-braces redundancy alongside the
+        // `html { scroll-padding-top: 120px }` rule in `app/globals.css`.
+        // Keeping an explicit offset here makes the intent discoverable
+        // when reading this component in isolation, and defends against
+        // any future scope change on the global rule.
+        className="relative z-[3] pt-16 lg:pt-20 pb-12 lg:pb-14 bg-purple-deep overflow-hidden scroll-mt-[120px]"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />
         <div

@@ -18,9 +18,17 @@ export function Navbar() {
   // meaningful on the home page (where all hash targets live); null elsewhere.
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const isTicketsPage = pathname === "/tickets";
-  const isAboutPage = pathname === "/about";
-  // Use dark text/logo whenever we're scrolled OR sitting over a light hero on /about.
-  const darkMode = scrolled || isAboutPage;
+  // Any route that renders the `AboutPageBody` starts over a cream editorial
+  // hero, not the video hero — so the navbar needs dark text/logo from the
+  // first paint, not just after scroll. That includes `/about` itself plus
+  // the hosts and experiences route families (list pages and slug routes
+  // both render `AboutPageBody` per the v2 deep-link refactor).
+  const isAboutLikePage =
+    pathname === "/about" ||
+    pathname.startsWith("/hosts") ||
+    pathname.startsWith("/experiences");
+  // Use dark text/logo whenever we're scrolled OR sitting over a light hero.
+  const darkMode = scrolled || isAboutLikePage;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -156,6 +164,9 @@ export function Navbar() {
                 if (target) {
                   setTimeout(() => {
                     window.scrollTo({ top: target.offsetTop - 100, behavior: "smooth" });
+                    // See desktop handler below for rationale — keep the URL
+                    // in sync with the section the user just navigated to.
+                    history.pushState(null, "", item.href);
                   }, 350);
                 } else {
                   window.location.href = "/" + item.href;
@@ -242,16 +253,47 @@ export function Navbar() {
           {/* Desktop nav */}
           <ul className="hidden lg:flex items-center gap-5 xl:gap-7 list-none">
             {NAV_ITEMS.map((item) => {
-              // An item is "active" in two ways:
+              // An item is "active" in three ways:
               //   - Route match: `pathname === item.href` (e.g. /about is active on /about)
               //   - Scroll spy: hash items are active when their target section
               //     is currently in view (only meaningful on the home page)
+              //   - Deep-link route family: `/speakers/<slug>` activates
+              //     "#speakers"; `/hosts*` and `/experiences*` activate "/about"
+              //     (those items live under About's narrative). Without this,
+              //     a user landing on `/speakers/sanjiv` from a shared link
+              //     would see no active underline at all.
               // When active, the underline holds at full width and the text
               // color matches the hover color permanently, so the user has a
               // continuous indicator of where they are on the site.
-              const isActive = item.href.startsWith("/")
-                ? pathname === item.href
-                : pathname === "/" && activeSection === item.href.slice(1);
+              const isActive = (() => {
+                if (item.href.startsWith("/")) {
+                  // Direct route match (e.g. "/about" on /about)
+                  if (pathname === item.href) return true;
+                  // Hosts and experiences routes fold into /about's nav item,
+                  // since those sections are canonical content under /about.
+                  if (
+                    item.href === "/about" &&
+                    (pathname.startsWith("/hosts") ||
+                      pathname.startsWith("/experiences"))
+                  ) {
+                    return true;
+                  }
+                  return false;
+                }
+                // Hash items: home-page scroll spy match, OR a deep-link
+                // route whose family maps back to this hash. Currently only
+                // speakers routes map this way (`#speakers`).
+                if (pathname === "/" && activeSection === item.href.slice(1)) {
+                  return true;
+                }
+                if (
+                  item.href === "#speakers" &&
+                  pathname.startsWith("/speakers")
+                ) {
+                  return true;
+                }
+                return false;
+              })();
               return (
                 <li key={item.href}>
                   <a
@@ -265,6 +307,14 @@ export function Navbar() {
                       if (target) {
                         const y = target.getBoundingClientRect().top + window.scrollY - 100;
                         window.scrollTo({ top: y, behavior: "smooth" });
+                        // Mirror native anchor behavior: reflect the clicked
+                        // section in the URL bar so the address is copy/shareable
+                        // and the browser Back button returns to the previous
+                        // section. We `preventDefault()` above to do a custom
+                        // smooth-scroll with navbar-offset math, which skips the
+                        // URL update that native `#hash` navigation would do —
+                        // `pushState` adds it back.
+                        history.pushState(null, "", item.href);
                       } else {
                         window.location.href = "/" + item.href;
                       }

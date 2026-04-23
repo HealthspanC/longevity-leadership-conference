@@ -549,13 +549,106 @@ function SpeakerModal({
 }
 
 /* ── Main Section ── */
-export function Speakers() {
+export function Speakers({ initialSlug }: { initialSlug?: string } = {}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [modalSpeaker, setModalSpeaker] = useState<Speaker | null>(null);
+
+  /* ── Modal + URL sync ────────────────────────────────────────────
+     The speaker modal is now URL-synced so every open becomes a shareable
+     link (`/speakers/<slug>`) — which is what makes per-speaker OG images
+     actually useful. Without this sync, the dynamic routes would only work
+     for externally-provided URLs; users browsing the carousel on `/` would
+     never generate a shareable link organically.
+
+     Implementation:
+     - `openModal(speaker)` pushes `/speakers/<slug>` onto history, tagging
+       the entry with `{ modalSlug }` so we can tell it apart from real
+       navigation later.
+     - `closeModal()` rewinds that push when we recognise our own marker;
+       otherwise (e.g., cold entry direct to `/speakers/<slug>`) we swap
+       the URL to `/` so the user stays in the app.
+     - A `popstate` listener keeps the modal in sync with the URL for
+       browser back/forward — Back from `/speakers/sanjiv` → `/` closes
+       the modal; Forward re-opens it.
+     - `initialSlug` (passed from the `[slug]` route's server component)
+       auto-opens the matching modal on mount without manipulating history
+       — we're already at the correct URL, no push needed.
+
+     Why `pushState` for opens rather than `replaceState`: we want browser
+     Back to actually close the modal, which only happens if opening added
+     a history entry. `replaceState` would make Back skip past the modal
+     entirely, which feels broken. */
   const openModal = useCallback((speaker: Speaker) => {
     track('Speaker View', { name: speaker.name });
     setModalSpeaker(speaker);
+    if (typeof window !== 'undefined') {
+      window.history.pushState(
+        { modalSlug: speaker.slug },
+        '',
+        `/speakers/${speaker.slug}`,
+      );
+    }
   }, []);
+
+  const closeModal = useCallback(() => {
+    setModalSpeaker(null);
+    if (typeof window !== 'undefined') {
+      // If the modal was opened via our click handler, this entry has our
+      // marker — go back one so browser history stays clean.
+      const state = window.history.state as { modalSlug?: string } | null;
+      if (state?.modalSlug) {
+        window.history.back();
+      } else {
+        // Cold entry at /speakers/<slug>: replace with "/" so closing
+        // returns the user to the home page rather than bouncing them
+        // out of the site.
+        window.history.replaceState(null, '', '/');
+      }
+    }
+  }, []);
+
+  // Auto-open modal on mount when the server-rendered page passed a slug.
+  // Also rotates the desktop reel so that speaker is the featured card
+  // behind the modal (in case the user closes it and lingers on the page),
+  // and scrolls the Speakers section into view so closing the modal lands
+  // the user at the carousel rather than at the top of a 5000px page.
+  //
+  // DOM query (`getElementById`) rather than a React ref: `<section
+  // id="speakers">` is rendered inside this same component, and its id is
+  // already the stable anchor contract for `/#speakers` URL navigation.
+  // A ref would be redundant. `behavior: "auto"` because a smooth-scroll
+  // on mount reads as a layout glitch when arriving from a social share.
+  // Runs *before* `setModalSpeaker` so the underlying page is already
+  // positioned when the modal paints on top.
+  useEffect(() => {
+    if (!initialSlug) return;
+    const idx = SPEAKERS.findIndex((s) => s.slug === initialSlug);
+    if (idx < 0) return;
+    setActiveIndex(idx);
+    document
+      .getElementById("speakers")
+      ?.scrollIntoView({ block: "start", behavior: "auto" });
+    setModalSpeaker(SPEAKERS[idx]);
+  }, [initialSlug]);
+
+  // URL ↔ modal state sync on browser back/forward. Runs once on mount.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handlePopState = () => {
+      const match = window.location.pathname.match(/^\/speakers\/([^/]+)$/);
+      if (match) {
+        const next = SPEAKERS.find((s) => s.slug === match[1]);
+        if (next) {
+          setModalSpeaker(next);
+          return;
+        }
+      }
+      setModalSpeaker(null);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const total = SPEAKERS.length;
 
   // Auto-advance state
@@ -664,10 +757,7 @@ export function Speakers() {
       </div>
 
       {modalSpeaker && (
-        <SpeakerModal
-          speaker={modalSpeaker}
-          onClose={() => setModalSpeaker(null)}
-        />
+        <SpeakerModal speaker={modalSpeaker} onClose={closeModal} />
       )}
     </section>
   );

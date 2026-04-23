@@ -4,7 +4,9 @@ import { FadeIn } from "./fade-in";
 
 export function SpeakBanner() {
   return (
-    <section className="relative z-[3] py-10 bg-purple-deep overflow-hidden">
+    <section
+      className="relative z-[3] py-10 bg-purple-deep overflow-hidden"
+    >
       {/* Gradient overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(192,96,128,0.15),transparent_50%),radial-gradient(circle_at_90%_60%,rgba(42,122,110,0.1),transparent_40%),radial-gradient(circle_at_50%_20%,rgba(91,58,140,0.2),transparent_50%)] pointer-events-none" />
       <div

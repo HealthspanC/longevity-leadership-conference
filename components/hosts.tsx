@@ -4,12 +4,10 @@ import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { LINKS, HOSTS } from "@/lib/constants";
+import { LINKS, HOSTS, type Host } from "@/lib/constants";
 import { Instagram, Linkedin, Youtube, X } from "lucide-react";
 import { FadeIn } from "./fade-in";
 import { SectionHeader } from "./section-header";
-
-type Host = (typeof HOSTS)[number];
 
 const socialIcons = {
   linkedin: Linkedin,
@@ -126,22 +124,117 @@ function HostModal({
   );
 }
 
-function HostCards() {
+function HostCards({ initialSlug }: { initialSlug?: string }) {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [modalHost, setModalHost] = useState<Host | null>(null);
 
-  const handleCardClick = useCallback(
+  /* ── Open/close helpers ──────────────────────────────────────────
+     Two open paths by viewport: ≥640px uses the portaled modal,
+     <640px uses in-place expansion of the card. URL-syncing (below)
+     needs a single entry point that applies to both paths so a
+     `/hosts/<slug>` URL produces the right UI at any width. */
+  const openHost = useCallback((host: Host) => {
+    if (typeof window !== "undefined" && window.innerWidth < 640) {
+      setModalHost(null);
+      setExpanded(host.name);
+    } else {
+      setExpanded(null);
+      setModalHost(host);
+    }
+  }, []);
+
+  /* Same as `openHost` but also pushes `/hosts/<slug>` onto history
+     so clicks on a card produce a shareable URL. Separates the
+     user-initiated flow (wants URL change) from the mount/popstate
+     flow (already at correct URL — just mirrors state). */
+  const openHostWithUrl = useCallback(
     (host: Host) => {
-      // sm+ (640px+): open modal; < sm (mobile 1-up): tap to expand inline
-      if (window.innerWidth >= 640) {
-        setExpanded(null);
-        setModalHost(host);
-      } else {
-        setExpanded((prev) => (prev === host.name ? null : host.name));
+      openHost(host);
+      if (typeof window !== "undefined") {
+        window.history.pushState(
+          { hostSlug: host.slug },
+          "",
+          `/hosts/${host.slug}`,
+        );
       }
     },
-    []
+    [openHost],
   );
+
+  const closeHost = useCallback(() => {
+    setModalHost(null);
+    setExpanded(null);
+    if (typeof window !== "undefined") {
+      const state = window.history.state as { hostSlug?: string } | null;
+      if (state?.hostSlug) {
+        window.history.back();
+      } else {
+        // Cold entry at /hosts/<slug>: route back to the hosts section of
+        // the About page so the user lands somewhere useful rather than
+        // bouncing out of the site.
+        window.history.replaceState(null, "", "/about#hosts");
+      }
+    }
+  }, []);
+
+  const handleCardClick = useCallback(
+    (host: Host) => {
+      // Mobile tap-to-toggle: tapping the already-expanded card closes it.
+      if (
+        typeof window !== "undefined" &&
+        window.innerWidth < 640 &&
+        expanded === host.name
+      ) {
+        closeHost();
+        return;
+      }
+      openHostWithUrl(host);
+    },
+    [expanded, openHostWithUrl, closeHost],
+  );
+
+  // Auto-open on mount when the server-rendered page passed a slug
+  // (e.g. user landed directly at `/hosts/adam`). Also scrolls the Hosts
+  // section into view so closing the modal (or the mobile inline
+  // expansion) lands the user at the section rather than at the top of
+  // the About page.
+  //
+  // DOM query (`getElementById`) rather than a React ref: `<section
+  // id="hosts">` is rendered by this component's parent (`Hosts`) — its
+  // id is already the stable anchor contract for `/about#hosts` URL
+  // navigation, so reusing it for programmatic scroll avoids threading a
+  // ref through the tree. `behavior: "auto"` because a smooth-scroll on
+  // mount reads as a layout glitch when arriving from a social share.
+  // Runs *before* `openHost` so the underlying page is already positioned
+  // when the modal/expansion paints.
+  useEffect(() => {
+    if (!initialSlug) return;
+    const host = HOSTS.find((h) => h.slug === initialSlug);
+    if (!host) return;
+    document
+      .getElementById("hosts")
+      ?.scrollIntoView({ block: "start", behavior: "auto" });
+    openHost(host);
+  }, [initialSlug, openHost]);
+
+  // Browser back/forward ↔ modal state sync.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handlePopState = () => {
+      const match = window.location.pathname.match(/^\/hosts\/([^/]+)$/);
+      if (match) {
+        const next = HOSTS.find((h) => h.slug === match[1]);
+        if (next) {
+          openHost(next);
+          return;
+        }
+      }
+      setModalHost(null);
+      setExpanded(null);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [openHost]);
 
   return (
     <>
@@ -265,14 +358,12 @@ function HostCards() {
         })}
       </div>
 
-      {modalHost && (
-        <HostModal host={modalHost} onClose={() => setModalHost(null)} />
-      )}
+      {modalHost && <HostModal host={modalHost} onClose={closeHost} />}
     </>
   );
 }
 
-export function Hosts() {
+export function Hosts({ initialSlug }: { initialSlug?: string } = {}) {
   return (
     <section
       id="hosts"
@@ -307,7 +398,7 @@ export function Hosts() {
         </FadeIn>
 
         {/* Editorial Host Profiles */}
-        <HostCards />
+        <HostCards initialSlug={initialSlug} />
 
         {/* Colophon strip — dual logos centered in divider */}
         <FadeIn delay={200}>

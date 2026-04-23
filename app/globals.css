@@ -69,6 +69,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* Offset every `#anchor` scroll by ~navbar height + comfort margin so the
+     target section's header lands cleanly below the fixed navbar rather than
+     under it. Applies to browser-native `#hash` navigation and any
+     programmatic `scrollIntoView()` call — which is why the deep-link slug
+     routes don't need to do their own offset math. Without this, anchored
+     section headings land flush at y=0, hidden under the ~100–130px fixed
+     navbar. 120px ≈ scrolled navbar (~110px) + small breathing room. */
+  scroll-padding-top: 120px;
 }
 
 body {

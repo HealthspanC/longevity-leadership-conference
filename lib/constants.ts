@@ -26,6 +26,7 @@ export const LINKS = {
 
 export const HOSTS = [
   {
+    slug: "adam",
     name: "Adam Torres",
     title: "Co-Founder Mission Matters",
     image: "/hosts/adam.jpg",
@@ -37,6 +38,7 @@ export const HOSTS = [
     },
   },
   {
+    slug: "chirag",
     name: "Chirag Sagar",
     title: "Co-Founder Mission Matters",
     image: "/hosts/chirag.jpg",
@@ -48,6 +50,7 @@ export const HOSTS = [
     },
   },
   {
+    slug: "elias",
     name: "Elias Arjan",
     title: "Founder/CEO - Healthspan Collective",
     image: "/hosts/elias-1.png",
@@ -79,6 +82,7 @@ export const STATS = [
 
 export const SPEAKERS = [
   {
+    slug: "sanjiv",
     name: "Sanjiv Lal",
     role: "Co-Founder at Regen Therapy",
     tag: "Keynote" as const,
@@ -87,7 +91,8 @@ export const SPEAKERS = [
     bio: "Sanjiv Lal is a healthcare entrepreneur and strategic leader who has founded and scaled multiple laboratories, held leadership roles at major biotech firms. Sanjiv is a recognized voice in advancing regenerative medicine and a founder/partner at Motivant, a business-building family office.",
   },
   {
-    name: "Paola Tefler",
+    slug: "paola",
+    name: "Paola Telfer",
     role: "Founder/CEO of SENS.AI",
     tag: "Keynote" as const,
     image: "/speakers/paola-telfer.png",
@@ -95,6 +100,7 @@ export const SPEAKERS = [
     bio: "Paola is a tech entrepreneur with a passion to develop technology that improves lives! Electrical Engineer, MBA in the Management of Technology and Singularity University Alumni. Life-long explorer of human consciousness development and member of the Space-Aging Research Institute (SARI) XPRIZE team.",
   },
   {
+    slug: "ashley",
     name: "Ashley Hines",
     role: "Health, Beauty & Technology Advocate",
     tag: "Panelist" as const,
@@ -103,6 +109,7 @@ export const SPEAKERS = [
     bio: "Ashley Hines is a clinical skincare educator with a background in the beauty industry who now focuses on advancing evidence-based approaches to skin health. Her work centers on translating the science of skin aging, barrier repair, and peptide signaling into practical education for clinicians, estheticians, and skin professionals.",
   },
   {
+    slug: "gayland",
     name: "Gayland Hethcoat",
     role: "Counsel at ArentFox Schiff",
     tag: "Panelist" as const,
@@ -110,6 +117,7 @@ export const SPEAKERS = [
     bio: "Gayland Hethcoat is an attorney specializing in privacy, compliance, and transactional matters for health care providers and longevity companies. He is Counsel at ArentFox Schiff, where he co-leads the firm's Longevity & Healthspan Industry Group – a cross-sector initiative supporting the longevity ecosystem and the first of its kind among Am Law 100 law firms.\n\nGayland's clients include longevity medical clinics, biomarker testing companies, digital health platforms, and other businesses operating at the frontier of healthspan, preventive care, and technological innovation. He is frequently sought to advise on complex and cutting-edge legal and regulatory issues and is also a key member of deal teams for mergers, acquisitions, and other strategic transactions involving health care and health technology businesses.",
   },
   {
+    slug: "resham",
     name: "Dr. Resham Uttamchandani, MD",
     role: "ConciergeMD",
     tag: "Panelist" as const,
@@ -117,6 +125,7 @@ export const SPEAKERS = [
     bio: "Double board-certified physician in Family and Obesity Medicine with specialized training in metabolic health, functional medicine, and longevity. She earned her medical degree from the American University of the Caribbean and completed her Family Medicine residency at Eisenhower Medical Center.",
   },
   {
+    slug: "josephine",
     name: "Josephine Musco",
     role: "Biotech & Wellness Innovation",
     tag: "Panelist" as const,
@@ -124,6 +133,7 @@ export const SPEAKERS = [
     bio: "Josephine Musco is an inventor, CEO, and patent holder operating at the forefront of biotechnology, wellness innovation, and brand architecture. She is the founder of Olyxir, as well as House of Malakai and Château Bellevue, where she has transformed proprietary intellectual property into high growth, globally positioned companies.\n\nHer work focuses on translating advanced science, formulation, and systems thinking into scalable consumer and performance driven solutions. As an internationally sought after speaker, Musco presents on longevity, innovation, and the future of human optimization at conferences around the world. She is recognized for bridging scientific rigor with visionary leadership to build enduring, category defining enterprises.",
   },
   {
+    slug: "jeremy",
     name: "Jeremy Hoffmann",
     role: "Founder & CEO, Quantum Wellness Spa",
     tag: "Panelist" as const,
@@ -131,6 +141,7 @@ export const SPEAKERS = [
     bio: "Jeremy Hoffmann is an entrepreneur and investor passionate about building businesses and communities that expand human aliveness.\n\nAs founder & CEO of Quantum Wellness Spa, Adapt or Die Cafe, and Not Coffee he pioneers intentional wellness experiences that reset the nervous system and foster connection to self and others.",
   },
   {
+    slug: "nick",
     name: "Nick Capozzi",
     role: "Revenue & Sales Leader in Longevity",
     tag: "Panelist" as const,
@@ -138,6 +149,7 @@ export const SPEAKERS = [
     bio: "Nick Capozzi is a revenue and sales leader with 25+ years of experience across multiple industries, with the last several years focused exclusively on longevity, healthspan, and wellness. He has held fractional CRO roles with some of the most innovative companies in the space and now works directly with clinics and practitioners to help them build the revenue systems their clinical expertise deserves.\n\nNick understands the science well enough to sell it, and the business well enough to build around it.",
   },
   {
+    slug: "reshma",
     name: "Reshma Patel, PA-C",
     role: "Founder, Ananda Integrative Medicine",
     tag: "Panelist" as const,
@@ -145,6 +157,7 @@ export const SPEAKERS = [
     bio: "Reshma Patel, PA-C, combines conventional western medicine with an integrative, functional and holistic approach to wellness at Ananda Integrative Medicine, in Los Angeles.\n\nBoard Certified by NCCPA · Certified by Women's Hormone Network · Certified Genomics Provider by Fagron Genomic US · Certified Genomics Provider by Nutrition Genome · Certified Functional Nutrition by MindBodyGreen · Member of The Menopause Society · Member of A4M (American Academy of Anti Aging Medicine)",
   },
   {
+    slug: "kayte",
     name: "Dr. Kayte Susse",
     role: "Clinical Educator & Strategic Advisor",
     tag: "Panelist" as const,
@@ -152,6 +165,7 @@ export const SPEAKERS = [
     bio: "Dr. Kayte Susse is a Clinical Educator and Strategic Advisor for Regen Therapy, Generation Labs, and a portfolio of health and biotech ventures at the forefront of longevity and regenerative medicine. She translates advanced diagnostics and therapeutics into real-world applications across clinical, commercial, and educational settings.\n\nA recognized advocate for women's health and biotech safety — shaped in part by her own recovery from breast implant illness. She is the creator of Biohack Your Beauty, an educational platform exploring aesthetics, biotechnology, and human optimization.",
   },
   {
+    slug: "arvind",
     name: "Arvind Chakravarthy, MD, MBA",
     role: "Founder of RegenTherapy™ and Co-Chair of RegenVentures",
     tag: "Panelist" as const,
@@ -505,3 +519,27 @@ export const GALLERY_ITEMS = [
     span: "wide",
   },
 ] as const;
+
+/* ── Slug lookup helpers ──────────────────────────────────────────
+   One source of truth for resolving a URL slug (e.g. "/speakers/sanjiv",
+   "/hosts/adam", "/experiences/iv-lounge") back to the underlying record.
+   Kept here next to the data so `generateStaticParams` / `generateMetadata`
+   in route files stays thin and doesn't re-implement finding logic. */
+
+export type Speaker = (typeof SPEAKERS)[number];
+export type Host = (typeof HOSTS)[number];
+export type Experience = (typeof EXPERIENCES)[number];
+
+export function getSpeakerBySlug(slug: string): Speaker | undefined {
+  return SPEAKERS.find((s) => s.slug === slug);
+}
+
+export function getHostBySlug(slug: string): Host | undefined {
+  return HOSTS.find((h) => h.slug === slug);
+}
+
+/** Experiences use `id` as the URL slug (we didn't rename the field to
+    avoid churning all the places that already read `experience.id`). */
+export function getExperienceBySlug(slug: string): Experience | undefined {
+  return EXPERIENCES.find((e) => e.id === slug);
+}

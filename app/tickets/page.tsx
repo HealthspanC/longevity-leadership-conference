@@ -99,7 +99,7 @@ export default function TicketsPage() {
               </div>
               <div className="hidden sm:block w-px h-10 bg-border-light" />
               <div>
-                <p className="text-[1.8rem] font-serif font-bold text-text">300+</p>
+                <p className="text-[1.8rem] font-serif font-bold text-text">200</p>
                 <p className="text-[0.75rem] text-text-secondary uppercase tracking-[0.1em]">Expected Attendees</p>
               </div>
               <div className="hidden sm:block w-px h-10 bg-border-light" />

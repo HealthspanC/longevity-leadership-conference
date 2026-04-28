@@ -41,6 +41,7 @@ const FORMAT_ACCENT: Record<AgendaSession["format"], AccentFamily> = {
   welcome: "rose",
   keynote: "purple",
   panel: "purple",
+  fireside: "purple",
   networking: "slate",
   closing: "rose",
 };
@@ -568,7 +569,7 @@ function DayClock({ onOpenAt }: { onOpenAt: (focusId?: string) => void }) {
           A Day of <span className="text-purple">Longevity Leadership</span>
         </h3>
         <p className="text-[0.7rem] sm:text-[0.76rem] text-text-secondary mb-5">
-          11 sessions · 4 phases · 6½ hours
+          13 sessions · 4 phases · 6½ hours
         </p>
         <button
           onClick={(e) => {

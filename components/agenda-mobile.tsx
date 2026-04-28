@@ -35,6 +35,7 @@ const FORMAT_CONFIG: Record<
   welcome: { icon: Sparkles, accent: "rose" },
   keynote: { icon: Mic, accent: "purple" },
   panel: { icon: Users, accent: "purple" },
+  fireside: { icon: Users, accent: "purple" },
   networking: { icon: Coffee, accent: "slate" },
   closing: { icon: Award, accent: "rose" },
 };
@@ -70,13 +71,13 @@ const PHASE_META: Record<
   morning: {
     label: "Morning",
     subtitle: "The foundation is set",
-    time: "10:00 AM – 11:50 AM",
+    time: "10:00 AM – 12:00 PM",
     railColor: "#7b52b5",
   },
   midday: {
     label: "Midday",
     subtitle: "Pause & connect",
-    time: "11:50 AM – 1:00 PM",
+    time: "12:00 PM – 1:00 PM",
     railColor: "#9992a6",
   },
   afternoon: {
@@ -145,7 +146,7 @@ export function HeroCard() {
         </h2>
         {/* Sub-stat */}
         <p className="text-[0.78rem] text-white/65 tracking-wide">
-          11 sessions · 4 phases · 6½ hours
+          13 sessions · 4 phases · 6½ hours
         </p>
       </div>
     </div>
@@ -362,10 +363,6 @@ export function AgendaMobile({
                   <span>Download PDF</span>
                 </button>
               </div>
-              <p className="text-[0.72rem] text-text-muted italic leading-[1.55]">
-                Agenda subject to refinement. Final program will be published
-                closer to the event.
-              </p>
             </div>
           </FadeIn>
         </div>

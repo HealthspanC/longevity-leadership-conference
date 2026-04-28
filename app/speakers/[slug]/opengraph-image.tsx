@@ -15,7 +15,7 @@ import { renderOGCard, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og-card";
  * with Node.js runtime (the default) so every speaker card is rasterized
  * to a static PNG at build time. Trade-offs:
  *   - Edge runtime is incompatible with `generateStaticParams` in Next 15.
- *   - For a fixed set (11 speakers) static generation is strictly better:
+ *   - For a fixed set (12 speakers) static generation is strictly better:
  *     zero cold-start, served directly from the CDN, and no risk of a
  *     scraper hitting a cold card during image generation.
  *

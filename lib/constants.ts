@@ -411,7 +411,7 @@ export const AGENDA: readonly AgendaSession[] = [
     panelists: [
       { name: "Nick Capozzi", role: "Longevity Clinic" },
       { name: "Jeremy Hoffmann", role: "Quantum Wellness Spa" },
-      { name: "Sarah Glicken", role: "Osterostong" },
+      { name: "Sarah Glicken", role: "Osteostrong" },
     ],
   },
   {

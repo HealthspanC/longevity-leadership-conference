@@ -34,6 +34,7 @@ const FORMAT_CONFIG: Record<
   welcome: { icon: Sparkles, accent: "rose" },
   keynote: { icon: Mic, accent: "purple" },
   panel: { icon: Users, accent: "purple" },
+  fireside: { icon: Users, accent: "purple" },
   networking: { icon: Coffee, accent: "slate" },
   closing: { icon: Award, accent: "rose" },
 };
@@ -73,12 +74,12 @@ const PHASE_META: Record<
   morning: {
     label: "Morning",
     subtitle: "The foundation is set",
-    time: "10:00 AM – 11:50 AM",
+    time: "10:00 AM – 12:00 PM",
   },
   midday: {
     label: "Midday",
     subtitle: "Pause & connect",
-    time: "11:50 AM – 1:00 PM",
+    time: "12:00 PM – 1:00 PM",
   },
   afternoon: {
     label: "Afternoon",
@@ -474,11 +475,11 @@ export function PrintableAgenda() {
     >
       {/* ── Masthead ─────────────────────────────────────── */}
       <header style={{ textAlign: "center", marginBottom: "28pt" }}>
-        {/* Top row — draft pill + site wordmark anchor */}
+        {/* Top row — site wordmark anchor (right-aligned) */}
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             alignItems: "center",
             marginBottom: "32pt",
             fontSize: "7pt",
@@ -487,9 +488,6 @@ export function PrintableAgenda() {
             textTransform: "uppercase",
           }}
         >
-          <span style={{ color: "#9b5a70" }}>
-            Draft · Subject to Change
-          </span>
           <span style={{ color: "#8888a0" }}>
             longevityleadershipconference.com
           </span>
@@ -934,19 +932,6 @@ export function PrintableAgenda() {
       >
         <div
           style={{
-            fontFamily:
-              "var(--font-serif), 'Playfair Display', Georgia, serif",
-            fontStyle: "italic",
-            fontSize: "8.5pt",
-            color: "#8888a0",
-            marginBottom: "4pt",
-          }}
-        >
-          Agenda subject to refinement. Final program will be published
-          closer to the event.
-        </div>
-        <div
-          style={{
             fontSize: "7pt",
             fontWeight: 700,
             letterSpacing: "0.2em",
@@ -1043,7 +1028,7 @@ export function AgendaModal({
         {/* Close button — glass pill, floats above scrollable content.
             Mobile uses a larger 44px touch target (iOS/Android minimum)
             and a tighter corner offset so it never collides with the
-            centered draft pill below. */}
+            hero block below. */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 sm:top-5 sm:right-5 md:top-6 md:right-6 z-10 w-11 h-11 sm:w-9 sm:h-9 rounded-full bg-white/80 backdrop-blur-md ring-1 ring-black/[0.06] shadow-[0_2px_10px_rgba(16,10,30,0.08)] flex items-center justify-center text-text-muted hover:text-text hover:bg-white hover:shadow-[0_3px_14px_rgba(16,10,30,0.12)] active:scale-95 transition-all duration-200 cursor-pointer"
@@ -1058,14 +1043,7 @@ export function AgendaModal({
           className="overflow-y-auto max-h-[92dvh] px-5 pt-16 pb-8 sm:px-10 sm:pt-12 sm:pb-10 md:px-14 md:pt-14 md:pb-12"
         >
           {/* ── Editorial hero block ───────────────────────────── */}
-          <div className="text-center mb-12 sm:mb-14 max-w-[640px] mx-auto">
-            {/* Draft pill — delicate, demoted above the hero */}
-            <div className="inline-flex items-center px-3 py-1 mb-8 rounded-full bg-[rgba(168,106,126,0.06)] ring-1 ring-[rgba(168,106,126,0.18)]">
-              <span className="text-[0.56rem] font-bold tracking-[0.22em] uppercase text-[#9b5a70]">
-                Draft Conference Agenda — Subject to Change
-              </span>
-            </div>
-
+          <div className="text-center mb-12 sm:mb-14 max-w-[640px] mx-auto pt-2">
             {/* Ornamental date kicker — editorial save-the-date feel.
                 On mobile the flanking hairlines are hidden so the date
                 stays on a single line inside the narrow viewport. */}
@@ -1205,10 +1183,6 @@ export function AgendaModal({
                 <span>Download PDF</span>
               </button>
             </div>
-            <p className="text-[0.72rem] text-text-muted italic">
-              Agenda subject to refinement. Final program will be published
-              closer to the event.
-            </p>
           </div>
         </div>
       </div>

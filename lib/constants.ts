@@ -296,7 +296,7 @@ export interface AgendaSession {
   id: string;
   time: string;
   phase: "morning" | "midday" | "afternoon" | "finale";
-  format: "welcome" | "keynote" | "panel" | "networking" | "closing";
+  format: "welcome" | "keynote" | "panel" | "fireside" | "networking" | "closing";
   formatLabel: string;
   title: string;
   speakers?: ReadonlyArray<{ name: string; role?: string }>;
@@ -314,9 +314,9 @@ export const AGENDA: readonly AgendaSession[] = [
     formatLabel: "Opening Welcome",
     title: "The State of Longevity Leadership",
     speakers: [
+      { name: "Elias Arjan", role: "Healthspan Collective" },
       { name: "Adam Torres", role: "Mission Matters" },
       { name: "Chirag Sagar", role: "Mission Matters" },
-      { name: "Elias Arjan", role: "Healthspan Collective" },
     ],
   },
   {
@@ -330,7 +330,7 @@ export const AGENDA: readonly AgendaSession[] = [
   },
   {
     id: "keynote-cell-signaling",
-    time: "10:30 – 10:50 AM",
+    time: "10:30 – 11:00 AM",
     phase: "morning",
     format: "keynote",
     formatLabel: "Keynote",
@@ -339,7 +339,7 @@ export const AGENDA: readonly AgendaSession[] = [
   },
   {
     id: "panel-peptides",
-    time: "10:50 – 11:30 AM",
+    time: "11:00 – 11:40 AM",
     phase: "morning",
     format: "panel",
     formatLabel: "Panel",
@@ -353,7 +353,7 @@ export const AGENDA: readonly AgendaSession[] = [
   },
   {
     id: "keynote-brain-clock",
-    time: "11:30 – 11:50 AM",
+    time: "11:40 AM – 12:00 PM",
     phase: "morning",
     format: "keynote",
     formatLabel: "Keynote",
@@ -362,7 +362,7 @@ export const AGENDA: readonly AgendaSession[] = [
   },
   {
     id: "lunch",
-    time: "11:50 AM – 1:00 PM",
+    time: "12:00 PM – 1:00 PM",
     phase: "midday",
     format: "networking",
     formatLabel: "Break",
@@ -370,20 +370,31 @@ export const AGENDA: readonly AgendaSession[] = [
   },
   {
     id: "panel-aesthetics",
-    time: "1:00 – 1:40 PM",
+    time: "1:00 – 1:30 PM",
     phase: "afternoon",
     format: "panel",
     formatLabel: "Panel",
-    title: "Regenerative Aesthetics & Longevity Medicine",
-    moderator: { name: "Dr. Kayte Susse" },
+    title: "Regenerative Aesthetics",
+    moderator: { name: "Adam Torres", role: "Mission Matters" },
     panelists: [
       { name: "Ashley Hines" },
-      { name: "Josephine Musco" },
+      { name: "Dr. Kayte Susse" },
     ],
   },
   {
+    id: "fireside-fascia",
+    time: "1:30 – 1:45 PM",
+    phase: "afternoon",
+    format: "fireside",
+    formatLabel: "Fireside",
+    title:
+      "Longevity in Motion: The Hidden Role of Fascia and the Peripheral Nervous System",
+    moderator: { name: "Adam Torres", role: "Mission Matters" },
+    panelists: [{ name: "Dr. Emily Splichal" }],
+  },
+  {
     id: "panel-clinics",
-    time: "1:40 – 2:20 PM",
+    time: "1:45 – 2:30 PM",
     phase: "afternoon",
     format: "panel",
     formatLabel: "Panel",
@@ -392,28 +403,35 @@ export const AGENDA: readonly AgendaSession[] = [
     panelists: [
       { name: "Nick Capozzi", role: "Longevity Clinic" },
       { name: "Jeremy Hoffmann", role: "Quantum Wellness Spa" },
+      { name: "Sarah Glicken", role: "Osterostong" },
     ],
   },
   {
-    id: "panel-capital",
-    time: "2:20 – 3:00 PM",
+    id: "fireside-microplastics",
+    time: "2:30 – 2:40 PM",
     phase: "afternoon",
-    format: "panel",
-    formatLabel: "Panel",
-    title: "Capital, Risk & Governance in Longevity",
+    format: "fireside",
+    formatLabel: "Fireside",
+    title: "Microplastics and Human Health",
     moderator: { name: "Adam Torres", role: "Mission Matters" },
-    panelists: [
-      { name: "Gayland Hethcoat" },
-      { name: "Investor", role: "TBD" },
-      { name: "Operator / Founder", role: "TBD" },
-    ],
+    panelists: [{ name: "Josephine Musco" }],
+  },
+  {
+    id: "fireside-regulatory",
+    time: "2:40 – 3:00 PM",
+    phase: "afternoon",
+    format: "fireside",
+    formatLabel: "Fireside",
+    title: "Regulatory and Risk in Longevity",
+    moderator: { name: "Elias Arjan", role: "Healthspan Collective" },
+    panelists: [{ name: "Gayland Hethcoat" }],
   },
   {
     id: "closing",
     time: "3:00 – 3:30 PM",
     phase: "finale",
     format: "closing",
-    formatLabel: "Closing + Q&A",
+    formatLabel: "Closing Presentation + Q&A",
     title: "The Future of Longevity Leadership",
     speakers: [
       { name: "Elias Arjan", role: "Healthspan Collective" },
@@ -425,6 +443,7 @@ export const AGENDA: readonly AgendaSession[] = [
       "Key takeaways from the day",
       "Open Q&A with audience",
       "Final call to action: partnerships, investment, and continued involvement",
+      "Final Group Photo",
     ],
   },
   {

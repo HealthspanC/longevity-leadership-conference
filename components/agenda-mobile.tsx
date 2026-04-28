@@ -266,18 +266,60 @@ function SessionRow({
             <h3 className="font-display text-[1.02rem] font-semibold text-text leading-[1.2] tracking-[-0.005em]">
               {session.title}
             </h3>
-            {/* Speakers — show all names (wraps to multiple lines as needed) */}
+            {/* Speakers — name + role per line, mirrors the desktop modal
+                so panelists/firesides aren't reduced to just the moderator. */}
             {session.speakers && session.speakers.length > 0 && (
-              <div className="mt-2 text-[0.75rem] text-text-muted leading-snug">
-                {session.speakers.map((s) => s.name).join(" · ")}
-              </div>
+              <ul className="mt-2.5 space-y-0.5">
+                {session.speakers.map((s) => (
+                  <li
+                    key={s.name}
+                    className="text-[0.78rem] leading-snug"
+                  >
+                    <span className="text-text font-medium">{s.name}</span>
+                    {s.role && (
+                      <span className="text-text-muted"> — {s.role}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
             )}
+            {/* Panel / fireside — Moderator + Panelists, each with role.
+                Singular "Panelist" label when there's just one (firesides). */}
             {session.moderator && (
-              <div className="mt-2 text-[0.75rem] text-text-muted leading-snug">
-                <span className="text-text-secondary font-medium">
-                  Moderator:
-                </span>{" "}
-                {session.moderator.name}
+              <div className="mt-2.5">
+                <div className="text-[0.6rem] font-bold tracking-[0.16em] uppercase text-text-muted/80 mb-0.5">
+                  Moderator
+                </div>
+                <div className="text-[0.78rem] leading-snug">
+                  <span className="text-text font-medium">
+                    {session.moderator.name}
+                  </span>
+                  {session.moderator.role && (
+                    <span className="text-text-muted">
+                      {" "}— {session.moderator.role}
+                    </span>
+                  )}
+                </div>
+                {session.panelists && session.panelists.length > 0 && (
+                  <>
+                    <div className="text-[0.6rem] font-bold tracking-[0.16em] uppercase text-text-muted/80 mt-2 mb-0.5">
+                      {session.panelists.length === 1 ? "Panelist" : "Panelists"}
+                    </div>
+                    <ul className="space-y-0.5">
+                      {session.panelists.map((p) => (
+                        <li
+                          key={p.name}
+                          className="text-[0.78rem] leading-snug"
+                        >
+                          <span className="text-text font-medium">{p.name}</span>
+                          {p.role && (
+                            <span className="text-text-muted"> — {p.role}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
             )}
           </div>

@@ -444,6 +444,26 @@ export function downloadAgendaICS() {
    ────────────────────────────────────────────────────── */
 export function downloadAgendaPDF() {
   if (typeof window === "undefined") return;
+
+  // Browsers use `document.title` to seed the "Save as PDF" filename in
+  // the print dialog. The page title is e.g.
+  //   "About | Longevity Leadership Conference 2026 | April 30, LA"
+  // and "|" gets sanitized to "_", producing the messy default
+  //   "About _ Longevity Leadership Conference 2026 _ April 30, LA.pdf".
+  // Swap the title for a clean agenda-specific one for the duration of
+  // the print dialog, then restore it on `afterprint` (fires whether
+  // the user saves or cancels).
+  const originalTitle = document.title;
+  const printTitle =
+    "Longevity Leadership Conference 2026 - Agenda - April 30, LA";
+  document.title = printTitle;
+
+  const restore = () => {
+    document.title = originalTitle;
+    window.removeEventListener("afterprint", restore);
+  };
+  window.addEventListener("afterprint", restore);
+
   window.print();
 }
 

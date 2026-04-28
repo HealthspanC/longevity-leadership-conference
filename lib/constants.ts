@@ -181,6 +181,14 @@ export const SPEAKERS = [
     image: "/speakers/emily-splichal.jpg",
     bio: "Dr. Emily Splichal, functional podiatrist and human movement specialist, is the mind behind Naboso. With a spirit to challenge conformity, Dr. Splichal has taken her conventional Podiatric Medical degree and combined it with years of experience and expertise in human movement and sensory science to found Naboso.\n\nDr. Splichal believes that our experience in this world is built around sensory stimulation and our ability to process, perceive, and integrate this information effectively. Since 2012, Dr. Splichal has been traveling the world to share her unique approach to human movement, foot function, and barefoot science. Having taught in 35 countries and to over 25,000 professionals, Dr. Splichal has quickly become a sought out leader in barefoot training and rehabilitation.",
   },
+  {
+    slug: "sarah",
+    name: "Sarah Glicken",
+    role: "Founder of OsteoStrong",
+    tag: "Panelist" as const,
+    image: "/speakers/sarah-glicken.jpg",
+    bio: "Sarah Glicken is an entrepreneur committed to advancing health optimization and aging gracefully. She is a partner at Precision Bone Imaging and owns multiple OsteoStrong locations, where she applies evidence-based approaches to bone, joint, and muscle health. She works with physicians and wellness practitioners to integrate advanced health technologies into their practices, making measurable outcomes the standard, not the exception.",
+  },
 ] as const;
 
 export const SPONSORS = [
@@ -411,7 +419,7 @@ export const AGENDA: readonly AgendaSession[] = [
     panelists: [
       { name: "Nick Capozzi", role: "Longevity Clinic" },
       { name: "Jeremy Hoffmann", role: "Quantum Wellness Spa" },
-      { name: "Sarah Glicken", role: "Osteostrong" },
+      { name: "Sarah Glicken", role: "OsteoStrong" },
     ],
   },
   {

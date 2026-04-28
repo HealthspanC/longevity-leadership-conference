@@ -424,7 +424,7 @@ export const AGENDA: readonly AgendaSession[] = [
     formatLabel: "Fireside",
     title: "Regulatory and Risk in Longevity",
     moderator: { name: "Elias Arjan", role: "Healthspan Collective" },
-    panelists: [{ name: "Gayland Hethcoat" }],
+    panelists: [{ name: "Gayland Hethcoat", role: "ArentFox Schiff" }],
   },
   {
     id: "closing",

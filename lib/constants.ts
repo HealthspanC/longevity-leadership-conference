@@ -173,6 +173,14 @@ export const SPEAKERS = [
     imagePosition: "center 20%",
     bio: "Arvind Chakravarthy, MD, MBA is a physician-entrepreneur focused on redefining the future of healthcare through Medicine 4.0—a proactive, data-driven model that shifts medicine from disease management to cellular optimization, longevity, and performance.",
   },
+  {
+    slug: "emily",
+    name: "Dr. Emily Splichal",
+    role: "Founder of Naboso",
+    tag: "Panelist" as const,
+    image: "/speakers/emily-splichal.jpg",
+    bio: "Dr. Emily Splichal, functional podiatrist and human movement specialist, is the mind behind Naboso. With a spirit to challenge conformity, Dr. Splichal has taken her conventional Podiatric Medical degree and combined it with years of experience and expertise in human movement and sensory science to found Naboso.\n\nDr. Splichal believes that our experience in this world is built around sensory stimulation and our ability to process, perceive, and integrate this information effectively. Since 2012, Dr. Splichal has been traveling the world to share her unique approach to human movement, foot function, and barefoot science. Having taught in 35 countries and to over 25,000 professionals, Dr. Splichal has quickly become a sought out leader in barefoot training and rehabilitation.",
+  },
 ] as const;
 
 export const SPONSORS = [

@@ -390,7 +390,7 @@ export const AGENDA: readonly AgendaSession[] = [
     title:
       "Longevity in Motion: The Hidden Role of Fascia and the Peripheral Nervous System",
     moderator: { name: "Adam Torres", role: "Mission Matters" },
-    panelists: [{ name: "Dr. Emily Splichal" }],
+    panelists: [{ name: "Dr. Emily Splichal", role: "Naboso" }],
   },
   {
     id: "panel-clinics",

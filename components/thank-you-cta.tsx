@@ -76,7 +76,7 @@ export function ThankYouCTA() {
               </div>
             </div>
             <h3 className="font-bold text-2xl text-white mb-2">You&rsquo;re on the list!</h3>
-            <p className="text-sm text-white/70">We&rsquo;ll see you in 2027.</p>
+            <p className="text-sm text-white/70">We hope to see you at our next event!</p>
           </div>
         ) : (
           <>

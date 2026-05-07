@@ -31,3 +31,7 @@ pnpm-debug.log*
 # ide
 .vscode/
 .idea/
+
+# claude code local state
+.claude/settings.local.json
+.claude/worktrees/

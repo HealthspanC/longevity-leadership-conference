@@ -92,7 +92,7 @@ export function Subscribe() {
                       placeholder="First name"
                       disabled={status === "loading"}
                       aria-label="First name"
-                      className="flex-1 bg-white border border-purple-deep/30 rounded-full py-3.5 px-6 text-[0.9rem] text-text placeholder:text-text-muted outline-none transition-all focus:border-purple-deep/60 focus:shadow-[0_0_0_3px_rgba(45,27,78,0.08)] disabled:opacity-60"
+                      className="flex-1 min-w-0 bg-white border border-purple-deep/30 rounded-full py-3.5 px-6 text-[0.9rem] text-text placeholder:text-text-muted outline-none transition-all focus:border-purple-deep/60 focus:shadow-[0_0_0_3px_rgba(45,27,78,0.08)] disabled:opacity-60"
                     />
                     <input
                       type="text"
@@ -101,7 +101,7 @@ export function Subscribe() {
                       placeholder="Last name"
                       disabled={status === "loading"}
                       aria-label="Last name"
-                      className="flex-1 bg-white border border-purple-deep/30 rounded-full py-3.5 px-6 text-[0.9rem] text-text placeholder:text-text-muted outline-none transition-all focus:border-purple-deep/60 focus:shadow-[0_0_0_3px_rgba(45,27,78,0.08)] disabled:opacity-60"
+                      className="flex-1 min-w-0 bg-white border border-purple-deep/30 rounded-full py-3.5 px-6 text-[0.9rem] text-text placeholder:text-text-muted outline-none transition-all focus:border-purple-deep/60 focus:shadow-[0_0_0_3px_rgba(45,27,78,0.08)] disabled:opacity-60"
                     />
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
@@ -113,7 +113,7 @@ export function Subscribe() {
                       required
                       disabled={status === "loading"}
                       aria-label="Email address"
-                      className="flex-1 bg-white border border-purple-deep/30 rounded-full py-3.5 px-6 text-[0.9rem] text-text placeholder:text-text-muted outline-none transition-all focus:border-purple-deep/60 focus:shadow-[0_0_0_3px_rgba(45,27,78,0.08)] disabled:opacity-60"
+                      className="flex-1 min-w-0 bg-white border border-purple-deep/30 rounded-full py-3.5 px-6 text-[0.9rem] text-text placeholder:text-text-muted outline-none transition-all focus:border-purple-deep/60 focus:shadow-[0_0_0_3px_rgba(45,27,78,0.08)] disabled:opacity-60"
                     />
                     <button
                       type="submit"

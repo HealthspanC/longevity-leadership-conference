@@ -98,7 +98,7 @@ export function ThankYouCTA() {
                   placeholder="First name"
                   disabled={status === "loading"}
                   aria-label="First name"
-                  className="flex-1 bg-white/[0.08] border border-white/[0.15] rounded-full py-3 px-5 text-[0.875rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-purple-light/60 focus:bg-white/[0.12] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.15)] disabled:opacity-60"
+                  className="flex-1 min-w-0 bg-white/[0.08] border border-white/[0.15] rounded-full py-3 px-5 text-[0.875rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-purple-light/60 focus:bg-white/[0.12] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.15)] disabled:opacity-60"
                 />
                 <input
                   type="text"
@@ -107,7 +107,7 @@ export function ThankYouCTA() {
                   placeholder="Last name"
                   disabled={status === "loading"}
                   aria-label="Last name"
-                  className="flex-1 bg-white/[0.08] border border-white/[0.15] rounded-full py-3 px-5 text-[0.875rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-purple-light/60 focus:bg-white/[0.12] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.15)] disabled:opacity-60"
+                  className="flex-1 min-w-0 bg-white/[0.08] border border-white/[0.15] rounded-full py-3 px-5 text-[0.875rem] text-white placeholder:text-white/40 outline-none transition-all focus:border-purple-light/60 focus:bg-white/[0.12] focus:shadow-[0_0_0_3px_rgba(139,92,246,0.15)] disabled:opacity-60"
                 />
               </div>
               <input

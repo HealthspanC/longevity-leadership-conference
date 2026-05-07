@@ -11,7 +11,6 @@ import { TopicsCloud } from "@/components/topics-cloud";
 import { EventDeck } from "@/components/event-deck";
 import { Subscribe } from "@/components/subscribe";
 import { Footer } from "@/components/footer";
-import { PromoPopup } from "@/components/promo-popup";
 import { SITE, LINKS, SPEAKERS, HOSTS } from "@/lib/constants";
 
 /**
@@ -178,7 +177,6 @@ export function HomePageBody({
         <Subscribe />
       </main>
       <Footer />
-      <PromoPopup />
     </>
   );
 }

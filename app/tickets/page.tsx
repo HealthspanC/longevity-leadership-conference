@@ -59,7 +59,7 @@ export default function TicketsPage() {
               fill
               priority
               sizes="100vw"
-              className="object-cover object-center"
+              className="object-cover object-center scale-[1.8] sm:scale-100 origin-center"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-purple-deep/90 via-purple-deep/55 to-purple-deep/95" />
             <div className="absolute inset-0 bg-purple-deep/30" />

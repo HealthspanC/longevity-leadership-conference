@@ -41,10 +41,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  icons: {
-    icon: "/brand/favicon.png",
-    apple: "/brand/favicon.png",
-  },
+  // Icons intentionally NOT overridden here — Next.js auto-generates
+  // <link rel="icon"> and <link rel="apple-touch-icon"> from
+  // app/icon.png and app/apple-icon.png (the file-based convention),
+  // which point at the tightened 512×512 / 180×180 H-mark icons.
   openGraph: {
     title:
       "Longevity Leadership Conference 2026 | Healthspan Collective & Mission Matters Media",
